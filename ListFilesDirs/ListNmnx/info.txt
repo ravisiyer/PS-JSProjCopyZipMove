@@ -1,0 +1,32 @@
+10 Jun. 2024: Key info. from this file has been put up on my blog post: Windows Powershell scripts: Copy without node_modules and .next folders/directories; List node_modules and .next folders, https://raviswdev.blogspot.com/2024/06/windows-powershell-scripts-copy-without.html .
+
+Also note that RecurseListNmnx.ps1 has been renamed as ListNmnx.ps1.
+
+=======================
+
+Use Write-Host or Write-Output in RecurseListNmnx.ps1 script?
+
+The use may want to redirect the main output of this script to a file. So the main output statements should use Write-Output.
+
+But usage message and debugging messages should go only to console and so they should use Write-Host.
+
+I also wanted to get some exposure to Write-Error (writes to error stream) and so am using it for error messages. Note that error stream can be redirected to file by using 2> err.txt or similar. Example of full command redirecting output to log file and error to error file:
+.\RecurseListNmnx.ps1 xxx > log.txt 2> err.txt
+
+========================
+
+Variable scoping, recursion, and me - or - How do I accumulate a counter across recursive calls?, https://www.reddit.com/r/PowerShell/comments/agdk2w/variable_scoping_recursion_and_me_or_how_do_i/  ... explains how to increment a variable across recursions.
+In my code, $ListFolderOccurrences++ within recursive function did not increment across recursions and final value I got was 0 (its initial value). Using $script:ListFolderOccurrences++ as suggested in a response in above article solved the issue with increment happening across recursions.
+
+...
+
+How to join String array into one String in PowerShell, https://morgantechspace.com/2021/01/how-to-join-string-array-into-one-string-in-powershell.html ... In my code, I used:
+$NmnxFolders = $ListFolders -join ","
+
+...
+
+Using Write-Output to write a long string broken into two strings in source file, as one line. This is the code I am using:
+"$ListFolderOccurrences folders found matching folder list: $NmnxFolders. " +
+  "Note that subfolders within matched folders are ignored." | Write-Output
+---
+Comma separator results in multiple lines output.

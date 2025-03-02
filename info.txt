@@ -1,0 +1,24 @@
+2 Mar. 2025
+
+Done: 3) Invocation of ExcludeDirsRecurseListFilesDirs.ps1 can be parameterized through the ListAllFF.ps1 script or a variant.
+
+
+1 Mar. 2025
+Considering:
+1) Copywonmnxbld can be parameterized
+-all - nm, nx, bld, intermediates, target, out
+otherwise the directories to be skipped can be passed as parameters.
+
+2) Similar approach can be taken for IncrBackup
+
+4) Consider using write-host in ExcludeDirsRecurseListFilesDirs.ps1 to print Excluded directories if that can work.
+ Note that using write-output interferes with it
+ being used together with (sort-of piped to) other PowerShell stuff like is used in ListMaxAgeFF.
+
+
+
+============
+My blog posts mentioned below have some useful info. about some of the scripts in this folder (and subfolders):
+1) Windows PowerShell script and commands to list files and folders modified in past x days excluding specified folders like .git and node_modules, https://raviswdev.blogspot.com/2024/05/windows-powershell-script-list-files.html
+
+2) Windows Powershell scripts: Copy without node_modules and .next folders/directories; List node_modules and .next folders, https://raviswdev.blogspot.com/2024/06/windows-powershell-scripts-copy-without.html .

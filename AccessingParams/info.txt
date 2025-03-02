@@ -1,0 +1,82 @@
+10 Jun. 2024: Key info. from this file has been put up on my blog post: Windows Powershell scripts: Copy without node_modules and .next folders/directories; List node_modules and .next folders, https://raviswdev.blogspot.com/2024/06/windows-powershell-scripts-copy-without.html (or an older PowerShell post mentioned in this blog post).
+
+Also note that RecurseListNmnx.ps1 has been renamed as ListNmnx.ps1.
+
+====================
+Reference for most scripts in this folder: https://www.red-gate.com/simple-talk/sysadmin/powershell/how-to-use-parameters-in-powershell/ 
+
+Info. on Param: In section "Param", https://ss64.com/ps/syntax-args.html . From the article:
+To define arguments by name, use a param statement, which is a comma separated list of variables, optionally prefixed with a [data type] and/or with = default values.
+
+If used, the param statement MUST be the first thing in your script or function:
+
+param (
+   [string]$welcome
+)
+Then call the script/function like:
+
+mysuperfunction -welcome "Hello world"
+A more complex example with multiple parameters, separated with commmas and some default values:
+
+param (
+   [string]$welcome, 
+   [string]$ComputerName = $env:computername,    
+   [string]$username = $(throw "-username is required."),
+   [string]$password = $( Read-Host -asSecureString "Input password" ),
+   [switch]$SaveData = $false
+)
+Write-Output "The price is $price"
+Write-Output "The Computer Name is $ComputerName"
+Write-Output "The True/False switch argument is $SaveData"
+
+Calling this script, and setting the switch parameter -SaveData to $TRUE:
+.\demo.ps1 -ComputerName "\\server64" -SaveData
+
+or setting -SaveData to $FALSE:
+.\demo.ps1 -ComputerName "\\server64" -SaveData:$false
+--- end extract ---
+
+I could not locate a Param reference page in limited net search. So the above article is very useful.
+
+
+----------
+Concatenation, https://learn.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-string-substitutions?view=powershell-7.4&source=recommendations
+
+
+Everything you wanted to know about the if statement, https://learn.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-if?view=powershell-7.4
+
+How To Add Exit Mechanisms in PowerShell Scripts, https://www.itprotoday.com/powershell/how-to-add-exit-mechanisms-in-powershell-scripts
+
+Find Your Script’s Name in PowerShell, https://hostingultraso.com/help/windows/find-your-script%E2%80%99s-name-powershell
+
+Substring(), https://ss64.com/ps/substring.html
+
+Naming (Function), https://learn.microsoft.com/en-us/powershell/scripting/learn/ps101/09-functions?view=powershell-7.4#naming
+
+about_Variables, https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_variables?view=powershell-7.4
+
+From: Capitalization guidelines, https://github.com/PoshCode/PowerShellPracticeAndStyle/issues/36
+
+Global Variable Names
+$PascalCase
+
+Local Variable Names
+$camelCase (see for example: $args and $this)
+
+Function Names
+PascalCase
+
+Function/method arguments
+PascalCase
+
+--- end extract ---
+
+https://www.manageengine.com/products/desktop-central/returning-error-code-on-scripts-how-to.html states, "$LASTEXITCODE holds the last error code in the powershell script."
+
+'write-host $LASTEXITCODE' on console prints out exit code of last command executed. 
+
+PowerShell: Check If a File Exists, Ref: https://www.sharepointdiary.com/2020/08/powershell-check-if-file-exists.html
+
+Demo-Choices.ps1, https://gist.github.com/kpatnayakuni/da1c1d6e4d9b6e457727a9394af5170d
+
+https://ss64.com/ps/trim.html

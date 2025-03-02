@@ -1,0 +1,6 @@
+16 Feb. 2025: Added Android folders like build and .gradle to exclusion list.
+
+=========
+My blog post mentioned below has some useful info. about some of the scripts in this folder:
+1) Windows PowerShell script and commands to list files and folders modified in past x days excluding specified folders like .git and node_modules, https://raviswdev.blogspot.com/2024/05/windows-powershell-script-list-files.html
+

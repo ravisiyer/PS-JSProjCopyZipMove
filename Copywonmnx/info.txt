@@ -1,0 +1,164 @@
+23 Feb. 2025
+
+I tried specifying relative sub-path to robocopy once again and faced the same failures as logged in 16-17 Feb. 2025 note below. But I also tried absolute path and that worked. 
+...
+\app\build exclusion simply does not work in robocopy except if full path is specified which the script cannot do.
+
+As a limited workaround, consider using intermediates by default and provide build being excluded as an optional parameter.
+
+=========
+In CopyWoNmNxbld, need to figure out how to exclude build only from Android projects as build in Tailwind seems to be reqd. to copy.
+...
+
+16-17 Feb. 2025
+Below article/post tips did not work for me!
+
+https://serverfault.com/questions/304896/wildcard-directory-exclusions-with-robocopy-weird-case
+
+Part of the failure is using a trailing \ in Robocopy when referring to a directory - which is a no-no - as Robocopy tries to interpret it as an escape character. Almost everyone makes this mistake in one way or another with Robocopy. With that in mind, this example will work:
+
+/XD "\Bar"
+If you wanted to match a more specific folder structure (so as not to match other subfolders, you can add more detail, like:
+
+/XD "\Foo\Bar"
+/XD "C:\Foo\Bar"
+
+..........
+https://stackoverflow.com/questions/67922726/how-to-exclude-subfolders-with-specific-titles-from-robocopy-in-cmd
+Alternatively, if applicable: /XD _* to exclude all directorys beginning with an underscore. The /XD switch excludes the directory if appearing on any level of subdirectories. Wildcards like * and ? are supported. If the name contains spaces, quote the names like /XD "My Folder" "Data\Folder 2" etc.
+
+.....
+
+Tests done in C:\Users\ravi-user\Projects\PS-Scripts\Copywonmnx\Test
+
+Below cmd works ... excludes app directory ... so there is no type issue here for app\build ... it just does not work
+robocopy Test1 Test1-wo-nmnxbld /E /XD node_modules .next app .gradle
+
+Below cmd works but excludes all build not only app\build
+robocopy Test1 Test1-wo-nmnxbld /E /XD node_modules .next build .gradle
+
+Below cmd gave ERROR : Invalid Parameter #7 : "*app\\build*"
+robocopy Test1 Test1-wo-nmnxbld /E /XD node_modules .next *app\\build* .gradle
+
+Below cmd did not work
+robocopy Test1 Test1-wo-nmnxbld /E /XD node_modules .next app\\build .gradle
+
+Below cmd did not work
+robocopy Test1 Test1-wo-nmnxbld /E /XD node_modules .next "app/build" .gradle
+
+Below cmd did not work
+robocopy Test1 Test1-wo-nmnxbld /E /XD node_modules .next "app\build" .gradle
+
+Below cmd did not work
+robocopy Test1 Test1-wo-nmnxbld /E /XD node_modules .next "\app\build" .gradle
+
+===================
+
+
+16 Feb. 2025: Updated script to exclude Android build and .gradle folders. Also changed output folder extension suitably. Also modified script name slightly.
+
+below works ... build directory is skipped in copy.
+robocopy LaunchTimestamp LaunchTimestamp-wo-nmnxbld /E /XD node_modules .next build .gradle
+
+below does not work and build directory gets copied over.
+robocopy LaunchTimestamp LaunchTimestamp-wo-nmnxbld /E /XD node_modules .next "app\build" .gradle
+
+How to exclude subdirectories in the destination while using /mir /xd switch in robocopy [closed], https://stackoverflow.com/questions/14511537/how-to-exclude-subdirectories-in-the-destination-while-using-mir-xd-switch-in
+
+============================
+
+10 Jun. 2024: Key info. from this file has been put up on my blog post: Windows Powershell scripts: Copy without node_modules and .next folders/directories; List node_modules and .next folders, https://raviswdev.blogspot.com/2024/06/windows-powershell-scripts-copy-without.html .
+
+============================
+
+Reference: https://www.red-gate.com/simple-talk/sysadmin/powershell/how-to-use-parameters-in-powershell/ 
+
+Info. on Param: In section "Param", https://ss64.com/ps/syntax-args.html . From the article:
+To define arguments by name, use a param statement, which is a comma separated list of variables, optionally prefixed with a [data type] and/or with = default values.
+
+If used, the param statement MUST be the first thing in your script or function:
+
+param (
+   [string]$welcome
+)
+Then call the script/function like:
+
+mysuperfunction -welcome "Hello world"
+A more complex example with multiple parameters, separated with commmas and some default values:
+
+param (
+   [string]$welcome, 
+   [string]$ComputerName = $env:computername,    
+   [string]$username = $(throw "-username is required."),
+   [string]$password = $( Read-Host -asSecureString "Input password" ),
+   [switch]$SaveData = $false
+)
+Write-Output "The price is $price"
+Write-Output "The Computer Name is $ComputerName"
+Write-Output "The True/False switch argument is $SaveData"
+
+Calling this script, and setting the switch parameter -SaveData to $TRUE:
+.\demo.ps1 -ComputerName "\\server64" -SaveData
+
+or setting -SaveData to $FALSE:
+.\demo.ps1 -ComputerName "\\server64" -SaveData:$false
+--- end extract ---
+
+I could not locate a Param reference page in limited net search. So the above article is very useful.
+
+
+----------
+Concatenation, https://learn.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-string-substitutions?view=powershell-7.4&source=recommendations
+
+
+Everything you wanted to know about the if statement, https://learn.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-if?view=powershell-7.4
+
+How To Add Exit Mechanisms in PowerShell Scripts, https://www.itprotoday.com/powershell/how-to-add-exit-mechanisms-in-powershell-scripts
+
+Find Your Script’s Name in PowerShell, https://hostingultraso.com/help/windows/find-your-script%E2%80%99s-name-powershell
+
+Substring(), https://ss64.com/ps/substring.html
+
+Naming (Function), https://learn.microsoft.com/en-us/powershell/scripting/learn/ps101/09-functions?view=powershell-7.4#naming
+
+about_Variables, https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_variables?view=powershell-7.4
+
+From: Capitalization guidelines, https://github.com/PoshCode/PowerShellPracticeAndStyle/issues/36
+
+Global Variable Names
+$PascalCase
+
+Local Variable Names
+$camelCase (see for example: $args and $this)
+
+Function Names
+PascalCase
+
+Function/method arguments
+PascalCase
+
+--- end extract ---
+
+https://www.manageengine.com/products/desktop-central/returning-error-code-on-scripts-how-to.html states, "$LASTEXITCODE holds the last error code in the powershell script."
+
+'write-host $LASTEXITCODE' on console prints out exit code of last command executed. 
+
+PowerShell: Check If a File Exists, Ref: https://www.sharepointdiary.com/2020/08/powershell-check-if-file-exists.html
+
+Demo-Choices.ps1, https://gist.github.com/kpatnayakuni/da1c1d6e4d9b6e457727a9394af5170d
+
+https://ss64.com/ps/trim.html
+
+From https://www.educative.io/answers/what-is-n-in-powershell :
+`n is used in Powershell to append a new line to the standard output.
+
+The use of `n in Powershell is similar to \n in C++ or Java.
+-----
+
+Check if Arguments Exists in PowerShell, https://java2blog.com/check-if-arguments-exists-powershell/
+
+-------------------------------
+
+Use Write-Host or Write-Output in copywonmnx.ps1 script?
+I think Write-Host should be used as the script is simply an interactive front-end to the robocopy command that is executed if user chooses to proceed. If Write-Host is used then redirecting output to log.txt file by '.\copywonmnx.ps1 .\Test\ > log.txt' results in copywonmnx script interactions to be seen on console as is appropriate, and only robocopy output is redirected to log.txt. If Write-Output is used then only $host.UI.PromptForChoice data is shown on console, which I feel is too limited. So I have decided to stick to using Write-Host in copywonmnx.ps1 script.
+------------------------

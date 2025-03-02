@@ -1,0 +1,1 @@
+﻿Get-ChildItem -Path . -Attributes Directory -Recurse | ForEach-Object {Write-Output $_.FullName}
