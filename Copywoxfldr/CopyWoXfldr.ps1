@@ -7,14 +7,17 @@
 # output folder name. Note that Powershell adds trailing backslash by default to folder names when
 # tab is used to step through files and folders being specified in a command on console.
 #
-param ($InputFolder="", $ExcludeFolders="node_modules .next intermediates .gradle", $OutputSuffix="-wo-nmnig")
+param ($InputFolder="", $OutputSuffix="-wo-nmnig", $ExcludeFolders="node_modules .next intermediates .gradle", $IncrOrMaxAge="")
 $OutputFolder = ""
 # $OutputSuffix ="-xclFldr"
 function Usage {
   param ($cmdName)
-  Write-Host Usage: $cmdName Source-Folder-Name Exclude-Folders-List Output-Folder-Suffix
-  Write-Host Usage: Output-Folder-Suffix is a space separated list like: node_modules .next intermediates .gradle
+  Write-Host Usage: $cmdName Source-Folder-Name Output-Folder-Suffix Exclude-Folders-List Incr-Or-MaxAge
+  Write-Host Usage: Exclude-Folders-List is a space separated list like: node_modules .next intermediates .gradle
+  Write-Host Usage: Incr-Or-MaxAge can be /XO for incremental or MaxAge as a number
 }
+$CopyIncr = ""
+$MaxAge=""
 
 $InputFolder = $InputFolder.trim()
 if ( "" -eq $InputFolder  ) {
@@ -30,7 +33,17 @@ if ( "" -eq $OutputSuffix  ) {
     exit 1
   }
 
-
+$IncrOrMaxAge = $IncrOrMaxAge.trim()
+if ( "" -eq $IncrOrMaxAge ) {
+  write-host "Incremental copy not specified. MaxAge not specified"
+} elseif ("/XO" -eq $IncrOrMaxAge) {
+  $CopyIncr = "/XO"
+  write-host "Incremental copy specified."
+} else {
+  write-host "Max age of $IncrOrMaxAge specified."
+  $MaxAge ="/MAXAGE:$IncrOrMaxAge"
+}
+  
 $len = $InputFolder.length
 if ("\" -eq $InputFolder.substring($len-1,1)) {
   $InputFolder = $InputFolder.substring(0, $len-1)
@@ -56,9 +69,11 @@ If (Test-Path -path $OutputFolder) {
   exit 1
 } 
 
-Write-Host "Command to be executed (for readability of below output, single quotes are added around folder names ..." 
-Write-Host "but these added single quotes are not passed to robocopy command):", `n
-Write-Host "robocopy '$InputFolder' '$OutputFolder' /E /XD $ExcludeFolders ", `n
+Write-Host "Command (list only and not actual copy) to be executed [for readability of below output, single quotes ..."
+Write-Host " are added around folder names but these added single quotes are not passed to robocopy command]:", `n
+$Cmd ="robocopy '$InputFolder' '$OutputFolder' /E $CopyIncr $MaxAge /NDL /XD $ExcludeFolders "
+$ListCmd = $Cmd + " /L"
+Write-Host $ListCmd , `n
 $Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
 $Choice = $host.UI.PromptForChoice("", "Proceed?", $Choices, 1)
 
@@ -68,6 +83,23 @@ if (1 -eq $Choice)
     exit 1
 }
 
-$ExcludeFolderArray = $($ExcludeFolders -split " ")
-robocopy $InputFolder $OutputFolder /E /XD @ExcludeFolderArray
+Invoke-Expression $ListCmd
+
+Write-Host "Actual copy command to be executed", `n
+Write-Host $Cmd, `n
+
+$Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
+$Choice = $host.UI.PromptForChoice("", "Proceed?", $Choices, 1)
+
+if (1 -eq $Choice)
+{
+    Write-Host "Aborted!"
+    exit 1
+}
+
+Invoke-Expression $Cmd
+
+
+# $ExcludeFolderArray = $($ExcludeFolders -split " ")
+# robocopy $InputFolder $OutputFolder /E /XD @ExcludeFolderArray
 # Ref: about_Splatting, https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_splatting?view=powershell-7.5
