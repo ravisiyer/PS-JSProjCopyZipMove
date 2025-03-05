@@ -15,7 +15,12 @@ otherwise the directories to be skipped can be passed as parameters.
  Note that using write-output interferes with it
  being used together with (sort-of piped to) other PowerShell stuff like is used in ListMaxAgeFF.
 
+5) ListAllFF should be renamed to indicate it excludes standard folders
+   A new ListAllFF should be created with: cmd.exe /c "dir /s /a /b"
+   Above command will list all files (no excluded folders)
 
+6) For CopyWoXfldr: If MaxAge is specified, /s is better option than /e
+    But if it is a full fresh copy /e may be better.
 
 ============
 My blog posts mentioned below have some useful info. about some of the scripts in this folder (and subfolders):

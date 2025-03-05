@@ -10,6 +10,10 @@
 param ($InputFolder="", $ExcludeFolders="", $MaxAge="", $OutputFolder="", $LogFile="")
 $OutputSuffixDefault ="-XF"
 $ExcludeFoldersDefault="node_modules .next intermediates .gradle target"
+
+# If MaxAge is specified, /S is better option than /E as we don't want empty directories to be copied
+# But if MaxAge is not specified and destination folder is not existing or empty (it is a full fresh copy), /e may be better.
+$CopySubDirOption = "/E"
 function Usage {
   param ($cmdName)
   Write-Host Usage: $cmdName Source-Folder-Name [Exclude-Folders-List MaxAge Output-Folder-Name LogFile]
@@ -32,11 +36,12 @@ if (( "" -eq $ExcludeFolders  ) -or ("-" -eq $ExcludeFolders)) {
 }
 
 if (( "" -eq $MaxAge  ) -or ("-" -eq $MaxAge)) {
-    write-host "MaxAge not specified"
+    write-host "MaxAge is not specified"
     $MaxAge =""
   } else {
-  write-host "Max age of $MaxAge specified."
+  write-host "Max age of $MaxAge is specified."
   $MaxAge ="/MAXAGE:$MaxAge"
+  $CopySubDirOption = "/S" # We don't want empty subdirectories to be copied in this case.
 }
   
 $len = $InputFolder.length
@@ -82,7 +87,8 @@ if ("" -ne $LogOption) {
   Write-Host "Log file is excluded in list only command."
 }
 
-$Cmd ="robocopy '$InputFolder' '$OutputFolder' /E /XO $MaxAge /NDL /XD $ExcludeFolders "
+$Cmd ="robocopy '$InputFolder' '$OutputFolder' $CopySubDirOption /XO $MaxAge /NDL /XD $ExcludeFolders "
+# $Cmd ="robocopy '$InputFolder' '$OutputFolder' /E /XO $MaxAge /NDL /XD $ExcludeFolders "
 
 $ListCmd = $Cmd + " /L"
 Write-Host $ListCmd , `n
