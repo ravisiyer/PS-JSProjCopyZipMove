@@ -20,6 +20,11 @@ if ( "" -eq $InputFolder  ) {
 $InputFolder = $InputFolder.trim()
 
 $len = $InputFolder.length
+if (($len -gt 1) -and (".\" -eq $InputFolder.substring(0,2))) {
+    $InputFolder = $InputFolder.substring(2,$len-2)
+    Write-Host "Input parameter (folder name) had starting dot and backslash which was stripped" 
+}
+$len = $InputFolder.length
 if ("\" -eq $InputFolder.substring($len-1,1)) {
   $InputFolder = $InputFolder.substring(0, $len-1)
   Write-Host "Input parameter (folder name) had trailing backslash which was stripped" 
@@ -38,7 +43,8 @@ If ( -not (Test-Path -path $InputFolder -PathType Container)) {
   exit 1
 }
 
-$OutputFolder = $InputFolder + $OutputSuffix
+$TodayDate = Get-Date -Format "yyyyMMdd-"
+$OutputFolder = $TodayDate + $InputFolder + $OutputSuffix + "-" + $MaxAge
 If (Test-Path -path $OutputFolder) {
   Write-Host "Output folder/directory name with auto suffix: '$OutputFolder' already exists. Aborting!"
   exit 1
