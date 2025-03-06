@@ -4,22 +4,22 @@
 # Usage: script-name [optional-path Exclude-Folders-List] | next-cmd
 # Usage Examples:
 # Lists last modified time followed by full path for each folder & file in current directory
-# excluding specified/default folders
+# excluding default folders
 # script-name | ForEach-Object {"$($_.LastWriteTime) $($_.FullName)"}
 #
 # Lists last modified time followed by full path for each folder & file in Test1 directory
-# excluding specified/default folders
+# excluding default folders
 # script-name Test1 | ForEach-Object {"$($_.LastWriteTime) $($_.FullName)"}
 #
 # Lists last modified time followed by full path for each folder & file in current directory
 # that was last modifed on 4.05.2024 (4th May) or 5.05.2024
-# excluding specified/default folders
+# excluding default folders
 # script-name | where { ((get-date('5.05.2024'))-$_.LastWriteTime).days -lt 1 } | 
 # ForEach-Object {"$($_.LastWriteTime) $($_.FullName)"}
 #
 # Lists last modified time followed by full path for each folder & file in current directory
 # that was last modifed in past 1 day i.e. 24 hours
-# excluding specified/default folders
+# excluding default folders
 # script-name | where { ((get-date)-$_.LastWriteTime).days -lt 1 } |
 # ForEach-Object {"$($_.LastWriteTime) $($_.FullName)"}
 #
@@ -28,7 +28,15 @@
 # script-name Test | Where-Object { ((get-date)-$_.LastWriteTime).days -lt 3700 } |
 # ForEach-Object {"$($_.LastWriteTime) $($_.FullName)"}
 #
-# ExcludeNone results in no files and folders being excluded.
+# build and .git directories are excluded
+# script-name Test "build .git" | Where-Object { ((get-date)-$_.LastWriteTime).days -lt 3700 } | 
+# ForEach-Object {"$($_.LastWriteTime) $($_.FullName)"}
+#
+# node_modules directory is excluded
+# script-name Test "node_modules" | Where-Object { ((get-date)-$_.LastWriteTime).days -lt 3700 } | 
+# ForEach-Object {"$($_.LastWriteTime) $($_.FullName)"}
+#
+# ExcludeNone results in no files and folders being excluded (all are included).
 # script-name Test ExcludeNone | Where-Object { ((get-date)-$_.LastWriteTime).days -lt 3700 } |
 # ForEach-Object {"$($_.LastWriteTime) $($_.FullName)"}
 #
@@ -37,12 +45,24 @@
 
 Param ($path = $pwd, $ExcludeFolders="")
 
+$ExcludeFoldersDefault = ".git node_modules .next .gradle intermediates .expo"
+$ExcludeNoneFlag="ExcludeNone"
+
+# Special flag to not specify Exclude Directtories option at all  
+if ( $ExcludeNoneFlag -eq $ExcludeFolders )  {
+  $ExcludeFolders = "" 
+} elseif (( "" -eq $ExcludeFolders  ) -or ("-" -eq $ExcludeFolders)) {
+  $ExcludeFolders = $ExcludeFoldersDefault
+}
+$ExcludeFoldersArray = $($ExcludeFolders -split " ")
+
+write-host "ExcludeDirsRecurseListFilesDirs: Excluded folders:" $ExcludeFoldersArray `n
 function get-folders {
     Param ($path)
     $items = Get-ChildItem -Force $path 
     foreach ($item in $items) {
         if (($item) -is [System.IO.DirectoryInfo]) { 
-           if ($ExcludeFolders -Contains ($item)) {
+           if ($ExcludeFoldersArray -Contains ($item)) {
              # Use write-host below insead write-output to write only to console and not to piped output
              # This will prevent below line from tripping up next command in pipeline that expects an 
              # object returned by Get-ChildItem for a specific file or folder
@@ -59,17 +79,5 @@ function get-folders {
          }
     }
 }
-
-$ExcludeFoldersDefault = ".git","node_modules",".next", ".gradle", "intermediates", ".expo"
-$ExcludeNoneFlag="ExcludeNone"
-
-# Special flag to not specify Exclude Directtories option at all  
-if ( $ExcludeNoneFlag -eq $ExcludeFolders )  {
-  $ExcludeFolders = "" 
-} elseif (( "" -eq $ExcludeFolders  ) -or ("-" -eq $ExcludeFolders)) {
-  $ExcludeFolders = $ExcludeFoldersDefault
-}
-
-write-host "ExcludeDirsRecurseListFilesDirs: Excluded folders:" $ExcludeFolders `n
 
 get-folders $path

@@ -1,7 +1,21 @@
 ﻿# List last modified in x days, files and folders OR only unique parent folder names, (excl. special folders by default)
 # It uses ExcludeDirsRecurseListFilesDirs.ps1 to do the main work
 #
-param ($Path = $pwd, $MaxAge="1", $ExcludeFoders="", $Unique="")
+# Usage examples:
+# Default folders are excluded
+# script-name test 4000
+#
+# build and .git folders are excluded
+# script-name test 4000 "build .git"
+#
+# node_modules folder is excluded
+# script-name test 4000 "node_modules"
+#
+# no folders are excluded (all are included)
+# script-name test 4000 ExcludeNone
+#
+param ($Path = $pwd, $MaxAge="1", $ExcludeFolders="", $Unique="")
+
 function Usage {
   param ($CmdName)
   Write-Host "List last modified in x days, files and folders OR only unique parent folder names, (excl. special folders by default)"`n
@@ -39,9 +53,9 @@ if ($Unique -eq "") {
 }
 
 if ($Unique -eq "upf") {
-  ExcludeDirsRecurseListFilesDirs.ps1 $Path $ExcludeFoders | Where-Object { ((get-date)-$_.LastWriteTime).days -lt $MaxAge } `
+  ExcludeDirsRecurseListFilesDirs.ps1 $Path $ExcludeFolders | Where-Object { ((get-date)-$_.LastWriteTime).days -lt $MaxAge } `
   | ForEach-Object {Split-Path -Parent $_.FullName} | Select-Object -unique 
 } else {
-  ExcludeDirsRecurseListFilesDirs.ps1 $Path $ExcludeFoders | Where-Object { ((get-date)-$_.LastWriteTime).days -lt $MaxAge } `
+  ExcludeDirsRecurseListFilesDirs.ps1 $Path $ExcludeFolders | Where-Object { ((get-date)-$_.LastWriteTime).days -lt $MaxAge } `
   | ForEach-Object {"$($_.LastWriteTime) $($_.FullName)"}
 }
