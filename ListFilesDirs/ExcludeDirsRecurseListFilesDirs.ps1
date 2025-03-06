@@ -27,8 +27,7 @@
 # Adapted from Getting files and folders recursively in PowerShell…without using -Recurse!,
 # https://cloudrun.co.uk/powershell/getting-files-and-folders-recursively-in-powershell-without-using-recurse/
 
-Param ($path = $pwd)
-$ExcludeFolders = ".git","node_modules",".next", ".gradle", "intermediates", ".expo"
+Param ($path = $pwd, $ExcludeFolders="")
 
 function get-folders {
     Param ($path)
@@ -53,6 +52,16 @@ function get-folders {
     }
 }
 
-# write-host "$myInvocation.InvocationName: Excluded folders:" $ExcludeFolders `n # Does not work
+$ExcludeFoldersDefault = ".git","node_modules",".next", ".gradle", "intermediates", ".expo"
+$ExcludeNoneFlag="ExcludeNone"
+
+# Special flag to not specify Exclude Directtories option at all  
+if ( $ExcludeNoneFlag -eq $ExcludeFolders )  {
+  $ExcludeFolders = "" 
+} elseif (( "" -eq $ExcludeFolders  ) -or ("-" -eq $ExcludeFolders)) {
+  $ExcludeFolders = $ExcludeFoldersDefault
+}
+
 write-host "ExcludeDirsRecurseListFilesDirs: Excluded folders:" $ExcludeFolders `n
+
 get-folders $path

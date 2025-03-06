@@ -1,5 +1,5 @@
-﻿# Recursively lists full path of files and directories of current working directory OR user specified directory
-# using write-output.
+﻿# Recursively lists full path of files (in yellow) and directories (in green) of current working directory OR
+# user specified directory using write-host.
 #
 # Usage: script-name [optional-path]
 #
@@ -14,16 +14,22 @@ function get-folders {
     foreach ($item in $items) {
         # List all the folders
         if (($item) -is [System.IO.DirectoryInfo]) { 
-           write-output $path\$item 
+           write-host $path\$item -foregroundcolor Green
            $itemname = $item.Name
            $fullpath = "$path\$itemname"
+           $array += $fullpath
            get-folders $fullpath #Recursively list if it is a directory
         }
         # Print out any files
         if (($item) -is [System.IO.FileInfo]) { 
-            write-output $path\$item 
+            write-host $path\$item -foregroundcolor Yellow
+            $itemname = $item.Name
+            $fullpath = "$path\$itemname"
+            $array += $fullpath
          }
     }
+# Return the array with all subfolders in in case you want to do something else with it
+return $array
 }
 
-get-folders $path
+$subfolders = get-folders $path
