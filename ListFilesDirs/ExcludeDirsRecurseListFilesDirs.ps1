@@ -53,4 +53,6 @@ function get-folders {
     }
 }
 
+# write-host "$myInvocation.InvocationName: Excluded folders:" $ExcludeFolders `n # Does not work
+write-host "ExcludeDirsRecurseListFilesDirs: Excluded folders:" $ExcludeFolders `n
 get-folders $path
