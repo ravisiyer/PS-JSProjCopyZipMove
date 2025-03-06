@@ -1,27 +1,35 @@
 ﻿# Recursively outputs Get-ChildItem returned object for files and directories of current working directory
-# OR user specified directory but excludes folders and their contents present in $ExcludeFolders variable
-# in script
+# OR user specified directory excluding specified/default folders (e.g. node_modules and .next folders).
 #
-# Usage: script-name [optional-path] | next-cmd
+# Usage: script-name [optional-path Exclude-Folders-List] | next-cmd
 # Usage Examples:
 # Lists last modified time followed by full path for each folder & file in current directory
-# excluding folders whose names are in $ExcludeFolders and such folders' contents
+# excluding specified/default folders
 # script-name | ForEach-Object {"$($_.LastWriteTime) $($_.FullName)"}
 #
 # Lists last modified time followed by full path for each folder & file in Test1 directory
-# excluding folders whose names are in $ExcludeFolders and such folders' contents
+# excluding specified/default folders
 # script-name Test1 | ForEach-Object {"$($_.LastWriteTime) $($_.FullName)"}
 #
 # Lists last modified time followed by full path for each folder & file in current directory
 # that was last modifed on 4.05.2024 (4th May) or 5.05.2024
-# excluding folders whose names are in $ExcludeFolders and such folders' contents
+# excluding specified/default folders
 # script-name | where { ((get-date('5.05.2024'))-$_.LastWriteTime).days -lt 1 } | 
 # ForEach-Object {"$($_.LastWriteTime) $($_.FullName)"}
 #
 # Lists last modified time followed by full path for each folder & file in current directory
 # that was last modifed in past 1 day i.e. 24 hours
-# excluding folders whose names are in $ExcludeFolders and such folders' contents
+# excluding specified/default folders
 # script-name | where { ((get-date)-$_.LastWriteTime).days -lt 1 } |
+# ForEach-Object {"$($_.LastWriteTime) $($_.FullName)"}
+#
+# Additional working examples but without much/any explanation
+# 3700 makes it over 10 years and so lists virtually all
+# script-name Test | Where-Object { ((get-date)-$_.LastWriteTime).days -lt 3700 } |
+# ForEach-Object {"$($_.LastWriteTime) $($_.FullName)"}
+#
+# ExcludeNone results in no files and folders being excluded.
+# script-name Test ExcludeNone | Where-Object { ((get-date)-$_.LastWriteTime).days -lt 3700 } |
 # ForEach-Object {"$($_.LastWriteTime) $($_.FullName)"}
 #
 # Adapted from Getting files and folders recursively in PowerShell…without using -Recurse!,
