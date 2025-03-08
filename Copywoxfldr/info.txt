@@ -1,3 +1,15 @@
+9 Mar. 2025
+
+robocopy MAXAGE as number of days has max. value of 1899
+Providing 1900 or higher number results in error.
+This article too says same: Robocopy Maxage limitations,
+ https://www.experts-exchange.com/questions/28547227/Robocopy-Maxage-limitations.html but further explains 
+ robocopy doc, https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/robocopy,
+ for /minlad:<n> spec. of 
+ "If n is less than 1900, n specifies the number of days. Otherwise, n specifies a date in the format YYYYMMDD."
+  applies to earlier 3 entries including /maxage.
+
+=========
 23 Feb. 2025
 
 I tried specifying relative sub-path to robocopy once again and faced the same failures as logged in 16-17 Feb. 2025 note below. But I also tried absolute path and that worked. 
