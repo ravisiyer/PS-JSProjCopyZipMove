@@ -1,26 +1,26 @@
-2 Mar. 2025
+8 Mar. 2025
 
+Consider
+1) Add ExcludeFolders parm to CopyWoXFMaxAge
+
+
+===============
 Done: 3) Invocation of ExcludeDirsRecurseListFilesDirs.ps1 can be parameterized through the ListAllFF.ps1 script or a variant.
-
-
-1 Mar. 2025
-Considering:
-1) Copywonmnxbld can be parameterized
--all - nm, nx, bld, intermediates, target, out
-otherwise the directories to be skipped can be passed as parameters.
-
-2) Similar approach can be taken for IncrBackup
-
 4) Consider using write-host in ExcludeDirsRecurseListFilesDirs.ps1 to print Excluded directories if that can work.
  Note that using write-output interferes with it
  being used together with (sort-of piped to) other PowerShell stuff like is used in ListMaxAgeFF.
-
 5) ListAllFF should be renamed to indicate it excludes standard folders
-   A new ListAllFF should be created with: cmd.exe /c "dir /s /a /b"
-   Above command will list all files (no excluded folders)
+   A new ListAllFF should be created 
+1) Created CopyWoXfldr.ps1 instead ... Copywonmnxbld can be parameterized
+-all - nm, nx, bld, intermediates, target, out
+otherwise the directories to be skipped can be passed as parameters.
+
+2) CopyWoXfldr.ps1 handles incremental backup too.
 
 6) For CopyWoXfldr: If MaxAge is specified, /s is better option than /e
     But if it is a full fresh copy /e may be better.
+
+
 
 ============
 My blog posts mentioned below have some useful info. about some of the scripts in this folder (and subfolders):
