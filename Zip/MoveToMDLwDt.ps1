@@ -86,19 +86,9 @@ if ("Y" -eq $AddDateTimePrefix) {
     Invoke-Expression $RenCmd
 } 
 
-exit 0
+$MoveCmd = "Move-Item -Path $FinalOutputFolderOrFile -Destination $MDLFolderPath"
 
-Move-Item -Path C:\test.txt -Destination E:\Temp\tst.txt
-
-If (Test-Path -path $OutputZipFile) {
-  Write-Host "Output Zip filename with auto prefix: '$OutputZipFile' already exists. Aborting!"
-  exit 1
-} 
-
-# $Cmd = "Compress-Archive -Path $InputFolderOrFile -DestinationPath $OutputZipFile"
-# $Cmd = "Compress-Archive -Confirm -Path $InputFolderOrFile -DestinationPath $OutputZipFile"
-$Cmd = "Compress-Archive -Path $InputFolderOrFile -DestinationPath $OutputZipFile"
-Write-Host "Command to be executed: $Cmd"
+Write-Host "Move Command to be executed: $MoveCmd"
 
 $Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
 $Choice = $host.UI.PromptForChoice("", "Proceed?", $Choices, 1)
@@ -109,4 +99,4 @@ if (1 -eq $Choice)
     exit 1
 }
 
-Invoke-Expression $Cmd
+Invoke-Expression $MoveCmd
