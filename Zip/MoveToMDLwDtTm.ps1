@@ -4,7 +4,7 @@ function Usage {
   param ($cmdName)
   Write-Host Usage: $cmdName Input-Folder-Or-File-Name [AddDateTimePrefix]
   Write-Host If AddDateTimePrefix is not specified, default value of "Y" is used
-  Write-Host If AddDateTimePrefix is "Y" current date as yyyyMMdd-hhmm- will be prefixed to Input-Folder-or-File-Name 
+  Write-Host If AddDateTimePrefix is "Y" current date time as yyyyMMdd-hhmm- will be prefixed to Input-Folder-or-File-Name 
   Write-Host when it is moved to MDL [MayDeleteLater] folder: $MDLFolderName
 }
 
@@ -42,10 +42,9 @@ if ($InputFolderOrFile.length -ge 2) {
     }
 }
 if ("" -eq $InputFFDrive) {
-    # Write-Host Current Drive is: $pwd.drive.name
     $InputFFDrive = $pwd.drive.name
 }
-Write-Host InputFFDrive is: $InputFFDrive
+
 $MDLFolderPath =  $InputFFDrive + ":\" + $MDLFolderName
 If ( -not (Test-Path -path $MDLFolderPath -PathType Container)) {
     If (Test-Path -path $MDLFolderPath) {
@@ -56,8 +55,6 @@ If ( -not (Test-Path -path $MDLFolderPath -PathType Container)) {
     Usage $myInvocation.InvocationName
     exit 1
 }
-Write-Host MDL [MayDeleteLater] folder path that will be used is: $MDLFolderPath
-
 
 $FinalOutputFolderOrFile = $InputFolderOrFile 
 if ("Y" -eq $AddDateTimePrefix) {
@@ -70,7 +67,6 @@ if ("Y" -eq $AddDateTimePrefix) {
     } else {
         $FinalOutputFolderOrFile = $Parent + "\" + $FinalOutputFolderOrFileLeaf
     }
-    # $RenCmd = "Rename-Item -Path $InputFolderOrFile -NewName $FinalOutputFolderOrFile"
     $RenCmd = "Rename-Item -Path $InputFolderOrFile -NewName $FinalOutputFolderOrFileLeaf"
     Write-Host "Rename Command to be executed: $RenCmd"
 
@@ -84,7 +80,15 @@ if ("Y" -eq $AddDateTimePrefix) {
     }
     
     Invoke-Expression $RenCmd
+    Write-Host Above command executed.
 } 
+
+$Leaf = Split-Path -Path $FinalOutputFolderOrFile -Leaf
+$DestinationFullPath = $MDLFolderPath + "\" + $Leaf
+If (Test-Path -path $DestinationFullPath) {
+    Write-Host "Destination $DestinationFullPath already exists! Aborting!"
+    exit 1
+}
 
 $MoveCmd = "Move-Item -Path $FinalOutputFolderOrFile -Destination $MDLFolderPath"
 
@@ -100,3 +104,4 @@ if (1 -eq $Choice)
 }
 
 Invoke-Expression $MoveCmd
+Write-Host Above command executed.

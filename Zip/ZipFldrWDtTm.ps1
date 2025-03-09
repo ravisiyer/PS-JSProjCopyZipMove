@@ -1,11 +1,10 @@
-param ($InputFolder="", $AddDatePrefix="Y")
-$OutputFolder = ""
-# $OutputSuffix ="-maxage"
+param ($InputFolder="", $AddDateTimePrefix="Y")
 function Usage {
   param ($cmdName)
   Write-Host Usage: $cmdName Input-Folder-Name [AddDatePrefix]
   Write-Host If AddDatePrefix is not specified, default value of "Y" is used
-  Write-Host If AddDatePrefix is "Y" current date as yyyyMMdd- will be prefixed to Input-Folder-Name to generate output zip file name
+  Write-Host If AddDatePrefix is "Y" current date time as yyyyMMdd-hhmm- will be prefixed to Input-Folder-Name `
+    to generate output zip file name
 }
 
 if ( "" -eq $InputFolder  ) {
@@ -38,19 +37,16 @@ If ( -not (Test-Path -path $InputFolder -PathType Container)) {
 }
 
 $OutputZipFile = $InputFolder + ".zip"
-# $OutputZipFile = $TodayDate + $InputFolder + ".zip"
 
-if ("Y" -eq $AddDatePrefix) {
-    $TodayDate = Get-Date -Format "yyyyMMdd-"
-    $OutputZipFile = $TodayDate + $OutputZipFile
+if ("Y" -eq $AddDateTimePrefix) {
+    $NowDateTime = Get-Date -Format "yyyyMMdd-hhmm-"
+    $OutputZipFile = $NowDateTime + $OutputZipFile
 }
 If (Test-Path -path $OutputZipFile) {
   Write-Host "Output Zip filename with auto prefix: '$OutputZipFile' already exists. Aborting!"
   exit 1
 } 
 
-# $Cmd = "Compress-Archive -Path $InputFolder -DestinationPath $OutputZipFile"
-# $Cmd = "Compress-Archive -Confirm -Path $InputFolder -DestinationPath $OutputZipFile"
 $Cmd = "Compress-Archive -Path $InputFolder -DestinationPath $OutputZipFile"
 Write-Host "Command to be executed: $Cmd"
 
@@ -63,4 +59,21 @@ if (1 -eq $Choice)
     exit 1
 }
 
+Invoke-Expression $Cmd
+Write-Host Above command executed.
+
+#$Cmd = "MoveToMDLwDtTm $InputFolder N"
+$Cmd = "MoveToMDLwDtTm $InputFolder"
+Write-Host $Cmd
+Write-Host "Execute above command to move $InputFolder to MayDeleteLater folder on same drive?"
+$Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
+$Choice = $host.UI.PromptForChoice("", "Proceed?", $Choices, 1)
+
+if (1 -eq $Choice)
+{
+    Write-Host "Aborted!"
+    exit 1
+}
+
+Write-Host Invoking above command ... `n
 Invoke-Expression $Cmd
