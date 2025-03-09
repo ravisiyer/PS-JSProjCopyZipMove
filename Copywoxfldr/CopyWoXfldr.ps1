@@ -97,8 +97,9 @@ if ("" -ne $ExcludeFolders) {
   $Cmd = $Cmd + "/XD $ExcludeFolders "
 }
 
-
 $ListCmd = $Cmd + " /L"
+# Write-Host "Switches are used to skip everything but timestamps and paths of files which will be copied if list switch is not used"
+# $ListCmd = $Cmd + " /NS /NC /NJH /NJS /L"
 Write-Host $ListCmd , `n
 $Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
 $Choice = $host.UI.PromptForChoice("", "Proceed?", $Choices, 1)
