@@ -92,7 +92,7 @@ if ("" -ne $LogOption) {
   Write-Host "Log file is excluded in list only command."
 }
 
-$Cmd ="robocopy '$InputFolder' '$OutputFolder' $CopySubDirOption /XO /XX $MaxAge /NDL "
+$Cmd ="robocopy '$InputFolder' '$OutputFolder' $CopySubDirOption /XO /XX /TS $MaxAge /NDL "
 if ("" -ne $ExcludeFolders) {
   $Cmd = $Cmd + "/XD $ExcludeFolders "
 }
