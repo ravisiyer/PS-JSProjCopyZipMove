@@ -39,12 +39,13 @@
 # https://cloudrun.co.uk/powershell/getting-files-and-folders-recursively-in-powershell-without-using-recurse/
 
 Param ($path = $pwd, $ExcludeFolders="")
+$ExcludeNoneFlag="ExcludeNone"
 function Usage {
   param ($CmdName)
   Write-Host "Output (list) files and folders excluding specified/default folders."`n
   Write-Host Usage: $CmdName [Path Exclude-Folders-List]`n
   Write-Host Path specifies the input folder which if not specified has default value of . [current directory]
-  Write-Host Exclude-Folders-List is a space separated list like: node_modules .next intermediates .gradle
+  Write-Host Exclude-Folders-List is a space separated list like: `"node_modules .next intermediates .gradle`"
   Write-Host Special value of $ExcludeNoneFlag can be passed as Exclude-Folders-List to not use exclude option at all [include all in copy]
   Write-Host /? passed as first parameter shows this help message.
 }
@@ -55,7 +56,6 @@ if ($Path -eq "/?") {
 }
 
 $ExcludeFoldersDefault = ".git node_modules .next .gradle intermediates .expo"
-$ExcludeNoneFlag="ExcludeNone"
 
 # Special flag to not specify Exclude Directories option at all  
 if ( $ExcludeNoneFlag -eq $ExcludeFolders )  {

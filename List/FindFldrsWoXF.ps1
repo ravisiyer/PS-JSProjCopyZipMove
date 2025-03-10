@@ -25,11 +25,27 @@
 # https://cloudrun.co.uk/powershell/getting-files-and-folders-recursively-in-powershell-without-using-recurse/
 
 Param ([string] $path = "", $FindFolders = "", $ExcludeFolders = "")
+$ExcludeNoneFlag="ExcludeNone"
 function Usage {
   param ($cmdName)
-  Write-Host "Usage: $cmdName [optional-path, Find-Folders-List, Exclude-Folders-List]"
-  Write-Host - for parameter results in default value being used for that parameter
-  Write-Host ExcludeNone results in no files and folders being excluded (all are included).
+  Write-Host "Find and list folders with names matching passed Find-Folders-List excluding specified/default folders."
+  Write-Host "The default values for this command helps to locate folders that can be deleted from inactive projects as these"
+  Write-Host "folder contents can be regenerated from main project source files (like node_modules can be regenerated from package.json)."
+  Write-Host "Find-Folders-List by default is .gitignore type of folders like node_modules and .next which in most list scripts" 
+  Write-Host "are exclude folders by default."
+  Write-Host "Further note that for this script, the Exclude-Folders-List by default is a folder like .git" `n
+  Write-Host "Usage: $cmdName [Path, Find-Folders-List, Exclude-Folders-List]" `n
+  Write-Host Path specifies the input folder which if not specified has default value of . [current directory]
+  Write-Host Find-Folders-List is a space separated list like: `"node_modules .next intermediates .gradle`"
+  Write-Host Exclude-Folders-List is a space separated list like: `".git xyz`"
+  Write-Host Special value of $ExcludeNoneFlag can be passed as Exclude-Folders-List to not use exclude option at all [include all in find]
+  Write-Host "To skip optional parameters but specify a following parameter, use - (hyphen character) to skip"
+  Write-Host "/? passed as first parameter shows this help message."`n
+}
+
+if ($path -eq "/?") { 
+  Usage $myInvocation.InvocationName
+  exit 0
 }
 
 $pathDefault = $pwd
@@ -47,9 +63,7 @@ $FindFoldersArray = $($FindFolders -split " ")
   
 write-host "Find folders:" $FindFoldersArray 
 
-$ExcludeNoneFlag="ExcludeNone"
-
-# Special flag to not specify Exclude Directtories option at all  
+# Special flag to not specify Exclude Directories option at all  
 if ( $ExcludeNoneFlag -eq $ExcludeFolders )  {
   $ExcludeFolders = "" 
 } elseif (( "" -eq $ExcludeFolders  ) -or ("-" -eq $ExcludeFolders)) {
@@ -100,5 +114,6 @@ If ( -not (Test-Path -path $path -PathType Container)) {
 
 get-folders $path
 
-"$FindFoldersOccurrences folders found matching find folders list. " +
-  "Note that subfolders within matched folders are ignored." | Write-Output
+Write-Host `n"$FindFoldersOccurrences folders found matching find folders list." `
+  "Note that subfolders within matched folders are ignored."
+Write-Host  `n
