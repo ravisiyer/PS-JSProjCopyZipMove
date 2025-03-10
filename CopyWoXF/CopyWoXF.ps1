@@ -34,7 +34,7 @@ if ( "" -eq $InputFolder  ) {
     exit 1
   }
 
-# Special flag to not specify Exclude Directtories option at all  
+# Special flag to not specify Exclude Directories option at all  
 if ( $ExcludeNoneFlag -eq $ExcludeFolders )  {
     $ExcludeFolders = "" 
 } elseif (( "" -eq $ExcludeFolders  ) -or ("-" -eq $ExcludeFolders)) {

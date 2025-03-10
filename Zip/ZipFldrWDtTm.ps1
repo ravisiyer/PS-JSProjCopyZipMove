@@ -62,7 +62,7 @@ if (1 -eq $Choice)
 
 Invoke-Expression $Cmd
 Write-Host Above command executed.
-
+return $OutputZipFile
 #$Cmd = "MoveToMDLwDtTm $InputFolder N"
 # $Cmd = "MoveToMDLwDtTm $InputFolder"
 # Write-Host $Cmd
