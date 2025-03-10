@@ -1,10 +1,11 @@
 param ($InputFolder="", $AddDateTimePrefix="Y")
 function Usage {
   param ($cmdName)
-  Write-Host Usage: $cmdName Input-Folder-Name [AddDatePrefix]
-  Write-Host If AddDatePrefix is not specified, default value of "Y" is used
-  Write-Host If AddDatePrefix is "Y" current date time as yyyyMMdd-hhmm- will be prefixed to Input-Folder-Name `
-    to generate output zip file name
+  Write-Host "Zip folder or file with Date and Time prefix by default in output zip filename."`n
+  Write-Host Usage: $cmdName Input-Folder-Name [AddDatePrefix]`n
+  Write-Host If AddDatePrefix is not specified, default value of "Y" is used.
+  Write-Host If AddDatePrefix is "Y", current date time as yyyyMMdd-HHmm- will be prefixed to Input-Folder-Name `
+    to generate output zip file name.`n
 }
 
 if ( "" -eq $InputFolder  ) {
@@ -39,7 +40,7 @@ If ( -not (Test-Path -path $InputFolder -PathType Container)) {
 $OutputZipFile = $InputFolder + ".zip"
 
 if ("Y" -eq $AddDateTimePrefix) {
-    $NowDateTime = Get-Date -Format "yyyyMMdd-hhmm-"
+    $NowDateTime = Get-Date -Format "yyyyMMdd-HHmm-"
     $OutputZipFile = $NowDateTime + $OutputZipFile
 }
 If (Test-Path -path $OutputZipFile) {
@@ -63,17 +64,17 @@ Invoke-Expression $Cmd
 Write-Host Above command executed.
 
 #$Cmd = "MoveToMDLwDtTm $InputFolder N"
-$Cmd = "MoveToMDLwDtTm $InputFolder"
-Write-Host $Cmd
-Write-Host "Execute above command to move $InputFolder to MayDeleteLater folder on same drive?"
-$Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
-$Choice = $host.UI.PromptForChoice("", "Proceed?", $Choices, 1)
+# $Cmd = "MoveToMDLwDtTm $InputFolder"
+# Write-Host $Cmd
+# Write-Host "Execute above command to move $InputFolder to MayDeleteLater folder on same drive?"
+# $Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
+# $Choice = $host.UI.PromptForChoice("", "Proceed?", $Choices, 1)
 
-if (1 -eq $Choice)
-{
-    Write-Host "Aborted!"
-    exit 1
-}
+# if (1 -eq $Choice)
+# {
+#     Write-Host "Aborted!"
+#     exit 1
+# }
 
-Write-Host Invoking above command ... `n
-Invoke-Expression $Cmd
+# Write-Host Invoking above command ... `n
+# Invoke-Expression $Cmd

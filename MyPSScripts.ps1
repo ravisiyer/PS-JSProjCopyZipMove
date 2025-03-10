@@ -19,6 +19,6 @@ Write-Host "============================================="
 Write-Host "ZipFldrWDtTm: Zip folder or file with Date and Time prefix by default in output zip filename."
 Write-Host "MoveToMDLWDtTm: Move folder or file to MayDeleteLater folder with Date and Time prefix by default." `n
 
-Write-Host "Misc"
-Write-Host "===="
+# Write-Host "Misc"
+# Write-Host "===="
 Write-Host "MyPSScripts: This command."`n
