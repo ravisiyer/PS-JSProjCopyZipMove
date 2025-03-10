@@ -1,5 +1,10 @@
-8 Mar. 2025
+10 Mar. 2025
+Renamed CopyWoXfldr.ps1 to CopyWoXF.ps1s
+Renamed ExcludeDirsRecurseListFilesDirs to ListWoXF
+Renamed ListMaxAgeFF to ListMaxAgeWoXF
+===============
 
+8 Mar. 2025
 
 ===============
 Done: 3) Invocation of ExcludeDirsRecurseListFilesDirs.ps1 can be parameterized through the ListAllFF.ps1 script or a variant.

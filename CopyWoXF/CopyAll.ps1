@@ -2,8 +2,9 @@
 param ($InputFolder="", $OutputFolder="")
 function Usage {
     param ($cmdName)
-    Write-Host Usage: $cmdName Input-Folder-Name Output-Folder-Name
-    Write-Host Copywoxfldr.ps1 is invoked to do the copy
+    Write-Host "Copy all files and folders. No folders are excluded."`n
+    Write-Host Usage: $cmdName Input-Folder-Name Output-Folder-Name `n
+    Write-Host CopyWoXF.ps1 is invoked to do the copy
 }
   
 if ( "" -eq $InputFolder  ) {
@@ -34,6 +35,6 @@ If (Test-Path -path $OutputFolder) {
 } 
   
 #Write-Host Usage: $cmdName Source-Folder-Name [Exclude-Folders-List MaxAge Output-Folder-Name LogFile]
-$Cmd = "Copywoxfldr $InputFolder ExcludeNone - $OutputFolder"
+$Cmd = "CopyWoXF $InputFolder ExcludeNone - $OutputFolder"
 Write-Host "Invoking $Cmd"
 Invoke-Expression $Cmd

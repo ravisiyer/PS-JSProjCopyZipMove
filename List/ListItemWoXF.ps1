@@ -23,11 +23,6 @@
 # script-name | where { ((get-date)-$_.LastWriteTime).days -lt 1 } |
 # ForEach-Object {"$($_.LastWriteTime) $($_.FullName)"}
 #
-# Additional working examples but without much/any explanation
-# 3700 makes it over 10 years and so lists virtually all
-# script-name Test | Where-Object { ((get-date)-$_.LastWriteTime).days -lt 3700 } |
-# ForEach-Object {"$($_.LastWriteTime) $($_.FullName)"}
-#
 # build and .git directories are excluded
 # script-name Test "build .git" | Where-Object { ((get-date)-$_.LastWriteTime).days -lt 3700 } | 
 # ForEach-Object {"$($_.LastWriteTime) $($_.FullName)"}
@@ -44,11 +39,25 @@
 # https://cloudrun.co.uk/powershell/getting-files-and-folders-recursively-in-powershell-without-using-recurse/
 
 Param ($path = $pwd, $ExcludeFolders="")
+function Usage {
+  param ($CmdName)
+  Write-Host "Output (list) files and folders excluding specified/default folders."`n
+  Write-Host Usage: $CmdName [Path Exclude-Folders-List]`n
+  Write-Host Path specifies the input folder which if not specified has default value of . [current directory]
+  Write-Host Exclude-Folders-List is a space separated list like: node_modules .next intermediates .gradle
+  Write-Host Special value of $ExcludeNoneFlag can be passed as Exclude-Folders-List to not use exclude option at all [include all in copy]
+  Write-Host /? passed as first parameter shows this help message.
+}
+
+if ($Path -eq "/?") { 
+  Usage $myInvocation.InvocationName
+  exit 0
+}
 
 $ExcludeFoldersDefault = ".git node_modules .next .gradle intermediates .expo"
 $ExcludeNoneFlag="ExcludeNone"
 
-# Special flag to not specify Exclude Directtories option at all  
+# Special flag to not specify Exclude Directories option at all  
 if ( $ExcludeNoneFlag -eq $ExcludeFolders )  {
   $ExcludeFolders = "" 
 } elseif (( "" -eq $ExcludeFolders  ) -or ("-" -eq $ExcludeFolders)) {
@@ -56,7 +65,7 @@ if ( $ExcludeNoneFlag -eq $ExcludeFolders )  {
 }
 $ExcludeFoldersArray = $($ExcludeFolders -split " ")
 
-write-host "ExcludeDirsRecurseListFilesDirs: Excluded folders:" $ExcludeFoldersArray `n
+write-host "ListItemWoXF: Excluded folders:" $ExcludeFoldersArray `n
 function get-folders {
     Param ($path)
     $items = Get-ChildItem -Force $path 
