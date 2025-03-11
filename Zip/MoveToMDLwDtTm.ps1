@@ -6,7 +6,7 @@ function Usage {
   Write-Host Usage: $cmdName Input-Folder-Or-File-Name [AddDateTimePrefix]`n
   Write-Host If AddDateTimePrefix is not specified, default value of "Y" is used
   Write-Host If AddDateTimePrefix is "Y", current date time as yyyyMMdd-HHmm- will be prefixed to Input-Folder-or-File-Name 
-  Write-Host when it is moved to MDL [MayDeleteLater] folder: $MDLFolderName
+  Write-Host when it is moved to MDL [MayDeleteLater] folder: $MDLFolderName`n
 }
 
 if ( "" -eq $InputFolderOrFile  ) {
@@ -20,12 +20,12 @@ $InputFolderOrFile = $InputFolderOrFile.trim()
 $len = $InputFolderOrFile.length
 if (($len -gt 1) -and (".\" -eq $InputFolderOrFile.substring(0,2))) {
     $InputFolderOrFile = $InputFolderOrFile.substring(2,$len-2)
-    Write-Host "Input parameter (folder or file name) had starting dot and backslash which was stripped" 
+    # Write-Host "Input parameter (folder or file name) had starting dot and backslash which was stripped" 
 }
 $len = $InputFolderOrFile.length
 if ("\" -eq $InputFolderOrFile.substring($len-1,1)) {
   $InputFolderOrFile = $InputFolderOrFile.substring(0, $len-1)
-  Write-Host "Input parameter (folder or file name) had trailing backslash which was stripped" 
+#   Write-Host "Input parameter (folder or file name) had trailing backslash which was stripped" 
 }
 
 If ( -not (Test-Path -path $InputFolderOrFile)) {
@@ -80,7 +80,13 @@ if ("Y" -eq $AddDateTimePrefix) {
         exit 1
     }
     
-    Invoke-Expression $RenCmd
+    try {
+        Invoke-Expression $RenCmd
+    }
+    catch {
+        Write-Error "Above command threw exception: $($PSItem.ToString())"
+        exit 1
+    }
     Write-Host Above command executed.
 } 
 
@@ -104,5 +110,13 @@ if (1 -eq $Choice)
     exit 1
 }
 
-Invoke-Expression $MoveCmd
+try {
+    Invoke-Expression $MoveCmd
+}
+catch {
+    Write-Error "Above command threw exception: $($PSItem.ToString())"
+    exit 1
+}
+  
 Write-Host Above command executed.
+exit 0

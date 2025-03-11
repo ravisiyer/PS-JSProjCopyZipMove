@@ -19,12 +19,12 @@ $InputFolder = $InputFolder.trim()
 $len = $InputFolder.length
 if (($len -gt 1) -and (".\" -eq $InputFolder.substring(0,2))) {
     $InputFolder = $InputFolder.substring(2,$len-2)
-    Write-Host "Input parameter (folder name) had starting dot and backslash which was stripped" 
+    # Write-Host "Input parameter (folder name) had starting dot and backslash which was stripped" 
 }
 $len = $InputFolder.length
 if ("\" -eq $InputFolder.substring($len-1,1)) {
   $InputFolder = $InputFolder.substring(0, $len-1)
-  Write-Host "Input parameter (folder name) had trailing backslash which was stripped" 
+  # Write-Host "Input parameter (folder name) had trailing backslash which was stripped" 
 }
 
 If ( -not (Test-Path -path $InputFolder -PathType Container)) {
@@ -60,5 +60,13 @@ if (1 -eq $Choice)
     exit 1
 }
 
-Invoke-Expression $Cmd
+try {
+  Invoke-Expression $Cmd
+}
+catch {
+  Write-Error "Above command threw exception: $($PSItem.ToString())"
+  exit 1
+}
+
 Write-Host Above command executed.
+exit 0
