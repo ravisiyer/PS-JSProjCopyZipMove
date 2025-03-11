@@ -62,19 +62,3 @@ if (1 -eq $Choice)
 
 Invoke-Expression $Cmd
 Write-Host Above command executed.
-return $OutputZipFile
-#$Cmd = "MoveToMDLwDtTm $InputFolder N"
-# $Cmd = "MoveToMDLwDtTm $InputFolder"
-# Write-Host $Cmd
-# Write-Host "Execute above command to move $InputFolder to MayDeleteLater folder on same drive?"
-# $Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
-# $Choice = $host.UI.PromptForChoice("", "Proceed?", $Choices, 1)
-
-# if (1 -eq $Choice)
-# {
-#     Write-Host "Aborted!"
-#     exit 1
-# }
-
-# Write-Host Invoking above command ... `n
-# Invoke-Expression $Cmd
