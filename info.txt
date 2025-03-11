@@ -1,7 +1,7 @@
 12 Mar. 2025
 Copy scripts should not have mandatory parameters with default empty string value. ???? Not sure about it now
 Get better understanding of named parameters. Should Usage statements use same names as named parameters?
-
+ZipFldrWDtTm and ZipMv are having common zip code. Refactor to share code (using functions?). But don't break CpXFZipMv
 
 10 Mar. 2025
 Renamed CopyWoXfldr.ps1 to CopyWoXF.ps1s
