@@ -1,21 +1,28 @@
-param ($InputFolder="", $Use7zip = "N", $AddDateTimePrefix="Y")
+#
+param ($InputFolder="", $AddDateTimePrefix="Y", $BackupFolder="")
+$BackupFolderDefault = "E:\TempBack"
+
 function Usage {
   param ($cmdName)
-  Write-Host "Zip folder or file with Date and Time prefix by default in output zip filename."`n
-  Write-Host Usage: $cmdName Input-Folder-Name [Use7zip AddDatePrefix]`n
-  Write-Host If Use7zip is "Y" then 7zip is used instead of Compress-Archive to create zip file.
-  Write-Host " By default, Use7zip is N and then Compress-Archive is used to create zip file."
-  Write-Host " Compress-Archive does not include hidden folders and files (including .git). 7zip includes hidden folders and files."
+  Write-Host "Zip folder or file with Date and Time prefix by default in output zip filename + Move OutputZipFile to BackupFolder"`n
+  Write-Host Usage: $cmdName Input-Folder-Name [AddDatePrefix Backup-Folder]`n
   Write-Host If AddDatePrefix is not specified, default value of "Y" is used.
   Write-Host If AddDatePrefix is "Y", current date time as yyyyMMdd-HHmm- will be prefixed to Input-Folder-Name `
-    to generate output zip file name.`n
+    to generate output zip file name.
+  Write-Host Backup-Folder is the final copy location. By default it is: $BackupFolderDefault
+  Write-Host /? passed as first parameter shows this help message.`n
+}
+
+if ($InputFolder -eq "/?") { 
+  Usage $myInvocation.InvocationName
+  exit 0
 }
 
 if ( "" -eq $InputFolder  ) {
-    write-host "Input folder not specified."
-    Usage $myInvocation.InvocationName
-    exit 1
-  }
+  write-error "Input folder not specified."
+  Usage $myInvocation.InvocationName
+  exit 1
+}
 
 $InputFolder = $InputFolder.trim()
 
@@ -40,6 +47,10 @@ If ( -not (Test-Path -path $InputFolder -PathType Container)) {
   exit 1
 }
 
+if (( "" -eq $BackupFolder  ) -or ("-" -eq $BackupFolder)) {
+    $BackupFolder = $BackupFolderDefault
+}
+
 $OutputZipFile = $InputFolder + ".zip"
 
 if ("Y" -eq $AddDateTimePrefix) {
@@ -51,16 +62,11 @@ If (Test-Path -path $OutputZipFile) {
   exit 1
 } 
 
-if ("Y" -eq $Use7zip) {
-  $Cmd = "7z a $OutputZipFile $InputFolder "
-} else {
-  $Cmd = "Compress-Archive -Path $InputFolder -DestinationPath $OutputZipFile"
-  Write-Host "Note that hidden folders (including .git) will be excluded from the output zip file as that is how Compress-Archive works."
-  Write-Host " To include hidden folders, use 7-zip by passing parameter Use7zip as Y ."
-}
+$Cmd = "Compress-Archive -Path $InputFolder -DestinationPath $OutputZipFile"
 Write-Host "Command to be executed: $Cmd"
-# Write-Host "Note that hidden folders (including .git) will be excluded from the output zip file as that is how Compress-Archive works."
-# Write-Host " To include hidden folders, use 7-zip (outside of this script)."
+Write-Host "Note that hidden folders (including .git) will be excluded from the output zip file as that is how Compress-Archive works."
+Write-Host " To include hidden folders, use 7-zip (outside of this script)."
+
 $Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
 $Choice = $host.UI.PromptForChoice("", "Proceed?", $Choices, 1)
 
@@ -78,5 +84,25 @@ catch {
   exit 1
 }
 
-Write-Host Above command executed.
+$MoveCmd = "Move-Item -Path $OutputZipFile -Destination $BackupFolder"
+Write-Host `n"Move OutputZipFile command to be executed:"
+Write-Host $MoveCmd
+
+$Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
+$Choice = $host.UI.PromptForChoice("", "Proceed (or skip)?", $Choices, 1)
+
+if (1 -eq $Choice)
+{
+  Write-Host "Skipped!"
+} else {
+  try {
+    Invoke-Expression $MoveCmd
+  }
+  catch {
+    Write-Error "Above command threw exception: $($PSItem.ToString())"
+    exit 1
+  }
+}
+
+Write-Host
 exit 0
