@@ -64,6 +64,8 @@ If (Test-Path -path $OutputZipFile) {
 
 $Cmd = "Compress-Archive -Path $InputFolder -DestinationPath $OutputZipFile"
 Write-Host "Command to be executed: $Cmd"
+Write-Host "Note that hidden folders (including .git) will be excluded from the output zip file as that is how Compress-Archive works."
+Write-Host " To include hidden folders, use 7-zip (outside of this script)."
 
 $Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
 $Choice = $host.UI.PromptForChoice("", "Proceed?", $Choices, 1)
