@@ -1,5 +1,6 @@
 #
-param ($InputFolder="", $ExcludeFolders="", $OutputSuffix="", $BackupFolder="")
+param ($InputFolder="", $Use7zip = "", $ExcludeFolders="", $OutputSuffix="", $BackupFolder="")
+$Use7zipDefault = "N"
 $BackupFolderDefault = "E:\TempBack"
 $ExcludeNoneFlag="ExcludeNone"
 $OutputSuffixExclNoneDefault ="-Copy"
@@ -8,7 +9,10 @@ $OutputSuffixExclFldrDefault ="-XF"
 function Usage {
   param ($cmdName)
   Write-Host "CopyWoXF + ZipFldrWDtTm + Move OutputZipFile to BackupFolder + MoveToMDLWDtTm (for CopyWoXF OutputFolder)"`n
-  Write-Host Usage: $cmdName Input-Folder-Name [Exclude-Folders-List Output-Suffix Backup-Folder]`n
+  Write-Host Usage: $cmdName Input-Folder-Name [Use7zip Exclude-Folders-List Output-Suffix Backup-Folder]`n
+  Write-Host If Use7zip is "Y" then 7zip is used instead of Compress-Archive to create zip file.
+  Write-Host " By default, Use7zip is N and then Compress-Archive is used to create zip file."
+  Write-Host " Compress-Archive does not include hidden folders and files (including .git). 7zip includes hidden folders and files."
   Write-Host Backup-Folder is the final copy location. By default it is: $BackupFolderDefault
   Write-Host Exclude-Folders-List is a space separated list like: `"node_modules .next intermediates .gradle`"
   Write-Host Special value of $ExcludeNoneFlag can be passed as Exclude-Folders-List to not use exclude option at all [include all in copy]
@@ -30,6 +34,11 @@ if ( "" -eq $InputFolder  ) {
   Usage $myInvocation.InvocationName
   exit 1
 }
+
+if (( "" -eq $Use7zip  ) -or ("-" -eq $Use7zip)) {
+    $Use7zip = $Use7zipDefault  
+}
+
 
 if ( "" -eq $ExcludeFolders  ) {
   $ExcludeFolders = "-"
@@ -66,7 +75,7 @@ if ($LASTEXITCODE -ne 0) {
   exit 1
 }
 
-$Cmd ="ZipFldrWDtTm $OutputFolder N"
+$Cmd ="ZipFldrWDtTm $OutputFolder $Use7zip N"
 Write-Host `n"Executing: $Cmd"
 Invoke-Expression $Cmd
 if ($LASTEXITCODE -ne 0) {
