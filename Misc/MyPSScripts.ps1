@@ -22,8 +22,9 @@ Write-Host "ZipMv: Zip folder or file with Date and Time prefix by default in ou
 Write-Host "CpXFZipMv: CopyWoXF + ZipFldrWDtTm + Move OutputZipFile to BackupFolder + MoveToMDLWDtTm (for CopyWoXF OutputFolder)"
 Write-Host "CpZipMv: This script is a wrapper around CpXFZipMv script tailored for copy with ExcludeNone"`n
 
-# Write-Host "Misc"
-# Write-Host "===="
+Write-Host "Misc"
+Write-Host "===="
+Write-Host "MakeFolderTodayName: Make (create) folder with today's date (yyyyMMdd) as name."`n
 Write-Host "MyPSScripts: This command."`n
 
 Write-Host "Note: PS aliases are set in PS profile location. Alias myals lists PS profile file showing my alias defintions."`n
