@@ -7,7 +7,7 @@ $OutputSuffixExclFldrDefault ="-XF"
 
 function Usage {
   param ($cmdName)
-  Write-Host "CopyWoXF + ZipFldrWDtTm + Move OutputZipFile to BackupFolder + Move CopyWoXF OutputFolder to MayDeleteLater folder"`n
+  Write-Host "CopyWoXF + ZipFldrWDtTm + Move OutputZipFile to BackupFolder + MoveToMDLWDtTm (for CopyWoXF OutputFolder)"`n
   Write-Host Usage: $cmdName Input-Folder-Name [Exclude-Folders-List Output-Suffix Backup-Folder]`n
   Write-Host Backup-Folder is the final copy location. By default it is: $BackupFolderDefault
   Write-Host Exclude-Folders-List is a space separated list like: `"node_modules .next intermediates .gradle`"
