@@ -1,17 +1,19 @@
 12 & 13 Mar. 2025
 Ref: Passing named arguments in windows powershell scripting, 
 https://www.softpost.org/windows-powershell-scripting/passing-named-arguments-in-windows-powershell-scripting
-I have not used mandatory parameters. When refactoring consider using mandatory parameters
-ZipFldrWDtTm and ZipMv are having common zip code. Refactor to share code (using functions?). But don't break CpXFZipMv
-Not sure if I need a CopyMaxAge script. If I feel the down the line, I should consider it.
+Refactor: I have not used mandatory parameters. When refactoring consider using mandatory parameters
+Refactor: ZipFldrWDtTm and ZipMv are having common zip code. Refactor to share code (using functions?). But don't break CpXFZipMv
+Refactor: Tons of repeated code across most scripts. Refactor to share code.
+Refactor: Use Split-Path and related cmdlets instead of parsing path strings by myself
+Refactor: Handle wildcards in path where feasible. [CopyWoXF does not properly handle . provided as input-folder. It also does not properly handle wild cards in input folder.]
 
-CopyWoXF does not properly handle . provided as input-folder.
-Update MyPSScripts with new scripts
-Update README
-If reqd. provide prompt in MakeFolderTodayName
-CopyMaxAgeWoXF script should have output folder name with XF-maxage-n suffix by default and an option to specify a custom suffix.
+Not sure if I need a CopyMaxAge script. If I feel the down the line, I should consider it.
+Not Urgent: CopyMaxAgeWoXF script should have output folder name with XF-maxage-n suffix by default and an option to specify a custom suffix. This is not an urgent issue for my needs and so am not spending time on it.
 
 Done: Usage statements should use same names as named parameters
+Done: If reqd. provide prompt in MakeFolderTodayName
+Done: Update MyPSScripts with new scripts
+Done: Update README
 
 --------------
 10 Mar. 2025

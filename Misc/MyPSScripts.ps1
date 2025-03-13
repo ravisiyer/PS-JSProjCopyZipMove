@@ -17,8 +17,9 @@ Write-Host "FindFldrsWoXF: Find and list folders with names matching passed Find
 Write-Host "Copy, zip and move related"
 Write-Host "==========================" 
 Write-Host "ZipFldrWDtTm: Zip folder or file with Date and Time prefix by default in output zip filename."
-Write-Host "MoveToMDLWDtTm: Move folder or file to MayDeleteLater folder with Date and Time prefix by default."
 Write-Host "ZipMv: Zip folder or file with Date and Time prefix by default in output zip filename + Move OutputZipFile to BackupFolder."
+Write-Host "MoveToBack: Move InputFolderOrFile to BackupFolder."
+Write-Host "MoveToMDLWDtTm: Move folder or file to MayDeleteLater folder with Date and Time prefix by default."
 Write-Host "CpXFZipMv: CopyWoXF + ZipFldrWDtTm + Move OutputZipFile to BackupFolder + MoveToMDLWDtTm (for CopyWoXF OutputFolder)"
 Write-Host "CpZipMv: This script is a wrapper around CpXFZipMv script tailored for copy with ExcludeNone"`n
 

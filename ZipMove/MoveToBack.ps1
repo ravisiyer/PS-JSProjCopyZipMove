@@ -4,7 +4,7 @@ $BackupFolderDefault = "E:\TempBack"
 
 function Usage {
   param ($cmdName)
-  Write-Host "Move InputFolderOrFile to BackupFolder"`n
+  Write-Host "Move InputFolderOrFile to BackupFolder."`n
   Write-Host Usage: $cmdName InputFolderOrFile [$BackupFolder]`n
   Write-Host $BackupFolder is the final copy location. By default it is: $BackupFolderDefault
   Write-Host /? passed as first parameter shows this help message.`n

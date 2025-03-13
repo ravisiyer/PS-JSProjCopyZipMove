@@ -29,4 +29,26 @@ If (Test-Path -path $NewFolderPath) {
     Write-Error "Folder/file: '$TodaysDate' already exists in Destination Folder: $DestinationFolder . Aborting!"
     exit 1
 } 
-New-Item -Path $DestinationFolder -Name $TodaysDate -ItemType "directory"
+
+$NewCmd = "New-Item -Path $DestinationFolder -Name $TodaysDate -ItemType directory"
+Write-Host "New command to be executed: $NewCmd"
+
+$Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
+$Choice = $host.UI.PromptForChoice("", "Proceed?", $Choices, 1)
+
+if (1 -eq $Choice)
+{
+    Write-Host "Aborted!"
+    exit 1
+}
+
+try {
+    Invoke-Expression $NewCmd
+}
+catch {
+    Write-Error "Above command threw exception: $($PSItem.ToString())"
+    exit 1
+}
+  
+Write-Host Above command executed.
+exit 0
