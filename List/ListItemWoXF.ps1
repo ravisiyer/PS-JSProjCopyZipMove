@@ -1,7 +1,7 @@
 ﻿# Recursively outputs Get-ChildItem returned object for files and directories of current working directory
 # OR user specified directory excluding specified/default folders (e.g. node_modules and .next folders).
 #
-# Usage: script-name [optional-path Exclude-Folders-List] | next-cmd
+# Usage: script-name [optional-path ExcludeFolders] | next-cmd
 # Usage Examples:
 # Lists last modified time followed by full path for each folder & file in current directory
 # excluding default folders
@@ -43,10 +43,10 @@ $ExcludeNoneFlag="ExcludeNone"
 function Usage {
   param ($CmdName)
   Write-Host "Output (list) files and folders excluding specified/default folders."`n
-  Write-Host Usage: $CmdName [Path Exclude-Folders-List]`n
+  Write-Host Usage: $CmdName [Path ExcludeFolders]`n
   Write-Host Path specifies the input folder which if not specified has default value of . [current directory]
-  Write-Host Exclude-Folders-List is a space separated list like: `"node_modules .next intermediates .gradle`"
-  Write-Host Special value of $ExcludeNoneFlag can be passed as Exclude-Folders-List to not use exclude option at all [include all in copy]
+  Write-Host ExcludeFolders is a space separated list like: `"node_modules .next intermediates .gradle`"
+  Write-Host Special value of $ExcludeNoneFlag can be passed as ExcludeFolders to not use exclude option at all [include all in copy]
   Write-Host /? passed as first parameter shows this help message.
 }
 

@@ -22,12 +22,12 @@ param ($Path = $pwd, $TopFewCount=10, $ExcludeFolders="")
 function Usage {
   param ($CmdName)
   Write-Host "List few last modified files and folders excluding specified/default folders."`n
-  Write-Host Usage: $CmdName [Path TopFewCount Exclude-Folders-List]`n
+  Write-Host Usage: $CmdName [Path TopFewCount ExcludeFolders]`n
   Write-Host This script relies on ListItemWoXF.ps1 to do the work.
   Write-Host Path specifies the input folder which if not specified has default value of . [current directory]
   Write-Host TopFewCount is the number of top few items shown. Default value is 10
-  Write-Host Exclude-Folders-List is passed as given to ListItemWoXF.ps1
-  Write-Host If Exclude-Folders-List is omitted`, default value of `"`" is passed to ListItemWoXF.ps1
+  Write-Host ExcludeFolders is passed as given to ListItemWoXF.ps1
+  Write-Host If ExcludeFolders is omitted`, default value of `"`" is passed to ListItemWoXF.ps1
   Write-Host /? passed as first parameter shows this help message.
 }
 

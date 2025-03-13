@@ -5,14 +5,14 @@ $BackupFolderDefault = "E:\TempBack"
 function Usage {
   param ($cmdName)
   Write-Host "Zip folder or file with Date and Time prefix by default in output zip filename + Move OutputZipFile to BackupFolder"`n
-  Write-Host Usage: $cmdName Input-Folder-Name [Use7zip AddDatePrefix Backup-Folder]`n
+  Write-Host Usage: $cmdName InputFolder [Use7zip AddDateTimePrefix BackupFolder]`n
   Write-Host If Use7zip is "Y" then 7zip is used instead of Compress-Archive to create zip file.
   Write-Host " By default, Use7zip is N and then Compress-Archive is used to create zip file."
   Write-Host " Compress-Archive does not include hidden folders and files (including .git). 7zip includes hidden folders and files."
-  Write-Host If AddDatePrefix is not specified, default value of "Y" is used.
-  Write-Host If AddDatePrefix is "Y", current date time as yyyyMMdd-HHmm- will be prefixed to Input-Folder-Name `
+  Write-Host If AddDateTimePrefix is not specified, default value of "Y" is used.
+  Write-Host If AddDateTimePrefix is "Y", current date time as yyyyMMdd-HHmm- will be prefixed to InputFolder `
     to generate output zip file name.
-  Write-Host Backup-Folder is the final copy location. By default it is: $BackupFolderDefault
+  Write-Host BackupFolder is the final copy location. By default it is: $BackupFolderDefault
   Write-Host /? passed as first parameter shows this help message.`n
 }
 
@@ -32,19 +32,17 @@ $InputFolder = $InputFolder.trim()
 $len = $InputFolder.length
 if (($len -gt 1) -and (".\" -eq $InputFolder.substring(0,2))) {
     $InputFolder = $InputFolder.substring(2,$len-2)
-    # Write-Host "Input parameter (folder name) had starting dot and backslash which was stripped" 
 }
 $len = $InputFolder.length
 if ("\" -eq $InputFolder.substring($len-1,1)) {
   $InputFolder = $InputFolder.substring(0, $len-1)
-  # Write-Host "Input parameter (folder name) had trailing backslash which was stripped" 
 }
 
 If ( -not (Test-Path -path $InputFolder -PathType Container)) {
   If (Test-Path -path $InputFolder) {
-    Write-Host "Parameter specified: '$InputFolder' is not a directory. Aborting!"
+    Write-Host "InputFolder parameter specified: '$InputFolder' is not a directory. Aborting!"
   } Else {
-    Write-Host "Parameter specified: '$InputFolder' does not exist. Aborting!"
+    Write-Host "InputFolder parameter specified: '$InputFolder' does not exist. Aborting!"
   }
   Usage $myInvocation.InvocationName
   exit 1

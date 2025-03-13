@@ -4,13 +4,13 @@
 # It also ignores folders present in $ExcludeFolders array 
 # Usage Examples:
 #
-# In working directory, find and list default find-folders-list and exclude default exclude-folders-list
+# In working directory, find and list default FindFolders and exclude default ExcludeFolders
 # script-name 
 #
-# In Test directory, find and list default find-folders-list and exclude default exclude-folders-list
+# In Test directory, find and list default FindFolders and exclude default ExcludeFolders
 # script-name Test
 #
-# In Test directory, find and list node_modules and .next folders and exclude default exclude-folders-list
+# In Test directory, find and list node_modules and .next folders and exclude default ExcludeFolders
 # script-name Test "node_modules .next"
 #
 # In Test directory, find and list node_modules folders and exclude .git folders
@@ -28,17 +28,20 @@ Param ([string] $path = "", $FindFolders = "", $ExcludeFolders = "")
 $ExcludeNoneFlag="ExcludeNone"
 function Usage {
   param ($cmdName)
-  Write-Host "Find and list folders with names matching passed Find-Folders-List excluding specified/default folders."
+  Write-Host "Find and list folders with names matching passed FindFolders excluding specified/default folders."
   Write-Host "The default values for this command helps to locate folders that can be deleted from inactive projects as these"
   Write-Host "folder contents can be regenerated from main project source files (like node_modules can be regenerated from package.json)."
-  Write-Host "Find-Folders-List by default is .gitignore type of folders like node_modules and .next which in most list scripts" 
+  Write-Host "FindFolders by default is .gitignore type of folders like node_modules and .next which in most list scripts" 
   Write-Host "are exclude folders by default."
-  Write-Host "Further note that for this script, the Exclude-Folders-List by default is a folder like .git" `n
-  Write-Host "Usage: $cmdName [Path, Find-Folders-List, Exclude-Folders-List]" `n
+  Write-Host "Further note that for this script, the ExcludeFolders by default is a folder like .git" `n
+  # Uppercase first letter Path specified as parameter to this command is set to $path by Powershell
+  # As code uses a mix of first letter uppercase and first letter lowercase variable names, I did not want to change $path variable alone
+  # to $Path
+  Write-Host "Usage: $cmdName [Path, FindFolders, ExcludeFolders]" `n
   Write-Host Path specifies the input folder which if not specified has default value of . [current directory]
-  Write-Host Find-Folders-List is a space separated list like: `"node_modules .next intermediates .gradle`"
-  Write-Host Exclude-Folders-List is a space separated list like: `".git xyz`"
-  Write-Host Special value of $ExcludeNoneFlag can be passed as Exclude-Folders-List to not use exclude option at all [include all in find]
+  Write-Host FindFolders is a space separated list like: `"node_modules .next intermediates .gradle`"
+  Write-Host ExcludeFolders is a space separated list like: `".git xyz`"
+  Write-Host Special value of $ExcludeNoneFlag can be passed as ExcludeFolders to not use exclude option at all [include all in find]
   Write-Host "To skip optional parameters but specify a following parameter, use - (hyphen character) to skip"
   Write-Host "/? passed as first parameter shows this help message."`n
 }
@@ -104,9 +107,9 @@ if ("\" -eq $path.substring($len-1,1)) {
 
 If ( -not (Test-Path -path $path -PathType Container)) {
   If (Test-Path -path $path) {
-    Write-Error "Parameter specified: '$path' is not a directory. Aborting!"
+    Write-Error "Path parameter specified: '$path' is not a directory. Aborting!"
   } Else {
-    Write-Error "Parameter specified: '$path' does not exist. Aborting!"
+    Write-Error "Path parameter specified: '$path' does not exist. Aborting!"
   }
   Usage $myInvocation.InvocationName
   exit 1

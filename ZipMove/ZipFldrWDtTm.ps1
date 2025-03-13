@@ -2,12 +2,12 @@ param ($InputFolder="", $Use7zip = "N", $AddDateTimePrefix="Y")
 function Usage {
   param ($cmdName)
   Write-Host "Zip folder or file with Date and Time prefix by default in output zip filename."`n
-  Write-Host Usage: $cmdName Input-Folder-Name [Use7zip AddDatePrefix]`n
+  Write-Host Usage: $cmdName InputFolder [Use7zip AddDateTimePrefix]`n
   Write-Host If Use7zip is "Y" then 7zip is used instead of Compress-Archive to create zip file.
   Write-Host " By default, Use7zip is N and then Compress-Archive is used to create zip file."
   Write-Host " Compress-Archive does not include hidden folders and files (including .git). 7zip includes hidden folders and files."
-  Write-Host If AddDatePrefix is not specified, default value of "Y" is used.
-  Write-Host If AddDatePrefix is "Y", current date time as yyyyMMdd-HHmm- will be prefixed to Input-Folder-Name `
+  Write-Host If AddDateTimePrefix is not specified, default value of "Y" is used.
+  Write-Host If AddDateTimePrefix is "Y", current date time as yyyyMMdd-HHmm- will be prefixed to InputFolder `
     to generate output zip file name.`n
 }
 
@@ -22,12 +22,10 @@ $InputFolder = $InputFolder.trim()
 $len = $InputFolder.length
 if (($len -gt 1) -and (".\" -eq $InputFolder.substring(0,2))) {
     $InputFolder = $InputFolder.substring(2,$len-2)
-    # Write-Host "Input parameter (folder name) had starting dot and backslash which was stripped" 
 }
 $len = $InputFolder.length
 if ("\" -eq $InputFolder.substring($len-1,1)) {
   $InputFolder = $InputFolder.substring(0, $len-1)
-  # Write-Host "Input parameter (folder name) had trailing backslash which was stripped" 
 }
 
 If ( -not (Test-Path -path $InputFolder -PathType Container)) {
@@ -59,8 +57,6 @@ if ("Y" -eq $Use7zip) {
   Write-Host " To include hidden folders, use 7-zip by passing parameter Use7zip as Y ."
 }
 Write-Host "Command to be executed: $Cmd"
-# Write-Host "Note that hidden folders (including .git) will be excluded from the output zip file as that is how Compress-Archive works."
-# Write-Host " To include hidden folders, use 7-zip (outside of this script)."
 $Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
 $Choice = $host.UI.PromptForChoice("", "Proceed?", $Choices, 1)
 

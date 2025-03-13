@@ -3,7 +3,7 @@ param ($InputFolder="", $OutputFolder="")
 function Usage {
     param ($cmdName)
     Write-Host "Copy all files and folders. No folders are excluded."`n
-    Write-Host Usage: $cmdName Input-Folder-Name Output-Folder-Name `n
+    Write-Host Usage: $cmdName InputFolder OutputFolder `n
     Write-Host CopyWoXF.ps1 is invoked to do the copy
 }
   
@@ -15,9 +15,9 @@ if ( "" -eq $InputFolder  ) {
 
 If ( -not (Test-Path -path $InputFolder -PathType Container)) {
     If (Test-Path -path $InputFolder) {
-      Write-Host "Parameter specified: '$InputFolder' is not a directory. Aborting!"
+      Write-Host "InputFolder parameter specified: '$InputFolder' is not a directory. Aborting!"
     } Else {
-      Write-Host "Parameter specified: '$InputFolder' does not exist. Aborting!"
+      Write-Host "InputFolder parameter specified: '$InputFolder' does not exist. Aborting!"
     }
     Usage $myInvocation.InvocationName
     exit 1
@@ -34,7 +34,6 @@ If (Test-Path -path $OutputFolder) {
     exit 1
 } 
   
-#Write-Host Usage: $cmdName Source-Folder-Name [Exclude-Folders-List MaxAge Output-Folder-Name LogFile]
 $Cmd = "CopyWoXF $InputFolder ExcludeNone - $OutputFolder"
 Write-Host "Invoking $Cmd"
 Invoke-Expression $Cmd

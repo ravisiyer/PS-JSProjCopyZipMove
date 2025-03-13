@@ -3,9 +3,9 @@ $MDLFolderName = "MayDeleteLater"
 function Usage {
   param ($cmdName)
   Write-Host "Move folder or file to MayDeleteLater folder with Date and Time prefix by default."`n
-  Write-Host Usage: $cmdName Input-Folder-Or-File-Name [AddDateTimePrefix]`n
+  Write-Host Usage: $cmdName InputFolderOrFile [AddDateTimePrefix]`n
   Write-Host If AddDateTimePrefix is not specified, default value of "Y" is used
-  Write-Host If AddDateTimePrefix is "Y", current date time as yyyyMMdd-HHmm- will be prefixed to Input-Folder-or-File-Name 
+  Write-Host If AddDateTimePrefix is "Y", current date time as yyyyMMdd-HHmm- will be prefixed to InputFolderOrFile 
   Write-Host when it is moved to MDL [MayDeleteLater] folder: $MDLFolderName`n
 }
 
