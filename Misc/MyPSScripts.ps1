@@ -29,4 +29,4 @@ Write-Host "MakeFolderTodayName: Make (create) folder with today's date (yyyyMMd
 Write-Host "PSScriptsListLastMod: Listing few last modified .ps1 files contained in folder (including subfolders)."
 Write-Host "MyPSScripts: This command."`n
 
-Write-Host "Note: PS aliases are set in PS profile location. Alias myals lists PS profile file showing my alias defintions."`n
+Write-Host "Note: PS aliases are set in PS profile location. Alias mya lists PS profile file showing my alias defintions."`n
