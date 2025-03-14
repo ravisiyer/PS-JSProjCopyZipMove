@@ -41,7 +41,7 @@ CpZipMv: This script is a wrapper around CpXFZipMv script tailored for copy with
 **Misc**
 
 MakeFolderTodayName: Make (create) folder with today's date (yyyyMMdd) as name.  
-ListLastModPSScripts: Listing few last modified .ps1 files contained in folder (including subfolders).  
+PSScriptsListLastMod: Listing few last modified .ps1 files contained in folder (including subfolders).  
 MyPSScripts: This command.  
 
 Note: PS aliases are set in PS profile location. Alias myals lists PS profile file showing my alias defintions.
