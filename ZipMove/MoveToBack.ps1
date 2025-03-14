@@ -31,6 +31,7 @@ if (( "" -eq $BackupFolder  ) -or ("-" -eq $BackupFolder)) {
     $BackupFolder = $BackupFolderDefault
 }
 
+# -Force seems to be needed to avoid access errors for hidden folders like .git
 $MoveCmd = "Move-Item -Path $InputFolderOrFile -Force -Destination $BackupFolder"
 Write-Host `n"Move command to be executed:"
 Write-Host $MoveCmd
