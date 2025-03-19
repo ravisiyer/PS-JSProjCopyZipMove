@@ -3,6 +3,7 @@ Write-Host "Copy related - using Robocopy"
 Write-Host "============================="
 Write-Host "CopyWoXF: Copy contents of a folder excluding specified/default folders (e.g. node_modules and .next folders)."
 Write-Host "CopyMaxAgeWoXF: Copy contents of a folder based on maxage excluding specified/default folders"
+Write-Host "CopyMaxAgeAll: Copies all contents of a folder/directory based on maxage. No folders are excluded."
 Write-Host "CopyAll: Copy all files and folders. No folders are excluded." `n
 
 Write-Host "List related"
