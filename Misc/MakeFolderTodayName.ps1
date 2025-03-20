@@ -30,7 +30,7 @@ If (Test-Path -path $NewFolderPath) {
     exit 1
 } 
 
-$NewCmd = "New-Item -Path $DestinationFolder -Name $TodaysDate -ItemType directory"
+$NewCmd = "New-Item -Path '$DestinationFolder' -Name '$TodaysDate' -ItemType directory"
 Write-Host "New command to be executed: $NewCmd"
 
 $Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")

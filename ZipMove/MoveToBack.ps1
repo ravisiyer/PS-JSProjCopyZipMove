@@ -45,7 +45,7 @@ if ("Y" -eq $UseTodaySubFolder) {
   $TodaysDate = Get-Date -Format "yyyyMMdd"
   $DestinationFolder = Join-Path -Path $BackupFolder -ChildPath $TodaysDate
   If ( -not (Test-Path -path $DestinationFolder)) {
-    $NewCmd = "New-Item -Path $BackupFolder -Name $TodaysDate -ItemType directory"
+    $NewCmd = "New-Item -Path '$BackupFolder' -Name '$TodaysDate' -ItemType directory"
     Write-Host "New command to be executed: $NewCmd"
     
     $Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")

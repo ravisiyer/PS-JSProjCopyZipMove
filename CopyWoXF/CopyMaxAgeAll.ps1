@@ -19,6 +19,6 @@ if ($InputFolder -eq "/?") {
     exit 0
 }
 
-$Cmd = "CopyMaxAgeWoXF $InputFolder $MaxAge ExcludeNone"
+$Cmd = "CopyMaxAgeWoXF '$InputFolder' $MaxAge ExcludeNone"
 Write-Host "Invoking $Cmd"
 Invoke-Expression $Cmd

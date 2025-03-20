@@ -68,7 +68,7 @@ if ("Y" -eq $AddDateTimePrefix) {
     } else {
         $FinalOutputFolderOrFile = $Parent + "\" + $FinalOutputFolderOrFileLeaf
     }
-    $RenCmd = "Rename-Item -Path $InputFolderOrFile -NewName $FinalOutputFolderOrFileLeaf"
+    $RenCmd = "Rename-Item -Path '$InputFolderOrFile' -NewName '$FinalOutputFolderOrFileLeaf'"
     Write-Host "Rename Command to be executed: $RenCmd"
 
     $Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
@@ -97,7 +97,7 @@ If (Test-Path -path $DestinationFullPath) {
     exit 1
 }
 
-$MoveCmd = "Move-Item -Path $FinalOutputFolderOrFile -Destination $MDLFolderPath"
+$MoveCmd = "Move-Item -Path '$FinalOutputFolderOrFile' -Destination '$MDLFolderPath'"
 
 Write-Host "Move Command to be executed: $MoveCmd"
 

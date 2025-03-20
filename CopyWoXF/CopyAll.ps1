@@ -34,6 +34,6 @@ If (Test-Path -path $OutputFolder) {
     exit 1
 } 
   
-$Cmd = "CopyWoXF $InputFolder ExcludeNone - $OutputFolder"
+$Cmd = "CopyWoXF '$InputFolder' ExcludeNone - '$OutputFolder'"
 Write-Host "Invoking $Cmd"
 Invoke-Expression $Cmd

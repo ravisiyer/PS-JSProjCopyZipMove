@@ -50,9 +50,9 @@ If (Test-Path -path $OutputZipFile) {
 } 
 
 if ("Y" -eq $Use7zip) {
-  $Cmd = "7z a $OutputZipFile $InputFolder "
+  $Cmd = "7z a '$OutputZipFile' '$InputFolder' "
 } else {
-  $Cmd = "Compress-Archive -Path $InputFolder -DestinationPath $OutputZipFile"
+  $Cmd = "Compress-Archive -Path '$InputFolder' -DestinationPath '$OutputZipFile'"
   Write-Host "Note that hidden folders (including .git) will be excluded from the output zip file as that is how Compress-Archive works."
   Write-Host " To include hidden folders, use 7-zip by passing parameter Use7zip as Y ."
 }

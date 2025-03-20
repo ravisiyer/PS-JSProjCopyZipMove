@@ -55,6 +55,6 @@ if ( "" -eq $ExcludeFolders  ) {
   $ExcludeFolders = "-"
 }
 
-$Cmd = "CopyWoXF $InputFolder $ExcludeFolders $MaxAge $OutputFolder"
+$Cmd = "CopyWoXF '$InputFolder' $ExcludeFolders $MaxAge '$OutputFolder'"
 Write-Host "Invoking $Cmd"
 Invoke-Expression $Cmd

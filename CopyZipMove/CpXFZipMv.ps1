@@ -64,7 +64,7 @@ if ("" -eq $InputFolderParent) {
   $OutputFolder = $InputFolderParent + "\" + $NowDateTime + $InputFolderLeaf + $OutputSuffix
 }
 
-$Cmd = "CopyWoXF $InputFolder $ExcludeFolders - $OutputFolder"
+$Cmd = "CopyWoXF '$InputFolder' $ExcludeFolders - '$OutputFolder'"
 Write-Host "Executing:"
 Write-Host $Cmd
 
@@ -74,7 +74,7 @@ if ($LASTEXITCODE -ne 0) {
   exit 1
 }
 
-$Cmd ="ZipFldrWDtTm $OutputFolder $Use7zip N"
+$Cmd ="ZipFldrWDtTm '$OutputFolder' $Use7zip N"
 Write-Host `n"Executing: $Cmd"
 Invoke-Expression $Cmd
 if ($LASTEXITCODE -ne 0) {
@@ -83,7 +83,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 $OutputZipFile = $OutputFolder + ".zip"
-$MoveCmd = "Move-Item -Path $OutputZipFile -Destination $BackupFolder"
+$MoveCmd = "Move-Item -Path '$OutputZipFile' -Destination '$BackupFolder'"
 Write-Host `n"Move OutputZipFile command to be executed:"
 Write-Host $MoveCmd
 
@@ -103,7 +103,7 @@ if (1 -eq $Choice)
   }
 }
 
-$Cmd ="MoveToMDLWDtTm $OutputFolder N"
+$Cmd ="MoveToMDLWDtTm '$OutputFolder' N"
 Write-Host `n"Executing: $Cmd"
 
 Invoke-Expression $Cmd

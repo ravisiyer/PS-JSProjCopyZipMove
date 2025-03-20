@@ -21,6 +21,6 @@ if ( "" -eq $Use7zip  )  {
     $Use7zip = "-"
 }
 
-$Cmd = "CpXFZipMv $InputFolder $Use7zip ExcludeNone - $BackupFolder"
+$Cmd = "CpXFZipMv '$InputFolder' $Use7zip ExcludeNone - '$BackupFolder'"
 Write-Host "Invoking $Cmd"
 Invoke-Expression $Cmd
