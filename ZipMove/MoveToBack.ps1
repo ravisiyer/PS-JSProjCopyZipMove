@@ -1,5 +1,5 @@
 #
-param ($InputFolderOrFile="", $UseTodaySubFolder="", $BackupFolder="")
+param ($InputFolderOrFile="", $UseTodaySubFolder="N", $BackupFolder="")
 $BackupFolderDefault = "E:\TempBack"
 
 function Usage {

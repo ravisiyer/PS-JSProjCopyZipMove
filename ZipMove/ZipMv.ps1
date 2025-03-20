@@ -1,18 +1,20 @@
 #
-param ($InputFolder="", $Use7zip = "N", $AddDateTimePrefix="Y", $BackupFolder="")
+param ($InputFolder="", $Use7zip = "N", $UseTodaySubFolder="N", $AddDateTimePrefix="Y", $BackupFolder="")
 $BackupFolderDefault = "E:\TempBack"
 
 function Usage {
   param ($cmdName)
   Write-Host "Zip folder or file with Date and Time prefix by default in output zip filename + Move OutputZipFile to BackupFolder"`n
-  Write-Host Usage: $cmdName InputFolder [Use7zip AddDateTimePrefix BackupFolder]`n
+  Write-Host Usage: $cmdName InputFolder [Use7zip UseTodaySubFolder AddDateTimePrefix BackupFolder]`n
   Write-Host If Use7zip is "Y" then 7zip is used instead of Compress-Archive to create zip file.
   Write-Host " By default, Use7zip is N and then Compress-Archive is used to create zip file."
   Write-Host " Compress-Archive does not include hidden folders and files (including .git). 7zip includes hidden folders and files."
+  Write-Host "If UseTodaySubFolder (default N) is Y, if required, create sub-folder with name of today's date as yyyyMMdd in BackupFolder."
+  Write-Host "If UseTodaySubFolder is Y, final copy location is sub-folder with today's date as name in BackupFolder, else it is BackupFolder."
   Write-Host If AddDateTimePrefix is not specified, default value of "Y" is used.
   Write-Host If AddDateTimePrefix is "Y", current date time as yyyyMMdd-HHmm- will be prefixed to InputFolder `
     to generate output zip file name.
-  Write-Host BackupFolder is the final copy location. By default it is: $BackupFolderDefault
+  Write-Host By default BackupFolder is: $BackupFolderDefault
   Write-Host /? passed as first parameter shows this help message.`n
 }
 
@@ -89,7 +91,41 @@ catch {
   exit 1
 }
 
-$MoveCmd = "Move-Item -Path '$OutputZipFile' -Destination '$BackupFolder'"
+If ( -not (Test-Path -path $BackupFolder)) {
+  Write-Error "BackupFolder parameter specified: '$BackupFolder' does not exist. Aborting!"
+  Usage $myInvocation.InvocationName
+  exit 1
+}
+
+$DestinationFolder = $BackupFolder
+
+if ("Y" -eq $UseTodaySubFolder) {
+  $TodaysDate = Get-Date -Format "yyyyMMdd"
+  $DestinationFolder = Join-Path -Path $BackupFolder -ChildPath $TodaysDate
+  If ( -not (Test-Path -path $DestinationFolder)) {
+    $NewCmd = "New-Item -Path '$BackupFolder' -Name '$TodaysDate' -ItemType directory"
+    Write-Host "New command to be executed: $NewCmd"
+    
+    $Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
+    $Choice = $host.UI.PromptForChoice("", "Proceed?", $Choices, 1)
+    
+    if (1 -eq $Choice)
+    {
+        Write-Host "Aborted!"
+        exit 1
+    }
+    
+    try {
+        Invoke-Expression $NewCmd
+    }
+    catch {
+        Write-Error "Above command threw exception: $($PSItem.ToString())"
+        exit 1
+    }
+  }
+}
+
+$MoveCmd = "Move-Item -Path '$OutputZipFile' -Destination '$DestinationFolder'"
 Write-Host `n"Move OutputZipFile command to be executed:"
 Write-Host $MoveCmd
 
