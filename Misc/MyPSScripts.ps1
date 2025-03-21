@@ -27,7 +27,7 @@ Write-Host "CpZipMv: This script is a wrapper around CpXFZipMv script tailored f
 Write-Host "Misc"
 Write-Host "===="
 Write-Host "MakeFolderTodayName: Make (create) folder with today's date (yyyyMMdd) as name."
-Write-Host "PSScriptsListLastMod: Listing few last modified .ps1 files contained in folder (including subfolders)."
+Write-Host "PSScriptsListLastMod: Lists top few last modified .ps1 files contained in a folder (including subfolders)."
 Write-Host "MyPSScripts: This command."`n
 
 Write-Host "Note: PS aliases are set in PS profile location. Alias mya lists PS profile file showing my alias defintions."`n

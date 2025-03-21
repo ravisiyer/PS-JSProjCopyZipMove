@@ -1,8 +1,8 @@
-param ($InputFolder="", $Use7zip = "", $UseTodaySubFolder="N", $BackupFolder="")
+param ($InputFolder="", $MaxAge="-", $Use7zip = "", $UseTodaySubFolder="N", $BackupFolder="")
 function Usage {
     param ($cmdName)
     Write-Host This script is a wrapper around CpXFZipMv script tailored for copy with ExcludeNone
-    Write-Host Usage: $cmdName InputFolder [Use7zip UseTodaySubFolder BackupFolder]`n
+    Write-Host Usage: $cmdName InputFolder [MaxAge Use7zip UseTodaySubFolder BackupFolder]`n
     Write-Host /? passed as first parameter shows this help message.`n
 }
   
@@ -25,6 +25,6 @@ if ( "" -eq $UseTodaySubFolder  )  {
     $UseTodaySubFolder = "-"
 }
 
-$Cmd = "CpXFZipMv '$InputFolder' $Use7zip $UseTodaySubFolder ExcludeNone - '$BackupFolder'"
+$Cmd = "CpXFZipMv '$InputFolder' $MaxAge $Use7zip $UseTodaySubFolder ExcludeNone - '$BackupFolder'"
 Write-Host "Invoking $Cmd"
 Invoke-Expression $Cmd
