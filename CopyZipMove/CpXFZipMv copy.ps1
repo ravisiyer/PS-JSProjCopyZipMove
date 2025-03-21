@@ -1,5 +1,5 @@
 #
-param ($InputFolder="", $MaxAge="-", $Use7zip = "", $UseTodaySubFolder="", $ExcludeFolders="", $OutputSuffix="", $BackupFolder="")
+param ($InputFolder="", $Use7zip = "", $UseTodaySubFolder="", $ExcludeFolders="", $OutputSuffix="", $BackupFolder="")
 $Use7zipDefault = "N"
 $UseTodaySubFolderDefault= "N"
 $BackupFolderDefault = "E:\TempBack"
@@ -10,8 +10,7 @@ $OutputSuffixExclFldrDefault ="-XF"
 function Usage {
   param ($cmdName)
   Write-Host "CopyWoXF + ZipFldrWDtTm + Move OutputZipFile to BackupFolder + MoveToMDLWDtTm (for CopyWoXF OutputFolder)"`n
-  Write-Host Usage: $cmdName InputFolder [MaxAge Use7zip UseTodaySubFolder ExcludeFolders OutputSuffix BackupFolder]`n
-  Write-Host MaxAge is passed as given to CopyWoXF. By default - is used which skips the parameter.
+  Write-Host Usage: $cmdName InputFolder [Use7zip UseTodaySubFolder ExcludeFolders OutputSuffix BackupFolder]`n
   Write-Host If Use7zip is "Y" then 7zip is used instead of Compress-Archive to create zip file.
   Write-Host " By default, Use7zip is N and then Compress-Archive is used to create zip file."
   Write-Host " Compress-Archive does not include hidden folders and files (including .git). 7zip includes hidden folders and files."
@@ -71,13 +70,7 @@ if ("" -eq $InputFolderParent) {
   $OutputFolder = $InputFolderParent + "\" + $NowDateTime + $InputFolderLeaf + $OutputSuffix
 }
 
-
-if ( -not (( "" -eq $MaxAge  ) -or ("-" -eq $MaxAge))) {
-  $OutputFolder = $OutputFolder + "-maxage-" + $MaxAge
-}
-
-$Cmd = "CopyWoXF '$InputFolder' $ExcludeFolders $MaxAge '$OutputFolder'"
-# $Cmd = "CopyWoXF '$InputFolder' $ExcludeFolders - '$OutputFolder'"
+$Cmd = "CopyWoXF '$InputFolder' $ExcludeFolders - '$OutputFolder'"
 Write-Host "Executing:"
 Write-Host $Cmd
 
@@ -95,7 +88,6 @@ if ($LASTEXITCODE -ne 0) {
   exit 1
 }
 
-# Consider invoking MoveToBack for following  instead of having repetition of that code below.
 If ( -not (Test-Path -path $BackupFolder)) {
   Write-Error "BackupFolder parameter specified: '$BackupFolder' does not exist. Aborting!"
   Usage $myInvocation.InvocationName
