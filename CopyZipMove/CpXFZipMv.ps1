@@ -95,48 +95,12 @@ if ($LASTEXITCODE -ne 0) {
   exit 1
 }
 
-# Consider invoking MoveToBack for following  instead of having repetition of that code below.
-If ( -not (Test-Path -path $BackupFolder)) {
-  Write-Error "BackupFolder parameter specified: '$BackupFolder' does not exist. Aborting!"
-  Usage $myInvocation.InvocationName
-  exit 1
-}
-
-$DestinationFolder = $BackupFolder
-
-if ("Y" -eq $UseTodaySubFolder) {
-  $TodaysDate = Get-Date -Format "yyyyMMdd"
-  $DestinationFolder = Join-Path -Path $BackupFolder -ChildPath $TodaysDate
-  If ( -not (Test-Path -path $DestinationFolder)) {
-    $NewCmd = "New-Item -Path '$BackupFolder' -Name '$TodaysDate' -ItemType directory"
-    Write-Host "New command to be executed: $NewCmd"
-    
-    $Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
-    $Choice = $host.UI.PromptForChoice("", "Proceed?", $Choices, 1)
-    
-    if (1 -eq $Choice)
-    {
-        Write-Host "Aborted!"
-        exit 1
-    }
-    
-    try {
-        Invoke-Expression $NewCmd
-    }
-    catch {
-        Write-Error "Above command threw exception: $($PSItem.ToString())"
-        exit 1
-    }
-  }
-}
-
 $OutputZipFile = $OutputFolder + ".zip"
-$MoveCmd = "Move-Item -Path '$OutputZipFile' -Destination '$DestinationFolder'"
-Write-Host `n"Move OutputZipFile command to be executed:"
+$MoveCmd = "MoveToBack '$OutputZipFile' $UseTodaySubFolder '$BackupFolder'"
+Write-Host `n"MoveToBack OutputZipFile command to be executed:"
 Write-Host $MoveCmd
-
 $Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
-$Choice = $host.UI.PromptForChoice("", "Proceed (or skip)?", $Choices, 1)
+$Choice = $host.UI.PromptForChoice("", "Optional step: Proceed (or skip)?", $Choices, 1)
 
 if (1 -eq $Choice)
 {
