@@ -24,6 +24,8 @@ Write-Host "MoveToBack: Move InputFolderOrFile to BackupFolder."
 Write-Host "MoveToMDLWDtTm: Move folder or file to MayDeleteLater folder with Date and Time prefix by default."
 Write-Host "CpXFZipMv: CopyWoXF + ZipFldrWDtTm + Move OutputZipFile to BackupFolder + MoveToMDLWDtTm (for CopyWoXF OutputFolder)"
 Write-Host "CpZipMv: This script is a wrapper around CpXFZipMv script tailored for copy with ExcludeNone"`n
+Write-Host "PrMaxAgeCpXF7ZipMv: Wrapper around CpXFZipMv script tailored for backup copy with user prompt for MaxAge and using 7zip."`n
+
 
 Write-Host "Misc"
 Write-Host "===="
