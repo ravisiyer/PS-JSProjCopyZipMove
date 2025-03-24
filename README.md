@@ -1,21 +1,23 @@
-Powershell scripts mainly for copying and listing JavaScript software development project source code without folders like node_modules
+Powershell scripts for listing, copying, zipping and moving mainly JavaScript (also few Java/Kotlin) software development projects source code excluding folders like node_modules
 ===========
 
-The main copy scripts use Robocopy and allow for exclusion of folders like node_modules. They initially use the list only feature of Robocopy to list out the files & folders that will be copied if the main Robocopy command is run and provide an option to abort. Robocopy's incremental copy as well as MaxAge parameter feature are also provided. The main list scripts exclude folders like node_modules and even .git. Listing only files & folders of MaxAge and top few last modified options are also provided.  
+*Disclaimer: These scripts are not perfect and surely have some bugs. But they currently are satisfying most of my key needs and work for my use cases. So I thought they may be useful to some others and hence I have shared them as a public repo. The scripts have lot of repetitive code across them as Powershell is relatively new to me and I focused on quickly getting the task done limiting my learning Powershell time to a minimum. At some later point, I hope to refactor the code to be modular and DRY (less repetition).*
 
-The zip scripts provide for using compress-archive or 7zip and automatically prefix current date and time to output zip filename. The move scripts provide faciliy to move folder or file to backup folder or a MayDeleteLater folder (simple substitute to Recycle bin).  
+The copy scripts use Robocopy and allow for exclusion of folders like node_modules. They initially use the list only feature of Robocopy to list out the files & folders that will be copied if the Robocopy command that does the actual copy is run and provide an option to abort. I find this list only preview of the copy to be quite useful and have aborted the actual copy command when I felt it is not required. Robocopy's incremental copy as well as MaxAge parameter feature are also provided. Some of the list scripts exclude folders like node_modules and even .git. Listing only files & folders of MaxAge and top few last modified options are also provided.  
+
+The zip scripts provide for using compress-archive (which does not include hidden folders like .git) or 7zip (which includes hidden folders like .git) and automatically prefix current date and time to output zip filename. The move scripts provide faciliy to move folder or file to backup folder or a MayDeleteLater folder (simple substitute to Recycle bin).  
 
 The combo scripts combine above copy, zip and move scripts.  
 
-The folder ExampleTopLevelScripts in the repo has simple examples of invoking some of the above scripts for particular folders and with hardcoded parameters. This enables them to be used easily on regular basis for needs like incremental backup (using robocopy) and MaxAge backup of specific folders.
+The folder ExampleTopLevelScripts in the repo has simple examples of invoking some of the above scripts for particular folders and with hardcoded parameters. This enables them to be used easily on regular basis by simply running them without any parameters (File Explorer -> Right-Click on PS script -> Run with PowerShell) for needs like incremental backup (using robocopy) and MaxAge backup of specific folders (MaxAge is taken as input via prompt).
 
 I use the scripts on Windows 11.
  
 Run or view MyPSScripts.ps1 in Misc folder to get a quick overview of the main scripts. A copy of its output is given
 later on in this file but it may be outdated. MyPSScripts.ps1 should have the updated content.
 
-While the scripts were written primarily to help me do copying and listing of JavaScript software development project 
-(MERN stack and React Native but also Android Kotlin) source code folders and files, it does help for other folders and files too.
+While the scripts were written primarily to help me do listing, copying, zipping and moving of mainly JavaScript software development projects 
+(MERN stack including Next.js, and React Native but also few Java and Android Kotlin projects) source code folders and files, it does help for other non-software-development-project folders and files too.
 
 Copy of MyPSScripts.ps1 console output (as of 23 Mar. 2025)
 ----------------------------------------------------------
