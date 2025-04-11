@@ -76,7 +76,7 @@ if ( -not (( "" -eq $MaxAge  ) -or ("-" -eq $MaxAge))) {
   $OutputFolder = $OutputFolder + "-maxage-" + $MaxAge
 }
 
-$Cmd = "CopyWoXF '$InputFolder' $ExcludeFolders $MaxAge '$OutputFolder'"
+$Cmd = "CopyWoXF '$InputFolder' '$ExcludeFolders' $MaxAge '$OutputFolder'"
 # $Cmd = "CopyWoXF '$InputFolder' $ExcludeFolders - '$OutputFolder'"
 Write-Host "Executing:"
 Write-Host $Cmd

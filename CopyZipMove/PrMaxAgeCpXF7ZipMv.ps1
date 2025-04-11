@@ -27,7 +27,7 @@ if ([string]::IsNullOrWhiteSpace($MaxAge)) {
 	$MaxAge = 1
 }
 
-Write-Host "CpXFZipMv '$InputFolder' $MaxAge Y Y $ExcludeFolders"
+Write-Host "CpXFZipMv '$InputFolder' $MaxAge Y Y '$ExcludeFolders'"
 $Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
 $Choice = $host.UI.PromptForChoice("", "Proceed?", $Choices, 1)
 if (1 -eq $Choice)
@@ -36,4 +36,4 @@ if (1 -eq $Choice)
   exit 1
 }
 
-CpXFZipMv $InputFolder $MaxAge Y Y $ExcludeFolders
+CpXFZipMv $InputFolder $MaxAge Y Y "$ExcludeFolders"
