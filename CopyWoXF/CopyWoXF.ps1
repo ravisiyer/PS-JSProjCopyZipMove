@@ -9,7 +9,7 @@
 #
 param ($InputFolder="", $ExcludeFolders="", $MaxAge="", $OutputFolder="", $LogFile="")
 $OutputSuffixDefault ="-XF"
-$ExcludeFoldersDefault="node_modules .next intermediates .gradle target"
+$ExcludeFoldersDefault="node_modules .next .gradle .idea .cache .expo build target"
 $ExcludeNoneFlag="ExcludeNone"
 
 # If MaxAge is specified, /S is better option than /E as we don't want empty directories to be copied

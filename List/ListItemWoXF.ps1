@@ -55,7 +55,7 @@ if ($Path -eq "/?") {
   exit 0
 }
 
-$ExcludeFoldersDefault = ".git node_modules .next .gradle intermediates .expo"
+$ExcludeFoldersDefault = ".git node_modules .next .gradle .idea .cache .expo"
 
 # Special flag to not specify Exclude Directories option at all  
 if ( $ExcludeNoneFlag -eq $ExcludeFolders )  {

@@ -56,7 +56,7 @@ if (( "" -eq $path  ) -or ("-" -eq $path)) {
     $path = $pathDefault
 }
 
-$FindFoldersDefault = "node_modules .next .gradle intermediates .expo target"
+$FindFoldersDefault = "node_modules .next .gradle .idea .cache .expo build target"
 $ExcludeFoldersDefault = ".git"
 
 if (( "" -eq $FindFolders  ) -or ("-" -eq $FindFolders)) {

@@ -1,9 +1,9 @@
-param ($DestinationFolder="E:\TempBack")
+param ($DestinationFolder="E:\FewDaysBkup")
 function Usage {
     param ($cmdName)
     Write-Host "Make (create) folder with today's date (yyyyMMdd) as name."`n
     Write-Host Usage: $cmdName [DestinationFolder]`n
-    Write-Host DestinationFolder is the location where the new folder will be created. By default it is: "E:\TempBack" .
+    Write-Host DestinationFolder is the location where the new folder will be created. By default it is: "E:\FewDaysBkup" .
     Write-Host "New folder name will be today's date as yyyyMMdd ."
     Write-Host /? passed as first parameter shows this help message.`n
 }

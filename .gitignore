@@ -1,6 +1,9 @@
 Microsoft.PowerShell_profile.ps1
 ScrapScripts/
+AutoTestData/TestData/
+**/TestRun/
 TestData?*/
+Test Data?*/
 [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-Test*/
 [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]-Test*/
 [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-Test*.zip

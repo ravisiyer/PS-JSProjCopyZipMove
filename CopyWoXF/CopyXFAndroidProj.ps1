@@ -28,6 +28,6 @@ If ( -not (Test-Path -path $InputFolder -PathType Container)) {
     exit 1
 }
 
-$Cmd = "CopyWoXF '$InputFolder' `"build release .gradle`""
+$Cmd = "CopyWoXF '$InputFolder' `"build release .gradle .idea`""
 Write-Host "Invoking $Cmd"
 Invoke-Expression $Cmd

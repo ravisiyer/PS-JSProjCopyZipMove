@@ -1,6 +1,6 @@
 #
 param ($InputFolder="", $Use7zip = "N", $UseTodaySubFolder="N", $AddDateTimePrefix="Y", $BackupFolder="")
-$BackupFolderDefault = "E:\TempBack"
+$BackupFolderDefault = "E:\FewDaysBkup"
 
 function Usage {
   param ($cmdName)

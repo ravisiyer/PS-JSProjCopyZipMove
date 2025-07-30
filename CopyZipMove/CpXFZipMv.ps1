@@ -2,7 +2,7 @@
 param ($InputFolder="", $MaxAge="-", $Use7zip = "", $UseTodaySubFolder="", $ExcludeFolders="", $OutputSuffix="", $BackupFolder="")
 $Use7zipDefault = "N"
 $UseTodaySubFolderDefault= "N"
-$BackupFolderDefault = "E:\TempBack"
+$BackupFolderDefault = "E:\FewDaysBkup"
 $ExcludeNoneFlag="ExcludeNone"
 $OutputSuffixExclNoneDefault ="-Copy"
 $OutputSuffixExclFldrDefault ="-XF"
