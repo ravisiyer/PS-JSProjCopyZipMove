@@ -40,6 +40,8 @@ if ($subfolders.Count -eq 1) {
 $ProjectTypes = @("ReactNative", "Android", "DotNet", "Others")
 $ScriptPath = Join-Path $PSScriptRoot "CopyXFProj.ps1"
 
+$TestResults = @{}
+
 foreach ($type in $ProjectTypes) {
     $InputFolder = Join-Path $TestDataRoot "Input_$type"
     $ExpectedFolder = Join-Path $TestDataRoot "Expected_$type"
@@ -47,6 +49,7 @@ foreach ($type in $ProjectTypes) {
     $OutputFolder = Join-Path $TestDataRoot "Input_$type-XF"
 
     if (-not (Test-Path $InputFolder)) {
+        $TestResults[$type] = "Input folder $InputFolder not found. Skipping."
         Write-Host "$($type): Input folder $InputFolder not found. Skipping."
         continue
     }
@@ -58,14 +61,23 @@ foreach ($type in $ProjectTypes) {
     if (Test-Path $OutputFolder) {
         $result = Compare-Folders $OutputFolder $ExpectedFolder
         if ($result) {
+            $TestResults[$type] = "Success"
             Write-Host "$($type): Success"
         } else {
+            $TestResults[$type] = "Failure (differences found)"
             Write-Host "$($type): Failure (differences found)"
         }
     } else {
+        $TestResults[$type] = "Failure (output folder not found)"
         Write-Host "$($type): Failure (output folder not found)"
     }
 }
 
+Write-Host "`n===================="
+Write-Host "Test Summary:"
+Write-Host "===================="
+foreach ($type in $ProjectTypes) {
+    Write-Host "$($type):`t$($TestResults[$type])"
+}
 Write-Host "`nTest run complete. Input and output folders are kept in: $TestDataRoot"
 Write-Host "You may manually inspect or delete them as needed."
