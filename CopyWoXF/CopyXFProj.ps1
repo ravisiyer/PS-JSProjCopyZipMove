@@ -1,14 +1,21 @@
 # Copy all source files and folders of a project
 param (
     [string]$InputFolder = "",
-    [string]$ProjectType = "Others"
+    [string]$ProjectType
 )
+
+. "$PSScriptRoot\ProjectTypeExcludes.ps1"
+
+if (-not $ProjectType) {
+    $ProjectType = $DefaultProjectType
+}
+
 function Usage {
     param ($cmdName)
     Write-Host "Copy all source files and folders of a project."`n
     Write-Host "Usage: $cmdName InputFolder ProjectType"
-    Write-Host "ProjectType: ReactNative, Android, DotNet, Others"
-    Write-Host "If ProjectType is not specified, default is: Others"`n
+    Write-Host ("ProjectType: {0}" -f ($validTypes -join ", "))
+    Write-Host ("If ProjectType is not specified, default is: {0}`n" -f $DefaultProjectType)
     Write-Host "CopyWoXF.ps1 is invoked to do the copy"`n
 }
 
@@ -34,19 +41,13 @@ If (-not (Test-Path -path $InputFolder -PathType Container)) {
 }
 
 # Validate ProjectType
-$validTypes = @("ReactNative", "Android", "DotNet", "Others")
 if ($ProjectType -notin $validTypes) {
     Write-Host "Invalid ProjectType specified: '$ProjectType'"
     Usage $myInvocation.InvocationName
     exit 1
 }
 
-switch ($ProjectType) {
-    "ReactNative" { $exclude = "node_modules android ios .expo .gradle" }
-    "Android"     { $exclude = "build release .gradle .idea" }
-    "DotNet"      { $exclude = "bin obj node_modules" }
-    "Others"      { $exclude = "node_modules .next .gradle .idea .cache .expo build target" }
-}
+$exclude = $ProjectTypeExcludes[$ProjectType]
 
 $Cmd = "CopyWoXF '$InputFolder' `"$exclude`""
 Write-Host "Invoking $Cmd"

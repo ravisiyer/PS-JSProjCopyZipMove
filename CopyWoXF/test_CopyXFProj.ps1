@@ -1,3 +1,6 @@
+# To run test, presuming TestData.zip has test data:
+# ./test_CopyXFProj.ps1 
+
 param (
     [string]$TestDataZip = "TestData.zip"
 )
