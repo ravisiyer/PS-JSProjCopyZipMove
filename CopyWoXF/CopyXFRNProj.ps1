@@ -1,33 +1,14 @@
-# Copy all source files and folders of a React Native (web and mobile) project
-param ($InputFolder="")
-function Usage {
-    param ($cmdName)
+# Wrapper script to invoke CopyXFProj.ps1 for a ReactNative project
+
+param (
+    [string]$InputFolder = ""
+)
+
+if ("" -eq $InputFolder -or $InputFolder -eq "/?") {
     Write-Host "Copy all source files and folders of a React Native (web and mobile) project."`n
-    Write-Host Usage: $cmdName InputFolder`n
-    Write-Host CopyWoXF.ps1 is invoked to do the copy`n
-}
-  
-if ($InputFolder -eq "/?") { 
-    Usage $myInvocation.InvocationName
-    exit 0
-}
-  
-if ( "" -eq $InputFolder  ) {
-    write-host "Input folder not specified."
-    Usage $myInvocation.InvocationName
+    Write-Host "Usage: $($myInvocation.InvocationName) -InputFolder <PathToReactNativeProject>"`n
+    Write-Host CopyXFProj.ps1 is invoked to do the copy`n
     exit 1
 }
 
-If ( -not (Test-Path -path $InputFolder -PathType Container)) {
-    If (Test-Path -path $InputFolder) {
-      Write-Host "InputFolder parameter specified: '$InputFolder' is not a directory. Aborting!"
-    } Else {
-      Write-Host "InputFolder parameter specified: '$InputFolder' does not exist. Aborting!"
-    }
-    Usage $myInvocation.InvocationName
-    exit 1
-}
-
-$Cmd = "CopyWoXF '$InputFolder' `"node_modules android ios .expo .gradle`""
-Write-Host "Invoking $Cmd"
-Invoke-Expression $Cmd
+& CopyXFProj.ps1 -InputFolder $InputFolder -ProjectType ReactNative

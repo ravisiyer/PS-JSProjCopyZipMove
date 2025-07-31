@@ -1,33 +1,14 @@
-# Copy all source files and folders of an Android project
-param ($InputFolder="")
-function Usage {
-    param ($cmdName)
-    Write-Host "Copy all source files and folders of an Android project."`n
-    Write-Host Usage: $cmdName InputFolder`n
-    Write-Host CopyWoXF.ps1 is invoked to do the copy`n
-}
-  
-if ($InputFolder -eq "/?") { 
-    Usage $myInvocation.InvocationName
-    exit 0
-}
-  
-if ( "" -eq $InputFolder  ) {
-    write-host "Input folder not specified."
-    Usage $myInvocation.InvocationName
+# Wrapper script to invoke CopyXFProj.ps1 for an Android project
+
+param (
+    [string]$InputFolder = ""
+)
+
+if ("" -eq $InputFolder -or $InputFolder -eq "/?") {
+    Write-Host "Copy all source files and folders of an Android project.`n"
+    Write-Host "Usage: $($myInvocation.InvocationName) -InputFolder <PathToAndroidProject>`n"
+    Write-Host "CopyXFProj.ps1 is invoked to do the copy.`n"
     exit 1
 }
 
-If ( -not (Test-Path -path $InputFolder -PathType Container)) {
-    If (Test-Path -path $InputFolder) {
-      Write-Host "InputFolder parameter specified: '$InputFolder' is not a directory. Aborting!"
-    } Else {
-      Write-Host "InputFolder parameter specified: '$InputFolder' does not exist. Aborting!"
-    }
-    Usage $myInvocation.InvocationName
-    exit 1
-}
-
-$Cmd = "CopyWoXF '$InputFolder' `"build release .gradle .idea`""
-Write-Host "Invoking $Cmd"
-Invoke-Expression $Cmd
+& CopyXFProj.ps1 -InputFolder $InputFolder -ProjectType Android
