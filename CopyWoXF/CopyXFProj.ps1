@@ -1,7 +1,10 @@
 # Copy all source files and folders of a project
 param (
     [string]$InputFolder = "",
-    [string]$ProjectType
+    [string]$ProjectType,
+    [string]$MaxAge="",
+    [string]$OutputFolder="",
+    [string]$LogFile=""
 )
 
 . "$PSScriptRoot\ProjectTypeExcludes.ps1"
@@ -13,7 +16,7 @@ if (-not $ProjectType) {
 function Usage {
     param ($cmdName)
     Write-Host "Copy all source files and folders of a project."`n
-    Write-Host "Usage: $cmdName InputFolder ProjectType"
+    Write-Host "Usage: $cmdName InputFolder ProjectType MaxAge OutputFolder LogFile"
     Write-Host ("ProjectType: {0}" -f ($validTypes -join ", "))
     Write-Host ("If ProjectType is not specified, default is: {0}`n" -f $DefaultProjectType)
     Write-Host "CopyWoXF.ps1 is invoked to do the copy"`n
@@ -49,6 +52,6 @@ if ($ProjectType -notin $validTypes) {
 
 $exclude = $ProjectTypeExcludes[$ProjectType]
 
-$Cmd = "CopyWoXF '$InputFolder' `"$exclude`""
+$Cmd = "CopyWoXF -InputFolder '$InputFolder' -ExcludeFolders `"$exclude`" -MaxAge '$MaxAge' -OutputFolder '$OutputFolder' -LogFile '$LogFile'"
 Write-Host "Invoking $Cmd"
 Invoke-Expression $Cmd
