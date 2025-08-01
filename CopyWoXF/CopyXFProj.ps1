@@ -21,7 +21,7 @@ if (-not $ProjectType) {
 
 function Usage {
     param ($cmdName)
-    Write-Host "Copy all source files and folders of a project."`n
+    Write-Host "Copy all source files and folders of a project based on its project type."`n
     Write-Host "Usage: $cmdName InputFolder ProjectType MaxAge OutputFolder LogFile"
     Write-Host ("ProjectType: {0}" -f ($validTypes -join ", "))
     Write-Host ("If ProjectType is not specified, default is: {0}`n" -f $DefaultProjectType)

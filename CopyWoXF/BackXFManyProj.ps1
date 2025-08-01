@@ -6,6 +6,7 @@ param (
 )
 
 function Show-Usage {
+    Write-Host "Copy all source files and folders of many project folders based on each of its project types, using CopyXFProj.ps1."`n
     Write-Host "Usage: `n`n`t$($myInvocation.InvocationName) -InputFolder <path> -OutputFolder <path> -ProjectDirsAndTypes <hashtable> 
     [-LogFile <path>]" -f Yellow
     Write-Host "-InputFolder <path>                : The source folder containing the projects. (Mandatory)"

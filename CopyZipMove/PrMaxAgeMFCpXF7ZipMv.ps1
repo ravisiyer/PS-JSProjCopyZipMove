@@ -14,6 +14,8 @@ if (Test-Path -Path "$PSScriptRoot\ProjectTypeExcludes.ps1") {
 $ExcludeNoneFlag="ExcludeNone"
 
 function Show-Usage {
+    Write-Host This script is a wrapper around CpXFZipMv script tailored for backup copy with MaxAge using 7zip.
+    Write-Host User is prompted for MaxAge. Multiple folders can be copied, each with exclude folders based on its project type.`n
     Write-Host "Usage: `n`n`t$($myInvocation.InvocationName) -InputFolder <path> -ProjectDirsAndTypes <hashtable>" -f Yellow
     Write-Host "-InputFolder <path>                : The source folder containing the projects. (Mandatory)"
     Write-Host "-ProjectDirsAndTypes <hashtable>   : A hashtable of directory names and their corresponding project types. (Mandatory)"
