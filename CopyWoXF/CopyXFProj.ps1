@@ -7,7 +7,13 @@ param (
     [string]$LogFile=""
 )
 
-. "$PSScriptRoot\ProjectTypeExcludes.ps1"
+# During deployment to user's cmds directory, ProjectTypeExcludes.ps1 will be in same directory as this script.
+# During development, it will be in the parent directory.
+if (Test-Path -Path "$PSScriptRoot\ProjectTypeExcludes.ps1") {
+    . "$PSScriptRoot\ProjectTypeExcludes.ps1"
+} else {
+    . "$PSScriptRoot\..\ProjectTypeExcludes.ps1"
+}
 
 if (-not $ProjectType) {
     $ProjectType = $DefaultProjectType

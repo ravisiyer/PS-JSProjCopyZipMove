@@ -3,13 +3,19 @@ param (
     [hashtable]$ProjectDirsAndTypes
 )
 
-. "$PSScriptRoot\ProjectTypeExcludes.ps1"
+# During deployment to user's cmds directory, ProjectTypeExcludes.ps1 will be in same directory as this script.
+# During development, it will be in the parent directory.
+if (Test-Path -Path "$PSScriptRoot\ProjectTypeExcludes.ps1") {
+    . "$PSScriptRoot\ProjectTypeExcludes.ps1"
+} else {
+    . "$PSScriptRoot\..\ProjectTypeExcludes.ps1"
+}
+
 $ExcludeNoneFlag="ExcludeNone"
 
 function Show-Usage {
     Write-Host "Usage: `n`n`t$($myInvocation.InvocationName) -InputFolder <path> -ProjectDirsAndTypes <hashtable>" -f Yellow
     Write-Host "-InputFolder <path>                : The source folder containing the projects. (Mandatory)"
-    Write-Host "-ProjectDirsAndTypes <hashtable>   : A hashtable of directory names and their corresponding project types. (Mandatory)"
     Write-Host "-ProjectDirsAndTypes <hashtable>   : A hashtable of directory names and their corresponding project types. (Mandatory)"
     Write-Host Special value of $ExcludeNoneFlag can be passed as ProjectType to not use exclude option at all [include all in copy]
     Write-Host "`nExamples:"
