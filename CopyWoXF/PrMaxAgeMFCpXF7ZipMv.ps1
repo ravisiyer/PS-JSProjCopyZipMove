@@ -4,11 +4,14 @@ param (
 )
 
 . "$PSScriptRoot\ProjectTypeExcludes.ps1"
+$ExcludeNoneFlag="ExcludeNone"
 
 function Show-Usage {
     Write-Host "Usage: `n`n`t$($myInvocation.InvocationName) -InputFolder <path> -ProjectDirsAndTypes <hashtable>" -f Yellow
     Write-Host "-InputFolder <path>                : The source folder containing the projects. (Mandatory)"
     Write-Host "-ProjectDirsAndTypes <hashtable>   : A hashtable of directory names and their corresponding project types. (Mandatory)"
+    Write-Host "-ProjectDirsAndTypes <hashtable>   : A hashtable of directory names and their corresponding project types. (Mandatory)"
+    Write-Host Special value of $ExcludeNoneFlag can be passed as ProjectType to not use exclude option at all [include all in copy]
     Write-Host "`nExamples:"
     Write-Host "`nExample 1: Basic usage with a single project type:"
     Write-Host "$($myInvocation.InvocationName) -InputFolder 'C:\Users\xyz-user\CurrProj' -ProjectDirsAndTypes @{'ReactNative'='ReactNative'}"
@@ -35,12 +38,15 @@ foreach ($ProjDir in $ProjectDirsAndTypes.GetEnumerator()) {
     $ProjTypeInputFolder = Join-Path -Path $InputFolder -ChildPath $DirName
 
     # Validate ProjectType
-    if ($ProjectType -notin $validTypes) {
+    if ($ProjectType -eq $ExcludeNoneFlag) {
+        $ExcludeFolders = $ProjectType
+    } elseif ($ProjectType -notin $validTypes) {
         Write-Host "Invalid ProjectType specified: '$ProjectType' for Directory '$DirName'"
         Write-Host "Skipping this directory."
         continue
+    } else {
+        $ExcludeFolders = $ProjectTypeExcludes[$ProjectType]
     }
-    $ExcludeFolders = $ProjectTypeExcludes[$ProjectType]
 
     If (Test-Path -Path $ProjTypeInputFolder -PathType Container) {
         Write-Host "CpXFZipMv '$ProjTypeInputFolder' $MaxAge Y Y '$ExcludeFolders'"
