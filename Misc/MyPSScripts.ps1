@@ -7,7 +7,7 @@ Write-Output "CopyXFProj: Copy all source files and folders of a project of vari
 Write-Output "CopyXFRNProj: Copy all source files and folders of a React Native (web and mobile) project."
 Write-Output "CopyXFAndroidProj: Copy all source files and folders of an Android project."
 Write-Output "CopyXFDotNetProj: Copy all source files and folders of a DotNet project."
-Write-Output "BackXFManyProj.ps1: Copy all source files and folders of many projects of various project types, using CopyXFProj.ps1."
+Write-Output "BackXFManyProj: Copy all source files and folders of many projects of various project types, using CopyXFProj."
 Write-Output "CopyMaxAgeWoXF: Copy contents of a folder based on maxage excluding specified/default folders."
 Write-Output "CopyMaxAgeAll: Copies all contents of a folder/directory based on maxage. No folders are excluded."
 Write-Output "CopyAll: Copy all files and folders. No folders are excluded."
