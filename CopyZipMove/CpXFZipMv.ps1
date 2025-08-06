@@ -87,6 +87,12 @@ if ($LASTEXITCODE -ne 0) {
   exit 1
 }
 
+If (-not (Test-Path -path $OutputFolder)) {
+  Write-Host "Output folder/directory: '$OutputFolder' does not exist though CopyWoXF script returned with success." 
+  Write-Host "Perhaps there are no files to be copied. Exiting script: $($myInvocation.InvocationName) with 0 return code."
+  exit 0
+} 
+
 $Cmd ="ZipFldrWDtTm '$OutputFolder' $Use7zip N"
 Write-Host `n"Executing: $Cmd"
 Invoke-Expression $Cmd

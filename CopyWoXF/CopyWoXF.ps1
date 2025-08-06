@@ -120,6 +120,18 @@ if ($LASTEXITCODE -ge 8) {
   exit 1
 }
 
+if ($LASTEXITCODE -eq 0) {
+  Write-Host "Above robocopy command gave exit code: 0, which means no files were listed." `n
+  $Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
+  $Choice = $host.UI.PromptForChoice("", "Skip copy step?", $Choices, 0)
+  if (0 -eq $Choice)
+  {
+    Write-Host "Skipping copy and returning with 0 exit code!"
+    exit 0
+  }
+}
+
+
 $Cmd = $Cmd + $LogOption
 Write-Host "Actual copy command to be executed", `n
 Write-Host $Cmd, `n
