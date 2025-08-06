@@ -37,8 +37,8 @@ if ($Path -eq "/?") {
 }
 
 $Cmd = "ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | " +
-  "Select-Object -first $TopFewCount | ForEach-Object {Write-Host `$_.LastWriteTime `$_.FullName}"
+       "Select-Object -first $TopFewCount | ForEach-Object {Write-Host `"`$(`$_.LastWriteTime), UTC:`$(`$_.LastWriteTimeUtc) `$(`$_.FullName)`"}"
 Write-Host "Executing command: $Cmd"
 
 ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | `
-  Select-Object -first $TopFewCount | ForEach-Object {Write-Host $_.LastWriteTime $_.FullName}
+  Select-Object -first $TopFewCount | ForEach-Object {Write-Host "$($_.LastWriteTime), UTC:$($_.LastWriteTimeUtc) $($_.FullName)"}
