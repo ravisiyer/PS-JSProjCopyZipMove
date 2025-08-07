@@ -17,17 +17,18 @@
 # no folders are excluded (all are included)
 # script-name test ExcludeNone
 #
-param ($Path = $pwd, $TopFewCount=10, $ExcludeFolders="")
+param ($Path = $pwd, $TopFewCount=10, $ExcludeFolders="", $UTC="")
 
 function Usage {
   param ($CmdName)
   Write-Host "List few last modified files and folders excluding specified/default folders."`n
-  Write-Host Usage: $CmdName [Path TopFewCount ExcludeFolders]`n
+  Write-Host Usage: $CmdName [Path TopFewCount ExcludeFolders UTC]`n
   Write-Host This script relies on ListItemWoXF.ps1 to do the work.
   Write-Host Path specifies the input folder which if not specified has default value of . [current directory]
   Write-Host TopFewCount is the number of top few items shown. Default value is 10
   Write-Host ExcludeFolders is passed as given to ListItemWoXF.ps1
   Write-Host If ExcludeFolders is omitted`, default value of `"`" is passed to ListItemWoXF.ps1
+  Write-Host If UTC is Y or y then time is additionally shown in UTC. Default value is empty string and so UTC time is not shown.
   Write-Host /? passed as first parameter shows this help message.
 }
 
@@ -36,9 +37,25 @@ if ($Path -eq "/?") {
   exit 0
 }
 
-$Cmd = "ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | " +
-       "Select-Object -first $TopFewCount | ForEach-Object {Write-Host `"`$(`$_.LastWriteTime), UTC:`$(`$_.LastWriteTimeUtc) `$(`$_.FullName)`"}"
-Write-Host "Executing command: $Cmd"
+if ($UTC -eq "y" -or $UTC -eq "Y") {
+  $Cmd = "ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | " +
+        "Select-Object -first $TopFewCount | ForEach-Object {Write-Host `"`$(`$_.LastWriteTime), UTC:`$(`$_.LastWriteTimeUtc) `$(`$_.FullName)`"}"
+  Write-Host "Executing command: $Cmd"
 
-ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | `
-  Select-Object -first $TopFewCount | ForEach-Object {Write-Host "$($_.LastWriteTime), UTC:$($_.LastWriteTimeUtc) $($_.FullName)"}
+  ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | `
+    Select-Object -first $TopFewCount | ForEach-Object {Write-Host "$($_.LastWriteTime), UTC:$($_.LastWriteTimeUtc) $($_.FullName)"}
+} else {
+  $Cmd = "ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | " +
+        "Select-Object -first $TopFewCount | ForEach-Object {Write-Host `"`$(`$_.LastWriteTime) `$(`$_.FullName)`"}"
+  Write-Host "Executing command: $Cmd"
+
+  ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | `
+    Select-Object -first $TopFewCount | ForEach-Object {Write-Host "$($_.LastWriteTime) $($_.FullName)"}
+} 
+
+# $Cmd = "ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | " +
+#        "Select-Object -first $TopFewCount | ForEach-Object {Write-Host `"`$(`$_.LastWriteTime), UTC:`$(`$_.LastWriteTimeUtc) `$(`$_.FullName)`"}"
+# Write-Host "Executing command: $Cmd"
+
+# ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | `
+#   Select-Object -first $TopFewCount | ForEach-Object {Write-Host "$($_.LastWriteTime), UTC:$($_.LastWriteTimeUtc) $($_.FullName)"}
