@@ -37,25 +37,37 @@ if ($Path -eq "/?") {
   exit 0
 }
 
-if ($UTC -eq "y" -or $UTC -eq "Y") {
-  $Cmd = "ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | " +
-        "Select-Object -first $TopFewCount | ForEach-Object {Write-Host `"`$(`$_.LastWriteTime), UTC:`$(`$_.LastWriteTimeUtc) `$(`$_.FullName)`"}"
-  Write-Host "Executing command: $Cmd"
+# Define the base command without the final output formatting
+$baseCommand = "ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | Select-Object -first $TopFewCount"
 
-  ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | `
-    Select-Object -first $TopFewCount | ForEach-Object {Write-Host "$($_.LastWriteTime), UTC:$($_.LastWriteTimeUtc) $($_.FullName)"}
+# Define the output format string based on the UTC flag
+if ($UTC -eq "y") { # -eq is case-insensitive
+    $outputFormat = 'Write-Host "$($_.LastWriteTime), UTC:$($_.LastWriteTimeUtc) $($_.FullName)"'
 } else {
-  $Cmd = "ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | " +
-        "Select-Object -first $TopFewCount | ForEach-Object {Write-Host `"`$(`$_.LastWriteTime) `$(`$_.FullName)`"}"
-  Write-Host "Executing command: $Cmd"
+    $outputFormat = 'Write-Host "$($_.LastWriteTime) $($_.FullName)"'
+}
 
-  ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | `
-    Select-Object -first $TopFewCount | ForEach-Object {Write-Host "$($_.LastWriteTime) $($_.FullName)"}
-} 
+# Combine the base command and the output format string
+$Cmd = "$baseCommand | ForEach-Object {$outputFormat}"
 
-# $Cmd = "ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | " +
-#        "Select-Object -first $TopFewCount | ForEach-Object {Write-Host `"`$(`$_.LastWriteTime), UTC:`$(`$_.LastWriteTimeUtc) `$(`$_.FullName)`"}"
-# Write-Host "Executing command: $Cmd"
+# Display the final command to the user
+Write-Host "Executing command: $Cmd"
 
-# ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | `
-#   Select-Object -first $TopFewCount | ForEach-Object {Write-Host "$($_.LastWriteTime), UTC:$($_.LastWriteTimeUtc) $($_.FullName)"}
+# Execute the final command
+Invoke-Expression -Command $Cmd
+
+# if ($UTC -eq "y" -or $UTC -eq "Y") {
+#   $Cmd = "ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | " +
+#         "Select-Object -first $TopFewCount | ForEach-Object {Write-Host `"`$(`$_.LastWriteTime), UTC:`$(`$_.LastWriteTimeUtc) `$(`$_.FullName)`"}"
+#   Write-Host "Executing command: $Cmd"
+
+#   ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | `
+#     Select-Object -first $TopFewCount | ForEach-Object {Write-Host "$($_.LastWriteTime), UTC:$($_.LastWriteTimeUtc) $($_.FullName)"}
+# } else {
+#   $Cmd = "ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | " +
+#         "Select-Object -first $TopFewCount | ForEach-Object {Write-Host `"`$(`$_.LastWriteTime) `$(`$_.FullName)`"}"
+#   Write-Host "Executing command: $Cmd"
+
+#   ListItemWoXF.ps1 $Path $ExcludeFolders | Sort-Object -Descending -Property LastWriteTime | `
+#     Select-Object -first $TopFewCount | ForEach-Object {Write-Host "$($_.LastWriteTime) $($_.FullName)"}
+# } 
