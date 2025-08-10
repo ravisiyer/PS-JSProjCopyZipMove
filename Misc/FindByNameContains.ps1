@@ -13,8 +13,8 @@ function Show-Usage {
     Write-Host "Script Usage:"
     Write-Host "  $cmdName -Path <path-to-search> -SearchString <string-to-search>"
     Write-Host " "
-    Write-Host "The script searches for files and folders whose name"
-    Write-Host "contains the given SearchString."
+    Write-Host "The script lists files and folders whose name contains given SearchString, " + 
+    "in last modified order."
     Write-Host " "
     Write-Host "Example:"
     Write-Host "  $cmdName -Path 'C:\Users\MyName\Documents' -SearchString 'Backup-Info'"
@@ -44,10 +44,24 @@ Write-Host "Searching for items (files or folders) whose name contains '$SearchS
 # 3. Sort-Object sorts the filtered items by their LastWriteTime property in descending order (latest first).
 # 4. Format-Table displays the results in a clean table format, including the number of days since the last write.
 try {
+    # We create a new calculated property called 'RelativePath'
+    # The Expression removes the base path from the FullName to give us the relative path
+    $basePath = (Get-Item $Path).FullName
     Get-ChildItem -Path $Path -Recurse |
     Where-Object { $_.Name -like "*$SearchString*" } |
     Sort-Object -Property LastWriteTime -Descending |
-    Format-Table FullName, LastWriteTime, Length, @{
+    Format-Table @{
+        Name='RelativePath'
+        Expression={
+            if ($_.FullName -eq $basePath) {
+                # Handle the case where the starting path itself matches
+                "."
+            } else {
+                # Get the part of the string after the base path and trailing backslash
+                $_.FullName.Substring($basePath.Length + 1)
+            }
+        }
+    }, LastWriteTime, Length, @{
         Name='DaysSinceLastWrite'
         Expression={(New-TimeSpan -Start $_.LastWriteTime -End (Get-Date)).Days}
     }
