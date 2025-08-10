@@ -13,8 +13,8 @@ function Show-Usage {
     Write-Host "Script Usage:"
     Write-Host "  $cmdName -Path <path-to-search> -SearchString <string-to-search>"
     Write-Host " "
-    Write-Host "The script lists files and folders whose name contains given SearchString, " + 
-    "in last modified order."
+    Write-Host ("The script lists files and folders whose name contains given SearchString, " + 
+    "in last modified order.")
     Write-Host " "
     Write-Host "Example:"
     Write-Host "  $cmdName -Path 'C:\Users\MyName\Documents' -SearchString 'Backup-Info'"
@@ -36,7 +36,17 @@ if ([string]::IsNullOrEmpty($SearchString)) {
     exit 1
 }
 
-Write-Host "Searching for items (files or folders) whose name contains '$SearchString' in path '$Path'..."
+# --- Path Validation ---
+# We'll check if the path exists before attempting to get items from it.
+if (-not (Test-Path $Path)) {
+    Write-Error "The specified path does not exist: $Path"
+    exit 1
+}
+
+# Normalize the path for consistent display and calculations
+$normalizedPath = (Get-Item $Path).FullName
+
+Write-Host "Searching for items (files or folders) whose name contains '$SearchString' in path '$normalizedPath'..."
 
 # The core logic of the script:
 # 1. Get-ChildItem with -Recurse finds all files and folders in the specified path and subdirectories.
@@ -47,6 +57,11 @@ try {
     # We create a new calculated property called 'RelativePath'
     # The Expression removes the base path from the FullName to give us the relative path
     $basePath = (Get-Item $Path).FullName
+    $basePathWithSeparator = $basePath
+    if ($basePathWithSeparator[-1] -ne '\') {
+        $basePathWithSeparator += '\'
+    }
+
     Get-ChildItem -Path $Path -Recurse |
     Where-Object { $_.Name -like "*$SearchString*" } |
     Sort-Object -Property LastWriteTime -Descending |
@@ -58,7 +73,7 @@ try {
                 "."
             } else {
                 # Get the part of the string after the base path and trailing backslash
-                $_.FullName.Substring($basePath.Length + 1)
+                $_.FullName.Replace($basePathWithSeparator, '')
             }
         }
     }, LastWriteTime, Length, @{
