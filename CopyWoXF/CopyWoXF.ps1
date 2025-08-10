@@ -115,13 +115,36 @@ if (1 -eq $Choice)
 }
 
 Invoke-Expression $ListCmd
-if ($LASTEXITCODE -ge 8) {
-  Write-Error "Above robocopy command failed with exit code: $LastExitCode." `n
+# Exit codes of robocopy are somewhat complicated. See my post: Robocopy: Full and Incremental Backup Strategy - Gemini chat,
+# https://raviswdev.blogspot.com/2025/08/robocopy-full-and-incremental-backup.html
+#
+# Exit code 0 to 3 is success for my use case.
+# Within that exit code 0 and 2 are for No files were copied but no failure was met.
+# And exit code 1 and 3 are for Some/all files were copied and no failure was met.
+#
+
+if ($LASTEXITCODE -ge 4) {
+  $ErrorMessage = "Above robocopy command failed with exit code: $LastExitCode.`n" +
+    "Note that this script views exit code 4 to 7 as an error as some files/directories are not copied due to mismatch."
+  Write-Error $ErrorMessage
   exit 1
 }
 
-if ($LASTEXITCODE -eq 0) {
-  Write-Host "Above robocopy command gave exit code: 0, which means no files were listed." `n
+# Return codes for 'No files were copied' but no failure was met, are: 0 and 2.
+if ($LASTEXITCODE -eq 0 -or $LASTEXITCODE -eq 2) {
+  Write-Host "Above robocopy command gave exit code: $LASTEXITCODE, which means:"
+  switch ($LASTEXITCODE) {
+    0 { 
+      Write-Host "Success - No files were copied as all files were already present."
+    }
+    2 { 
+      Write-Host "Success - No files were copied. Some extra files or directories were found in the destination."
+    }
+    Default {
+      Write-Host "An unexpected exit code for this code block."
+    }
+  }
+
   $Choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
   $Choice = $host.UI.PromptForChoice("", "Skip copy step?", $Choices, 0)
   if (0 -eq $Choice)
@@ -130,7 +153,6 @@ if ($LASTEXITCODE -eq 0) {
     exit 0
   }
 }
-
 
 $Cmd = $Cmd + $LogOption
 Write-Host "Actual copy command to be executed", `n
@@ -146,8 +168,10 @@ if (1 -eq $Choice)
 }
 
 Invoke-Expression $Cmd
-if ($LASTEXITCODE -ge 8) {
-  Write-Error "Above robocopy command failed with exit code: $LastExitCode." `n
+if ($LASTEXITCODE -ge 4) {
+  $ErrorMessage = "Above robocopy command failed with exit code: $LastExitCode.`n" +
+    "Note that this script views exit code 4 to 7 as an error as some files/directories are not copied due to mismatch."
+  Write-Error $ErrorMessage
   exit 1
 }
 exit 0
