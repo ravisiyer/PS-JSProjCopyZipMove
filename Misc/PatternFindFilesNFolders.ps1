@@ -38,12 +38,15 @@ Write-Host "Searching for files containing '$SearchString'..."
 # 1. Get-ChildItem with -Recurse finds all files in the current directory and subdirectories.
 # 2. Where-Object filters the output to only include items where the FullName (the full path) contains the search string.
 # 3. Sort-Object sorts the filtered files by their LastWriteTime property in descending order (latest first).
-# 4. Format-Table displays the results in a clean table format.
+# 4. Format-Table displays the results in a clean table format, including the number of days since the last write.
 try {
     Get-ChildItem -Recurse |
     Where-Object { $_.FullName -like "*$SearchString*" } |
     Sort-Object -Property LastWriteTime -Descending |
-    Format-Table FullName, LastWriteTime, Length
+    Format-Table FullName, LastWriteTime, Length, @{
+        Name='DaysSinceLastWrite'
+        Expression={(New-TimeSpan -Start $_.LastWriteTime -End (Get-Date)).Days}
+    }
 }
 catch {
     Write-Error "An error occurred while running the script: $_"
