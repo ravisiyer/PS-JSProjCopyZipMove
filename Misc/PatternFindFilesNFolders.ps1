@@ -1,7 +1,8 @@
-# This script searches for files containing a specific string
+# This script searches for files and folders whose name contains a specific string
 # and sorts the results by the latest modification date.
 
 param (
+    [string]$Path = ".",
     [string]$SearchString = ""
 )
 
@@ -10,17 +11,20 @@ function Show-Usage {
     param ($cmdName)
     Write-Host "--------------------"
     Write-Host "Script Usage:"
-    Write-Host "  $cmdName <string-to-search>"
+    Write-Host "  $cmdName -Path <path-to-search> -SearchString <string-to-search>"
+    Write-Host " "
+    Write-Host "The script searches for files and folders whose name"
+    Write-Host "contains the given SearchString."
     Write-Host " "
     Write-Host "Example:"
-    Write-Host "  $cmdName 'Backup-Info'"
+    Write-Host "  $cmdName -Path 'C:\Users\MyName\Documents' -SearchString 'Backup-Info'"
     Write-Host " "
     Write-Host "To show this help text, use: $cmdName /?"
     Write-Host "--------------------"
 }
 
 # Check if the user passed the '/?' parameter to show usage.
-if ($SearchString -eq "/?") {
+if ($Path -eq "/?") {
     Show-Usage $myInvocation.InvocationName
     exit 0
 }
@@ -32,16 +36,16 @@ if ([string]::IsNullOrEmpty($SearchString)) {
     exit 1
 }
 
-Write-Host "Searching for files containing '$SearchString'..."
+Write-Host "Searching for items (files or folders) whose name contains '$SearchString' in path '$Path'..."
 
 # The core logic of the script:
-# 1. Get-ChildItem with -Recurse finds all files in the current directory and subdirectories.
-# 2. Where-Object filters the output to only include items where the FullName (the full path) contains the search string.
-# 3. Sort-Object sorts the filtered files by their LastWriteTime property in descending order (latest first).
+# 1. Get-ChildItem with -Recurse finds all files and folders in the specified path and subdirectories.
+# 2. Where-Object filters the output to only include items where the Name (the file or folder name) contains the search string.
+# 3. Sort-Object sorts the filtered items by their LastWriteTime property in descending order (latest first).
 # 4. Format-Table displays the results in a clean table format, including the number of days since the last write.
 try {
-    Get-ChildItem -Recurse |
-    Where-Object { $_.FullName -like "*$SearchString*" } |
+    Get-ChildItem -Path $Path -Recurse |
+    Where-Object { $_.Name -like "*$SearchString*" } |
     Sort-Object -Property LastWriteTime -Descending |
     Format-Table FullName, LastWriteTime, Length, @{
         Name='DaysSinceLastWrite'
@@ -51,4 +55,3 @@ try {
 catch {
     Write-Error "An error occurred while running the script: $_"
 }
-
