@@ -1,10 +1,10 @@
 # MoveFFByNameContains.ps1
 #
-# This script moves files and folders based on name patterns to a specified target folder.
+# This script moves files and folders based on partial name matches to a specified target folder.
 
 <#
 .SYNOPSIS
-    Moves files and folders matching specified name patterns to a target folder.
+    Moves files and folders matching specified partial name to a target folder.
 
 .DESCRIPTION
     This script automates the process of organizing files and folders by moving
@@ -55,7 +55,8 @@ function Show-Usage {
 }
 
 # Check for '/?' parameter to show usage
-if ($Usage -or ($FFNamePatternsToMove -eq $null) -or ($TargetFolder -eq $null)) {
+# if ($Usage -or ($FFNamePatternsToMove -eq $null) -or ($TargetFolder -eq $null)) {
+if ($Usage -or ($null -eq $FFNamePatternsToMove) -or ($null -eq $TargetFolder)) {    
     if ($args[0] -eq '/?') {
         Show-Usage
     } else {

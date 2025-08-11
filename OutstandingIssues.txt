@@ -1,0 +1,13 @@
+CopyZipMove\MoveFFByNameContains.ps1 :
+Not specifying the target folder is not resulting in error message:
+
+ravi-user> MoveFFByNameContains E:\FewDaysBkup\20250811  @('Others-XF', 'ReactNative-XF', 'DotNet-XF', 'Android-XF', 'Common-XF')
+
+Scanning for files and folders in 'E:\FewDaysBkup\20250811'...
+
+No files or folders found matching any of the specified patterns. Exiting.
+
+ravi-user>
+-----------
+
+As it is a minor issue, I am postponing resolving the issue to a later time when I am modifying this project's code.

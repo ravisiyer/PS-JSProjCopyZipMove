@@ -33,6 +33,7 @@ Write-Output "MoveToMDLWDtTm: Move folder or file to MayDeleteLater folder with 
 Write-Output "CpXFZipMv: CopyWoXF + ZipFldrWDtTm + Move OutputZipFile to BackupFolder + MoveToMDLWDtTm (for CopyWoXF OutputFolder)."
 Write-Output "CpZipMv: This script is a wrapper around CpXFZipMv script tailored for copy with ExcludeNone."
 Write-Output "PrMaxAgeMFCpXF7ZipMv: Wrapper around CpXFZipMv script tailored for backup copy of multiple folders with user prompt for MaxAge and using 7zip."
+Write-Output "MoveFFByNameContains: Moves files and folders matching specified partial name to a target folder."
 Write-Output ""
 
 Write-Output "Misc"
