@@ -30,7 +30,7 @@ If ( -not (Test-Path -path $DestinationFolder)) {
 	exit
 }
 
-MoveFFByNameContains $DestinationFolder  @('Others-XF', 'ReactNative-XF', 'DotNet-XF', 'Android-XF', 'Common-XF') `
+MoveByNameContains $DestinationFolder  @('Others-XF', 'ReactNative-XF', 'DotNet-XF', 'Android-XF', 'Common-XF') `
     $InputFolderLeaf
 
 pause

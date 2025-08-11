@@ -1,4 +1,4 @@
-# MoveFFByNameContains.ps1
+# MoveByNameContains.ps1
 #
 # This script moves files and folders based on partial name matches to a specified target folder.
 
@@ -28,17 +28,17 @@
     Example: 'CurrProj'
 
 .EXAMPLE
-    .\MoveFFByNameContains.ps1 -Path "C:\Projects" -FFNamePatternsToMove @('Backend', 'Frontend') -TargetFolder "Sorted"
+    .\MoveByNameContains.ps1 -Path "C:\Projects" -FFNamePatternsToMove @('Backend', 'Frontend') -TargetFolder "Sorted"
     Moves any files or folders containing 'Backend' or 'Frontend' from 'C:\Projects'
     to 'C:\Projects\Sorted', with confirmation prompts.
 
 .EXAMPLE
-    .\MoveFFByNameContains.ps1 -FFNamePatternsToMove @('Logs', 'Archives') -TargetFolder "Cleanup"
+    .\MoveByNameContains.ps1 -FFNamePatternsToMove @('Logs', 'Archives') -TargetFolder "Cleanup"
     Moves items with 'Logs' or 'Archives' in their name from the current directory
     to a folder named 'Cleanup' within the current directory.
 
 .EXAMPLE
-    .\MoveFFByNameContains.ps1 /?
+    .\MoveByNameContains.ps1 /?
     Displays detailed usage and parameter information for the script.
 #>
 param(

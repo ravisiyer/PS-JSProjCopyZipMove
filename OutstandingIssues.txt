@@ -1,4 +1,4 @@
-CopyZipMove\MoveFFByNameContains.ps1 :
+CopyZipMove\MoveByNameContains.ps1  (earlier name: MoveFFByNameContains.ps1):
 Not specifying the target folder is not resulting in error message:
 
 ravi-user> MoveFFByNameContains E:\FewDaysBkup\20250811  @('Others-XF', 'ReactNative-XF', 'DotNet-XF', 'Android-XF', 'Common-XF')
