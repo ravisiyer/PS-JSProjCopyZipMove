@@ -77,10 +77,10 @@ foreach ($pattern in $FFNamePatternsToMove) {
     $allFoundItems += $itemsToMove
 }
 
-# If no items are found, exit gracefully
+# If no items are found, print a message
 if ($allFoundItems.Count -eq 0) {
-    Write-Host "No files or folders found matching any of the specified patterns. Exiting." -ForegroundColor Yellow
-    exit
+    Write-Host "No files or folders found matching any of the specified patterns." -ForegroundColor Yellow
+    # exit
 }
 
 # Construct the full path to the target folder
