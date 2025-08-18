@@ -8,8 +8,9 @@ FindByNameContains $BackupTopLevelFolder 'RegXYData' | Out-String -Stream | Sele
 Write-Host "`nAbove list is the top 10 files or folders in last modified descending order (latest first)`n"
 # FindTopNByNameContains $BackupTopLevelFolder 'RegXYData'
 
-cd $InputFolder
+Push-Location $InputFolder
 PrMaxAgeMFCpXF7ZipMv.ps1 -InputFolder $InputFolder -ProjectDirsAndTypes @{ 'RegXYData'='ExcludeNone'}
+Pop-Location
 
 pause
 

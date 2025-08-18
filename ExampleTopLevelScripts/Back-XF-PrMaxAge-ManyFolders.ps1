@@ -12,7 +12,7 @@ Write-Host "`nAbove list is the top 10 files or folders in last modified descend
 
 # FindTopNByNameContains $BackupTopLevelFolder $InputFolderLeaf
 
-Set-Location $InputFolder
+Push-Location $InputFolder
 
 # ` (backtick) is used to continue the command on the next line
 # As per Gemini when the hashtable parameter is split across multiple lines, backtick is not needed
@@ -39,4 +39,5 @@ If ( -not (Test-Path -path $DestinationFolder)) {
 MoveByNameContains $DestinationFolder  @('Others-XF', 'ReactNative-XF', 'DotNet-XF', 'Android-XF', 'Common-XF') `
     $InputFolderLeaf
 
+Pop-Location    
 pause

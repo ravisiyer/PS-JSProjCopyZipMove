@@ -7,9 +7,9 @@ FindByNameContains $BackupTopLevelFolder 'Backup-Info' | Out-String -Stream | Se
 
 Write-Host "`nAbove list is the top 10 files or folders in last modified descending order (latest first)`n"
 
-cd $InputFolder
-
+Push-Location $InputFolder
 PrMaxAgeMFCpXF7ZipMv.ps1 -InputFolder $InputFolder -ProjectDirsAndTypes @{ 'Backup-Info'='ExcludeDirs: Logs'}
+Pop-Location
 
 pause
 
