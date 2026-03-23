@@ -8,3 +8,9 @@ Test Data?*/
 [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]-Test*/
 [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-Test*.zip
 [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]-Test*.zip
+
+aitool-temp*.*
+
+# Hierarchy Agnostic: Matches 'NotInGit' folders at any level in the project 
+# (pattern without leading slash matches recursively)
+NotInGit/

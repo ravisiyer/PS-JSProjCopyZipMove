@@ -1,0 +1,59 @@
+The contents below are the initial part and the final part of the console output of the automated test run of CopyWoXF\test_CopyXFProj.ps1 done on 23 March 2026.
+Large amount of output in between has been --snipped--.
+Further the user name part has been changed to xyzuser.
+The test was run with AutoTestData folder being the current directory.
+
+==================================
+
+AutoTestData> ..\CopyWoXF\test_CopyXFProj.ps1
+Invoking CopyWoXF -InputFolder 'C:\Users\xyzuser\CurrProj\Others\PS-JSProjCopyZipMove\CopyWoXF\TestRun\TestData\Input_ReactNative' -ExcludeFolders "node_modules android ios .gradle .expo .idea .vscode .agents .gemini .antigravity .cache .pnpm-store .turbo NIBS-RAVISIYER" -MaxAge '' -OutputFolder '' -LogFile ''
+MaxAge is not specified
+OutputFolder is: C:\Users\xyzuser\CurrProj\Others\PS-JSProjCopyZipMove\CopyWoXF\TestRun\TestData\Input_ReactNative-XF
+Log file not specified.
+Command (list only and not actual copy) to be executed [for readability of below output, single quotes ...
+ are added around folder names but these added single quotes are not passed to robocopy command]:
+
+robocopy 'C:\Users\xyzuser\CurrProj\Others\PS-JSProjCopyZipMove\CopyWoXF\TestRun\TestData\Input_ReactNative' 'C:\Users\xyzuser\CurrProj\Others\PS-JSProjCopyZipMove\CopyWoXF\TestRun\TestData\Input_ReactNative-XF' /E /XO /XX /TS  /NDL /XD node_modules android ios .gradle .expo .idea .vscode .agents .gemini .antigravity .cache .pnpm-store .turbo NIBS-RAVISIYER  /L
+
+Proceed?
+[Y] yes  [N] no  [?] Help (default is "N"): y
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy for Windows
+-------------------------------------------------------------------------------
+
+  Started : 23 March 2026 22:50:05
+   Source : C:\Users\xyzuser\CurrProj\Others\PS-JSProjCopyZipMove\CopyWoXF\TestRun\TestData\Input_ReactNative\
+     Dest : C:\Users\xyzuser\CurrProj\Others\PS-JSProjCopyZipMove\CopyWoXF\TestRun\TestData\Input_ReactNative-XF\
+
+    Files : *.*
+
+ Exc Dirs : node_modules
+            android
+            ios
+            .gradle
+            .expo
+            .idea
+            .vscode
+            .agents
+            .gemini
+            .antigravity
+            .cache
+            .pnpm-store
+            .turbo
+            NIBS-RAVISIYER
+
+  Options : *.* /TS /NDL /L /S /E /DCOPY:DA /COPY:DAT /XX /XO /R:1000000 /W:30
+
+--snipped--
+
+====================
+Test Summary:
+====================
+ReactNative:    Success
+Android:        Success
+DotNet: Success
+Others: Success
+
+Test run complete. Input and output folders are kept in: C:\Users\xyzuser\CurrProj\Others\PS-JSProjCopyZipMove\CopyWoXF\TestRun\TestData
+You may manually inspect or delete them as needed.

@@ -1,3 +1,9 @@
+23 Mar 2026: ProjectTypeExcludes.ps1 was updated today to have an improved exclude folders list.
+I did not change the test data of the automated test CopyWoXF/test_CopyXFProj.ps1 to include new folders added to exclude list like out and dist.
+I saw that the CopyWoXF robocopy prompts clearly showed that these folders have been correctly specified in the exclude list when appropriate. I think that is enough for now.
+
+--------------------
+Below entry seems to have been made or last updated in August 2025
 CopyZipMove\MoveByNameContains.ps1  (earlier name: MoveFFByNameContains.ps1):
 Not specifying the target folder is not resulting in error message:
 

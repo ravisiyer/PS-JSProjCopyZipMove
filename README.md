@@ -20,7 +20,7 @@ Initially the scripts were written primarily to help me do listing, copying, zip
 
 The scripts also help for other non-software-development-project folders and files too.
 
-Associated blog post: [Handling varying exclude folders for source code backup of MERN, React Native, Android and DotNet tech stacks](https://raviswdev.blogspot.com/2025/08/handling-varying-exclude-folders-for.html)
+The exclude folders for various project types part of the scripts was, IIRC, first enhanced in Aug. 2025. In Mar. 2026 I improved it. The documentation of this part is provided in my blog post: [Handling varying exclude folders for source code backup of MERN, React Native, Android and DotNet tech stacks](https://raviswdev.blogspot.com/2025/08/handling-varying-exclude-folders-for.html)
 
 Copy of MyPSScripts.ps1 console output (as of 2 Aug. 2025)
 ----------------------------------------------------------
