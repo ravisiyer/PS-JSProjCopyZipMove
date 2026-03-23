@@ -16,4 +16,9 @@ No files or folders found matching any of the specified patterns. Exiting.
 ravi-user>
 -----------
 
-As it is a minor issue, I am postponing resolving the issue to a later time when I am modifying this project's code.
+Update 23 Mar 2026:
+As per Gemini, the issue happens because the `[string]$TargetFolder` parameter defaults to an empty string `""` instead of `$null` when omitted, so the old check `($null -eq $TargetFolder)` evaluates to False and fails silently.
+To fix this, the condition needs to use `[string]::IsNullOrWhiteSpace($TargetFolder)`.
+
+A new file named `MoveByNameContains-BugFixAttempt.ps1` has been created containing this bug fix.
+However, due to infrequent use of the script, the investment of time to test the bug fix and integrate it into the main script has been postponed to a suitable time later on.
