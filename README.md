@@ -1,15 +1,29 @@
-Powershell scripts for listing, copying, zipping and moving MERN stack (Others) software development projects source code excluding folders like node_modules; Copying part expanded to React Native, Android, DotNet and Java projects
-===========
+# JS Tech Stack Source Code Copy, Zip, Move, List & Misc PowerShell Scripts
 
-*Disclaimer: These scripts are not perfect and surely have some bugs. But they currently are satisfying most of my key needs and work for my use cases. So I thought they may be useful to some others and hence I have shared them as a public repo. The scripts have a lot of repetitive code across them as Powershell is relatively new to me and I focused on quickly getting the task done, limiting my learning Powershell time to a minimum. At some later point, I hope to refactor the code to be modular and DRY (less repetition).*
+## Overview
+This project contains PowerShell scripts for listing, copying, zipping, and moving the source code of MERN stack software development projects, automatically excluding heavy dependency folders like `node_modules`. The copying capabilities were later expanded to support React Native, Android, DotNet, and Java projects. It also has some miscellaneous related scripts.
 
-The copy scripts use Robocopy and allow for exclusion of folders like node_modules. They initially use the list only feature of Robocopy to list out the files & folders that will be copied if the Robocopy command that does the actual copy is run and provide an option to abort. I find this list only preview of the copy to be quite useful and have aborted the actual copy command when I felt it is not required. Robocopy's incremental copy as well as MaxAge parameter features are also provided. Some of the list scripts exclude folders like node_modules and even .git. Listing only files & folders of MaxAge and top few last modified options are also provided.  
+*Disclaimer: While these scripts were initially built rapidly to solve immediate workflow needs (and thus contain some repetitive code), in March 2026 they have undergone a comprehensive review and documentation process by myself with the assistance of Gemini AI. Known technical debt, minor bugs, and refactoring targets have been formally logged in the respective sub-folder documentation. They successfully satisfy my daily backup and file management needs, and I am sharing them as a public repo just in case they may be useful to others.*
+
+The copy scripts use Robocopy and allow for exclusion of folders like node_modules. Robocopy's incremental copy as well as MaxAge parameter features are also provided. 
+
+The copy scripts initially use the list only feature of Robocopy to list out the files & folders that will be copied if the Robocopy command that does the actual copy is run and provide an option to abort. I find this list only preview of the copy followed by abort option, to be quite useful and, quite often, the list preview has shown me that I had to modify some files/folders before running the live copy command. In such cases, I have aborted the run, made the changes and then run the copy script again. 
+
+Some of the list scripts exclude folders like node_modules and even .git. Listing only files & folders of MaxAge and top few last modified options are also provided.  
 
 The zip scripts provide for using compress-archive (which does not include hidden folders like .git) or 7zip (which includes hidden folders like .git) and automatically prefix current date and time to output zip filename. The move scripts provide facility to move a folder or file to a backup folder or a MayDeleteLater folder (simple substitute to Recycle bin).  
 
 The combo scripts combine above copy, zip and move scripts.  
 
-The folder ExampleTopLevelScripts in the repo has simple examples of invoking some of the above scripts for particular folders and with hardcoded parameters. This enables them to be used easily on regular basis by simply running them without any parameters (File Explorer -> Right-Click on PS script -> Run with PowerShell) for needs like incremental backup (using robocopy) and MaxAge backup of specific folders (MaxAge is taken as input via prompt).
+## Repository Structure & Documentation
+
+This project is highly modular. Detailed documentation for each component can be found in the respective sub-folder `README.md` files:
+* **[CopyWoXF/README.md](CopyWoXF/README.md):** The core `robocopy` engine, smart technology-stack routers, and time-based incremental backup scripts.
+* **[CopyZipMove/README.md](CopyZipMove/README.md):** High-level orchestrator scripts that chain copy, zip, and move operations into complete, automated backup pipelines.
+* **[List/README.md](List/README.md):** A custom recursion engine for incredibly fast, filtered directory traversal and file discovery (bypassing heavy dependency folders).
+* **[Misc/README.md](Misc/README.md):** Standalone utility scripts for targeted searching, quick timestamped backups, and repository indexing.
+* **[ExampleTopLevelScripts/README.md](ExampleTopLevelScripts/README.md):** User-friendly, configurable right-click-and-run templates for batch processing multiple project directories at once.
+* **[AutoTestData/README.md](AutoTestData/README.md):** An automated, cryptographic test harness to verify the integrity of the core copy logic.
 
 I use the scripts on Windows 11.
  
@@ -18,9 +32,9 @@ later on in this file but it may be outdated. MyPSScripts.ps1 should have the up
 
 Initially the scripts were written primarily to help me do listing, copying, zipping and moving of mainly JavaScript software development projects (MERN stack including Next.js) source code folders and files. Later I expanded the copying scripts to handle ReactNative, Android (Android Studio as IDE, Prog. Lang. as Kotlin/Java), DotNet (VS2022 as IDE, Prog. Lang. as C#/VB.NET) and Java projects (IDEA as IDE). The zipping and moving scripts are independent of the project type. I did not explore upgrading the listing scripts to have specific code for ReactNative, Android, DotNet and Java projects barring a minor modification to one script. If I feel the need for the listing scripts to specifically handle ReactNative, Android, DotNet and Java projects, I will consider doing it.
 
-The scripts also help for other non-software-development-project folders and files too.
+The scripts help for other non-software-development-project folders and files too.
 
-The exclude folders for various project types part of the scripts was, IIRC, first enhanced in Aug. 2025. In Mar. 2026 I improved it. The documentation of this part is provided in my blog post: [Handling varying exclude folders for source code backup of MERN, React Native, Android and DotNet tech stacks](https://raviswdev.blogspot.com/2025/08/handling-varying-exclude-folders-for.html)
+The exclude folders for various project types part of the scripts was, IIRC, first enhanced in Aug. 2025. In Mar. 2026 I improved it. The documentation of this part is provided in my blog post: [Handling varying exclude folders for source code backup of MERN, React Native, Android and DotNet tech stacks](https://raviswdev.blogspot.com/2025/08/handling-varying-exclude-folders-for.html).
 
 Copy of MyPSScripts.ps1 console output (as of 2 Aug. 2025)
 ----------------------------------------------------------
@@ -69,3 +83,8 @@ PSScriptsListLastMod: Lists top few last modified .ps1 files contained in a fold
 CopyFileWDtTm: Copies a file to a new name with a timestamp suffix.  
 MyPSScripts: This command.  
 Note: PS aliases are set in PS profile location. Alias mya lists PS profile file showing my alias defintions.
+
+---
+
+**P.S. regarding AI Context Windows:**  
+You may notice a file named `Context-Window-Size-Impact.md` in this repository. This document was generated during my work on this project using Gemini Code Assist. It discusses how LLM context window sizes impact an AI's "memory" during software development sessions. While not directly related to the core PowerShell scripts here, I have retained it as a temporary document. I plan to eventually publish it as a post on my Blogger blog, at which point I will update the document with the live link.

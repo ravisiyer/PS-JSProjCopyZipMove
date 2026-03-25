@@ -16,7 +16,7 @@ When you use an AI chat, the backend does not remember your previous messages. I
 
 Because the AI can read the history in that package, it appears as though it "remembers" what you just did. This stateless architecture is the industry standard because it allows tech companies to scale horizontally—routing your prompt to any available server without needing to reserve massive, dedicated memory banks for every single active session.
 
-However, when there is a break—especially a long one where the session might time out, or if you close the window, or start a new chat thread—that historical package is wiped clean by the system to save memory and processing power. The next time you send a message, the AI starts completely fresh with a blank slate, only knowing exactly what is provided in that specific prompt and the files currently shared in its context.
+However, when there is a break—such as closing the application window or starting a new chat thread—the default behavior is often to start with a fresh, blank slate because the historical package of the *previous* session is no longer active. But this doesn't mean the context is lost forever. Modern client applications like the Gemini Code Assist extension in VS Code maintain a chat history. By manually selecting a previous chat session from this history, you are instructing the client to reload that entire conversation. When you send your next message, the client bundles it with the full history of that *restored* session, effectively allowing the AI to "remember" the context from a previous work session.
 
 ## What is a Context Window?
 
