@@ -40,57 +40,58 @@ This project is highly modular. Detailed documentation for each component can be
 
 ## MyPSScripts.ps1: Quick Overview Of The Main Scripts
  
-Run or view MyPSScripts.ps1 in Misc folder to get a quick overview of the main scripts. A copy of its output is given belowbut it may be outdated. MyPSScripts.ps1 should have the updated content.
+Run or view MyPSScripts.ps1 in Misc folder to get a quick overview of the main scripts. A copy of its output is given below but it may be outdated. MyPSScripts.ps1 should have the updated content.
 
-Copy of MyPSScripts.ps1 console output (as of 2 Aug. 2025)
+Copy of MyPSScripts.ps1 console output taken on 25 Mar. 2026
 ----------------------------------------------------------
-*Note: This copy has been manually modified and checked. So there could be some differences with the actual output of MyPSScripts.ps1 script.*
-
----
-
+```
 These are my active Powershell scripts in cmds folder which is part of PATH env. variable
 
-**Copy related - using Robocopy**
+Copy related - using Robocopy
+=============================
+CopyWoXF: Copy contents of a folder excluding specified/default folders (e.g. node_modules and .next folders).
+CopyXFProj: Copy all source files and folders of a project of various types (ReactNative, Android, DotNet, Others).
+CopyXFRNProj: Copy all source files and folders of a React Native (web and mobile) project.
+CopyXFAndroidProj: Copy all source files and folders of an Android project.
+CopyXFDotNetProj: Copy all source files and folders of a DotNet project.
+BackXFManyProj: Copy all source files and folders of many projects of various project types, using CopyXFProj.
+CopyMaxAgeWoXF: Copy contents of a folder based on maxage excluding specified/default folders.
+CopyMaxAgeAll: Copies all contents of a folder/directory based on maxage. No folders are excluded.
+CopyAll: Copy all files and folders. No folders are excluded.
 
-CopyWoXF: Copy contents of a folder excluding specified/default folders (e.g. node_modules and .next folders).  
-CopyXFProj: Copy all source files and folders of a project of various types (ReactNative, Android, DotNet, Others).  
-CopyXFRNProj: Copy all source files and folders of a React Native (web and mobile) project.  
-CopyXFAndroidProj: Copy all source files and folders of an Android project.  
-CopyXFDotNetProj: Copy all source files and folders of a DotNet project.  
-BackXFManyProj: Copy all source files and folders of many projects of various project types, using CopyXFProj.  
-CopyMaxAgeWoXF: Copy contents of a folder based on maxage excluding specified/default folders.  
-CopyMaxAgeAll: Copies all contents of a folder/directory based on maxage. No folders are excluded.  
-CopyAll: Copy all files and folders. No folders are excluded.  
+List related
+============
+ListItemWoXF: Output (list) files and folders items (objects) excluding specified/default folders.
+ListWoXF: List files and folders excluding specified/default folders.
+ListAll: List all files and folders. No folders are excluded.
+ListMaxAgeWoXF: List last modified in x days, files and folders OR only unique parent folder names, excluding specified/default folders.
+ListLastModWoXF: List few last modified files and folders excluding specified/default folders.
+FindFldrsWoXF: Find and list folders with names matching passed Find-Folders-List excluding specified/default folders.
 
-**List related**
+Copy, zip and move related
+==========================
+ZipFldrWDtTm: Zip folder or file with Date and Time prefix by default in output zip filename.
+ZipMv: Zip folder or file with Date and Time prefix by default in output zip filename + Move OutputZipFile to BackupFolder.
+7zipMv: This script is a wrapper around ZipMv script tailored for zip with Use7zip Y and UseTodaySubFolder Y.
+MoveToBack: Move InputFolderOrFile to BackupFolder.
+MoveToMDLWDtTm: Move folder or file to MayDeleteLater folder with Date and Time prefix by default.
+CpXFZipMv: CopyWoXF + ZipFldrWDtTm + Move OutputZipFile to BackupFolder + MoveToMDLWDtTm (for CopyWoXF OutputFolder).
+CpZipMv: This script is a wrapper around CpXFZipMv script tailored for copy with ExcludeNone.
+PrMaxAgeMFCpXF7ZipMv: Wrapper around CpXFZipMv script tailored for backup copy of multiple folders with user prompt for MaxAge and using 7zip.
+MoveByNameContains: Moves files and folders matching specified partial name to a target folder.
 
-ListItemWoXF: Output (list) files and folders items (objects) excluding specified/default folders.  
-ListWoXF: List files and folders excluding specified/default folders.  
-ListAll: List all files and folders. No folders are excluded.  
-ListMaxAgeWoXF: List last modified in x days, files and folders OR only unique parent folder names, excluding specified/default folders.  
-ListLastModWoXF: List few last modified files and folders excluding specified/default folders.  
-FindFldrsWoXF: Find and list folders with names matching passed Find-Folders-List excluding specified/default folders.  
-
-**Copy, zip and move related**
-
-ZipFldrWDtTm: Zip folder or file with Date and Time prefix by default in output zip filename.  
-ZipMv: Zip folder or file with Date and Time prefix by default in output zip filename + Move OutputZipFile to BackupFolder.  
-7zipMv: This script is a wrapper around ZipMv script tailored for zip with Use7zip Y and UseTodaySubFolder Y.  
-MoveToBack: Move InputFolderOrFile to BackupFolder.  
-MoveToMDLWDtTm: Move folder or file to MayDeleteLater folder with Date and Time prefix by default.  
-CpXFZipMv: CopyWoXF + ZipFldrWDtTm + Move OutputZipFile to BackupFolder + MoveToMDLWDtTm (for CopyWoXF OutputFolder).  
-CpZipMv: This script is a wrapper around CpXFZipMv script tailored for copy with ExcludeNone.  
-PrMaxAgeMFCpXF7ZipMv: Wrapper around CpXFZipMv script tailored for backup copy of multiple folders with user prompt for MaxAge and using 7zip.  
-
-**Misc**
-
-MakeFolderTodayName: Make (create) folder with today's date (yyyyMMdd) as name.  
-PSScriptsListLastMod: Lists top few last modified .ps1 files contained in a folder (including subfolders).  
-CopyFileWDtTm: Copies a file to a new name with a timestamp suffix.  
-MyPSScripts: This command.  
+Misc
+====
+MakeFolderTodayName: Make (create) folder with today's date (yyyyMMdd) as name.
+FindByNameContains: Lists files and folders whose name contains given SearchString, in last modified order.
+FindTopNByNameContains: Lists top N entries of files and folders whose name contains given SearchString, in last modified order.
+PSScriptsListLastMod: Lists top few last modified .ps1 files contained in a folder (including subfolders).
+CopyFileWDtTm: Copies a file to a new name with a timestamp suffix.
+MyPSScripts: This command.
 Note: PS aliases are set in PS profile location. Alias mya lists PS profile file showing my alias defintions.
+```
 
 ---
 
-**P.S. regarding AI Context Windows:**  
+**P.S. Regarding AI Context Windows:**  
 You may notice a file named `Context-Window-Size-Impact.md` in this repository. This document was generated during my work on this project using Gemini Code Assist. It discusses how LLM context window sizes impact an AI's "memory" during software development sessions. While not directly related to the core PowerShell scripts here, I have retained it in this project as it arose while I was working on this project. I plan to eventually publish it as a post on my Blogger blog, at which point I will update the document with the live post link and probably move the document to a suitable sub-folder.
