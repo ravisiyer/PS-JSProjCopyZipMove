@@ -26,8 +26,8 @@ A specialized tool for managing this repository. It recursively searches for `.p
 **`MakeFolderTodayName.ps1`**
 A daily workflow automation script. It creates a new directory named with the current date (`yyyyMMdd`) in a specified destination folder (defaulting to a backup drive). This is often used as a prerequisite step for bulk moving files into a daily backup archive.
 
-**`CopyFileWDtTm.ps1`**
-A robust, idiomatic PowerShell script that creates a quick, versioned backup of an individual file. It grabs the target file and safely copies it, appending a timestamp (e.g., `YYYYMMDD-HHMM`) right before the file extension. 
+**`CpRnFileWDtTm.ps1`**
+A robust, idiomatic PowerShell script that creates a quick, versioned backup of an individual file. It grabs the target file and, by default, safely copies it, appending a timestamp (e.g., `YYYYMMDD-HHMM`) right before the file extension. It also includes a `-Rename` switch to move the file instead of copying it.
 
 ### 3. Repository Index
 **`MyPSScripts.ps1`**
@@ -40,7 +40,6 @@ An interactive "cheat sheet" or table of contents. When executed, it prints a ca
 When time permits, the following minor bugs and refactoring opportunities have been identified for future updates:
 
 ### Bug Fixes / Minor Corrections
-* **`CopyFileWDtTm.ps1` Documentation:** In the comment-based help block at the top of the script, the `.EXAMPLE` section refers to the script incorrectly as `.\Copy-WithTimestamp.ps1`.
 * **String `.Replace()` Bug Risk (`FindByNameContains.ps1`):** When calculating the relative path, the script uses `$_.FullName.Replace($basePath, '')`. If the base path string coincidentally appears deeper inside the folder structure, `.Replace()` will corrupt the output string. A safer approach is `.Substring($basePath.Length)`.
 
 ### Refactoring Targets (DRY & Modernization)

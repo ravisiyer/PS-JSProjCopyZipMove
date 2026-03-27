@@ -42,7 +42,7 @@ Write-Output "MakeFolderTodayName: Make (create) folder with today's date (yyyyM
 Write-Output "FindByNameContains: Lists files and folders whose name contains given SearchString, in last modified order."
 Write-Output "FindTopNByNameContains: Lists top N entries of files and folders whose name contains given SearchString, in last modified order."
 Write-Output "PSScriptsListLastMod: Lists top few last modified .ps1 files contained in a folder (including subfolders)."
-Write-Output "CopyFileWDtTm: Copies a file to a new name with a timestamp suffix."
+Write-Output "CpRnFileWDtTm: Copies or renames a file to a new name with a timestamp suffix."
 Write-Output "MyPSScripts: This command."
 
 Write-Output "Note: PS aliases are set in PS profile location. Alias mya lists PS profile file showing my alias defintions."

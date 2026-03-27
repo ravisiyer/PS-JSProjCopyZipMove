@@ -42,7 +42,7 @@ This project is highly modular. Detailed documentation for each component can be
  
 Run or view MyPSScripts.ps1 in Misc folder to get a quick overview of the main scripts. A copy of its output is given below but it may be outdated. MyPSScripts.ps1 should have the updated content.
 
-Copy of MyPSScripts.ps1 console output taken on 25 Mar. 2026
+Copy of MyPSScripts.ps1 console output taken on 27 Mar. 2026
 ----------------------------------------------------------
 ```
 These are my active Powershell scripts in cmds folder which is part of PATH env. variable
@@ -86,7 +86,7 @@ MakeFolderTodayName: Make (create) folder with today's date (yyyyMMdd) as name.
 FindByNameContains: Lists files and folders whose name contains given SearchString, in last modified order.
 FindTopNByNameContains: Lists top N entries of files and folders whose name contains given SearchString, in last modified order.
 PSScriptsListLastMod: Lists top few last modified .ps1 files contained in a folder (including subfolders).
-CopyFileWDtTm: Copies a file to a new name with a timestamp suffix.
+CpRnFileWDtTm: Copies or renames a file to a new name with a timestamp suffix.
 MyPSScripts: This command.
 Note: PS aliases are set in PS profile location. Alias mya lists PS profile file showing my alias defintions.
 ```
