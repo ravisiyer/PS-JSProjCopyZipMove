@@ -1,7 +1,6 @@
 param (
     [string]$InputFolder,
-    [hashtable]$ProjectDirsAndTypes,
-    [string]$MaxAge = ""
+    [hashtable]$ProjectDirsAndTypes
 )
 
 # During deployment to user's cmds directory, ProjectTypeExcludes.ps1 will be in same directory as this script.
@@ -17,12 +16,11 @@ $ExcludeDirsFlag="ExcludeDirs:"
 
 function Show-Usage {
     param ($cmdName)
-    Write-Host "This script orchestrates the backup of multiple project folders using CpXFZipMv.ps1 and 7zip."
-    Write-Host "It interactively prompts for a MaxAge value (for incremental backups) or allows ignoring it to copy all matching files and folders.`n"
-    Write-Host "Usage: `n`n`t$cmdName -InputFolder <path> -ProjectDirsAndTypes <hashtable> [-MaxAge <string>]" -f Yellow
+    Write-Host This script is a wrapper around CpXFZipMv script tailored for backup copy with MaxAge using 7zip.
+    Write-Host User is prompted for MaxAge. Multiple folders can be copied, each with exclude folders based on its project type.`n
+    Write-Host "Usage: `n`n`t$cmdName -InputFolder <path> -ProjectDirsAndTypes <hashtable>" -f Yellow
     Write-Host "-InputFolder <path>                : The source folder containing the projects. (Mandatory)"
     Write-Host "-ProjectDirsAndTypes <hashtable>   : A hashtable of directory names and their corresponding project types. (Mandatory)"
-    Write-Host "-MaxAge <string>                   : Optional. Positive integer for days, or '-' to ignore MaxAge."
     Write-Host "Special value of $ExcludeNoneFlag can be passed as ProjectType to not use exclude option at all [include all in copy]"
     Write-Host "Special value of $ExcludeDirsFlag can be passed as ProjectType to exclude specified directories which are provided in the project type itself, after the colon in the flag."
     Write-Host "`nExamples:"
@@ -46,27 +44,11 @@ if (-not $InputFolder -or $InputFolder -eq "/?" -or -not $ProjectDirsAndTypes) {
 }
 
 Write-Host "In dir: $pwd"
-while ($true) {
-    if ([string]::IsNullOrWhiteSpace($MaxAge)) {
-        $MaxAge = Read-Host -Prompt "Please specify MaxAge (positive integer for days, or '-' to ignore MaxAge)"
-    }
-
-    # Check ignore MaxAge
-    if ($MaxAge -eq '-') {
-        break # Valid input, exit loop
-    }
-
-    # Check for a valid positive integer for days. Note: robocopy's /MAXAGE limit is 1899 days.
-    $maxAgeInt = $MaxAge -as [int]
-    if ($maxAgeInt -is [int] -and $maxAgeInt -gt 0 -and $maxAgeInt -le 1899) {
-        break # Valid input, exit loop
-    }
-
-    # If we reach here, the input is invalid. Provide feedback and loop again.
-    Write-Host "Invalid input. Please enter a positive number of days (e.g., 5), up to 1899, or '-' to ignore MaxAge." -ForegroundColor Red
-    $MaxAge = "" # Clear invalid input so the next loop prompts the user
+$MaxAge = Read-Host -Prompt "Please specify MaxAge [1]"
+if ([string]::IsNullOrWhiteSpace($MaxAge)) {
+	$MaxAge = 1
 }
- 
+
 # Loop through each project directory and type from the provided hashtable
 foreach ($ProjDir in $ProjectDirsAndTypes.GetEnumerator()) {
     $DirName = $ProjDir.Key
