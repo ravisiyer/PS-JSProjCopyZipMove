@@ -1,3 +1,9 @@
+# Outdated Document
+
+27 Mar 2026 - This document is now outdated. The live version is my blog post: [How AI (LLM) Context Window Size Impacts What Data AI 'Remembers' In Software Development Workflows](https://raviswdev.blogspot.com/2026/03/how-ai-llm-context-window-size-impacts.html).
+
+---
+
 # How LLM AI Context Window Size Impacts What Data AI 'Remembers' In Software Development Workflows
 
 **Date created:** 25 March 2026 
