@@ -1,4 +1,5 @@
-# Copy all source files and folders of a project
+# Copy all source files and folders of a project of various types (types including default defined
+# in ProjectTypeExcludes.ps1)
 param (
     [string]$InputFolder = "",
     [string]$ProjectType,
@@ -22,7 +23,7 @@ if (-not $ProjectType) {
 function Usage {
     param ($cmdName)
     Write-Host "Copy all source files and folders of a project based on its project type."`n
-    Write-Host "Usage: $cmdName InputFolder ProjectType MaxAge OutputFolder LogFile"
+    Write-Host "Usage: $cmdName InputFolder [ProjectType MaxAge OutputFolder LogFile]"
     Write-Host ("ProjectType: {0}" -f ($validTypes -join ", "))
     Write-Host ("If ProjectType is not specified, default is: {0}`n" -f $DefaultProjectType)
     Write-Host "CopyWoXF.ps1 is invoked to do the copy"`n
