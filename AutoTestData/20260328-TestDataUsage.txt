@@ -1,0 +1,5 @@
+Today I used the TestData folder for running refactored CopyZipMove folder scripts testing. That testing is described by CopyZipMove\TestRuns.md.
+After the testing, I deleted the output files created and also a specific modified data input folder I had created.
+But it is possible I may not have deleted everything created as part of my tests or deleted something not related to my tests.
+I realize that I should have made a copy of TestData as say 20260328-TestData and run the tests there. After the tests, I could have simply deleted 20260328-TestData folder. Perhaps that's what I should do for future tests involving TestData.
+Note that TestData.zip seems to contain all of TestData. I unzipped TestData.zip as a folder with a new name (TestData2). Then I renamed TestData in TestData2 as TestData22. Then I compared the TestData folder with TestData22 using WinMerge which said that all their contents (subfolders) are identical.

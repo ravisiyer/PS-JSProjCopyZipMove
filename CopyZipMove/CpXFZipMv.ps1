@@ -124,10 +124,17 @@ if (1 -eq $Choice)
 $Cmd ="MoveToMDLWDtTm '$OutputFolder' N"
 Write-Host `n"Executing: $Cmd"
 
-Invoke-Expression $Cmd
-if ($LASTEXITCODE -ne 0) {
-  Write-Error "Above MoveToMDLWDtTm script failed with exit code: $LastExitCode."
-  exit 1
+$ChoicesMDL = [System.Management.Automation.Host.ChoiceDescription[]] @("&yes", "&no")
+$ChoiceMDL = $host.UI.PromptForChoice("", "Optional step: Proceed to MayDeleteLater (or skip)?", $ChoicesMDL, 1)
+
+if (1 -eq $ChoiceMDL) {
+  Write-Host "Skipped!"
+} else {
+  Invoke-Expression $Cmd
+  if ($LASTEXITCODE -ne 0) {
+    Write-Error "Above MoveToMDLWDtTm script failed with exit code: $LastExitCode."
+    exit 1
+  }
 }
 Write-Host
 exit 0

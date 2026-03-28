@@ -21,7 +21,7 @@ This is the central pipeline engine. It executes a strict 5-step process for a s
 2. **Validate:** Checks if files were actually copied (gracefully exiting if a MaxAge filter resulted in 0 files).
 3. **Package:** Uses `ZipFldrWDtTm.ps1` to compress the temporary folder.
 4. **Archive:** Prompts the user, then uses `MoveToBack.ps1` to move the final `.zip` file to the backup destination.
-5. **Cleanup:** Uses `MoveToMDLWDtTm.ps1` to safely move the intermediate temporary folder to the `MayDeleteLater` directory.
+5. **Cleanup:** Prompts the user (allowing polite skipping), then uses `MoveToMDLWDtTm.ps1` to safely move the intermediate temporary folder to the `MayDeleteLater` directory.
 
 ### 2. Pipeline Wrappers & Batch Managers
 **`CpZipMv.ps1`**
@@ -31,9 +31,15 @@ A simple wrapper around `CpXFZipMv.ps1` that acts as the "Full 1:1 Backup" comma
 The advanced batch-processing manager. It allows you to configure a single run that backs up multiple disparate projects in sequence.
 * Uses a hashtable to map specific sub-folders to their respective project types (e.g., `@{'ReactNativeApp'='ReactNative'; 'BackendAPI'='DotNet'}`).
 * Dynamically sources `ProjectTypeExcludes.ps1` to apply the correct exclusion filters for each specific project.
-* Prompts for a single `MaxAge` value to apply across all projects.
+* Prompts for a single `MaxAge` value to apply across all projects (allows specifying a number of days for an incremental backup, or `-` for a full backup).
 * Hardcodes `7z` to guarantee hidden `.git` folders are included.
 * Provides interactive prompts allowing you to selectively skip individual projects during the batch run.
+
+**`CpXFProj7ZipMv.ps1`**
+A smart single-folder orchestrator. It accepts the path to a specific project folder and its project type, resolves the paths safely, and delegates the backup operation to `PrMaxAgeMFCpXF7ZipMv.ps1`.
+
+**Stack-Specific Wrappers (`CpXFRNProj7ZipMv.ps1`, `CpXFAndroidProj7ZipMv.ps1`, `CpXFDotNetProj7ZipMv.ps1`)**
+Minimal, ergonomic wrappers for `CpXFProj7ZipMv.ps1`. They allow you to trigger a properly filtered backup for a specific tech stack without needing to remember or type the `ProjectType` string.
 
 ### 3. Post-Backup Organization
 **`MoveByNameContains.ps1`**
