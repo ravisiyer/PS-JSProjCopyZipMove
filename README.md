@@ -42,7 +42,7 @@ This project is highly modular. Detailed documentation for each component can be
  
 Run or view MyPSScripts.ps1 in Misc folder to get a quick overview of the main scripts. A copy of its output is given below but it may be outdated. MyPSScripts.ps1 should have the updated content.
 
-Copy of MyPSScripts.ps1 console output taken on 27 Mar. 2026
+Copy of MyPSScripts.ps1 console output taken on 29 Mar. 2026
 ----------------------------------------------------------
 ```
 These are my active Powershell scripts in cmds folder which is part of PATH env. variable
@@ -50,7 +50,7 @@ These are my active Powershell scripts in cmds folder which is part of PATH env.
 Copy related - using Robocopy
 =============================
 CopyWoXF: Copy contents of a folder excluding specified/default folders (e.g. node_modules and .next folders).
-CopyXFProj: Copy all source files and folders of a project of various types (ReactNative, Android, DotNet, Others).
+CopyXFProj: Copy all source files and folders of a project of specified type or default type (currently 'Others').
 CopyXFRNProj: Copy all source files and folders of a React Native (web and mobile) project.
 CopyXFAndroidProj: Copy all source files and folders of an Android project.
 CopyXFDotNetProj: Copy all source files and folders of a DotNet project.
@@ -75,9 +75,13 @@ ZipMv: Zip folder or file with Date and Time prefix by default in output zip fil
 7zipMv: This script is a wrapper around ZipMv script tailored for zip with Use7zip Y and UseTodaySubFolder Y.
 MoveToBack: Move InputFolderOrFile to BackupFolder.
 MoveToMDLWDtTm: Move folder or file to MayDeleteLater folder with Date and Time prefix by default.
-CpXFZipMv: CopyWoXF + ZipFldrWDtTm + Move OutputZipFile to BackupFolder + MoveToMDLWDtTm (for CopyWoXF OutputFolder).
+CpXFZipMv: CopyWoXF + ZipFldrWDtTm + Optionally Move OutputZipFile to BackupFolder + Optionally MoveToMDLWDtTm.
 CpZipMv: This script is a wrapper around CpXFZipMv script tailored for copy with ExcludeNone.
-PrMaxAgeMFCpXF7ZipMv: Wrapper around CpXFZipMv script tailored for backup copy of multiple folders with user prompt for MaxAge and using 7zip.
+PrMaxAgeMFCpXF7ZipMv: Wrapper around CpXFZipMv script tailored for backup copy of multiple project folders with user prompt for MaxAge (including - for ignore) and using 7zip.
+CpXFProj7ZipMv: Wrapper around PrMaxAgeMFCpXF7ZipMv for a single project of specified type or default type (currently 'Others').
+CpXFRNProj7ZipMv: Wrapper around CpXFProj7ZipMv tailored for a React Native project.
+CpXFAndroidProj7ZipMv: Wrapper around CpXFProj7ZipMv tailored for an Android project.
+CpXFDotNetProj7ZipMv: Wrapper around CpXFProj7ZipMv tailored for a DotNet project.
 MoveByNameContains: Moves files and folders matching specified partial name to a target folder.
 
 Misc
@@ -88,7 +92,7 @@ FindTopNByNameContains: Lists top N entries of files and folders whose name cont
 PSScriptsListLastMod: Lists top few last modified .ps1 files contained in a folder (including subfolders).
 CpRnFileWDtTm: Copies or renames a file to a new name with a timestamp suffix.
 MyPSScripts: This command.
-Note: PS aliases are set in PS profile location. Alias mya lists PS profile file showing my alias defintions.
+Note: PS aliases are set in PS profile location. Alias mya lists PS profile file showing my alias definitions.
 ```
 
 ---
