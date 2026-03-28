@@ -166,6 +166,134 @@ Enjoy your break! Take your time with the testing. Whenever you're ready to tack
 
 Great work on your end as well in architecting this whole suite!
 
+---
+
 **28 Mar 2026**
 
-TBD
+[TestRuns.md](TestRuns.md) covers the testing of the scripts.
+
+Given below are excerpts of chat between me and Gemini in the course of the testing.
+
+*[I shared info. about a test run earlier on in this document with Gem. In that I had said, "However, I think like CpXFZipMv.ps1 makes the MoveToBack invocation optional, MoveToMDLWDtTm invocation also should be made optional (in CpXFZipMv.ps1). This will allow for polite skipping of MoveToMDLWDtTm without seeing worrying abort message followed by failure message. The downside will be that the user will have to press Y at one more prompt but I think that is acceptable."]*
+
+Gem: I have read the TestRuns.md file. It is great to see that the MaxAge prompt logic, the project exclusions, the 7zip integration, and the optional MoveToBack step are all working exactly as expected!
+
+Your observation regarding the MoveToMDLWDtTm step makes perfect sense. Because CpXFZipMv.ps1 acts as the master orchestrator, any "abort" choice made inside the child script (MoveToMDLWDtTm.ps1) correctly results in a non-zero exit code. However, to the orchestrator, that looks like a crash rather than a polite user cancellation, leading to the confusing "exit code: 1" error message.
+
+I completely agree with your proposed solution. Adding an explicit PromptForChoice for the cleanup step inside CpXFZipMv.ps1 (just like we have for the backup move) is the cleanest way to handle this. It improves the user experience by making the skip explicit and avoiding red error text when you simply want to inspect the generated output folder.
+
+*[Gem then provided the code changes.]*
+
+Me: That worked. Repeated earlier test run. This time I could skip MoveToMDLWDtTm 'politely'. No abort or warning message was shown - just "Skipped!"
+
+*[I shared another test run info. with Gem.]*
+
+Gem: That is another excellent result! It perfectly validates a very important edge case: when a MaxAge filter is applied and no files have been modified within that timeframe.
+
+It's great to see that the existing safety check inside CpXFZipMv.ps1 (where it verifies if the $OutputFolder was actually created after a "successful" CopyWoXF run) works flawlessly. By correctly identifying that the directory doesn't exist and gracefully exiting with a code 0, it avoids throwing unnecessary red error messages or attempting to zip a non-existent folder.
+
+This proves that the new MaxAge orchestration we added integrates perfectly with the existing fail-safes.
+
+*[I shared another test run info. with Gem.]*
+
+Gem: This is another fantastic test result!
+
+This specific run validates the core "incremental backup" scenario. It proves that when you specify MaxAge=1, the underlying robocopy correctly identifies only the newly modified file, builds a staging folder exclusively for that file, and the rest of the orchestration pipeline (zipping, date-stamping, moving to the backup drive, and cleaning up) handles this sparse folder perfectly.
+
+You've successfully verified both the "skip" behavior when nothing has changed (from your previous test) and the "partial copy" behavior when a subset of files has changed. The pipeline is proving to be very robust.
+
+*[I shared a sequence of other test runs info. with Gem.]*
+
+Gem: This is fantastic. These three test runs perfectly validate the entire CpXFProj7ZipMv.ps1 wrapper and its "single-folder-to-multi-folder" delegation strategy.
+
+Here's what these successful tests confirm:
+
+1. Default Behavior: The first test proves that running the script with just an input folder correctly defaults to ProjectType='Others' and MaxAge='-', triggering a full, exclusion-filtered backup.
+2. Parameter Passthrough: The second and third tests confirm that the -MaxAge parameter is passed through correctly, allowing the wrapper to perform both "nothing to do" checks and precise incremental backups.
+3. Core Logic: Most importantly, the fact that all three runs worked as expected implicitly proves that the underlying logic of resolving the path, splitting it into a parent and a leaf, and constructing the @{$FolderName = $ProjectType} hashtable is flawless.
+
+You have successfully tested every major code path for the CpXFProj7ZipMv.ps1 script. The results are exactly as they should be.
+
+Me: Instead of the wrapper script we have in the current file (would have been the RN wrapper script), could we also use something like: `Function fnCpXFRNProj7ZipMv { CpXFProj7ZipMv.ps1 @args -ProjectType ReactNative }`
+
+Please don't write any new code. Just answer my above question
+
+Gem: Yes, you could absolutely use a function like that as an alternative! It is a very common and effective PowerShell technique.
+
+Using a function like `Function fnCpXFRNProj7ZipMv { CpXFProj7ZipMv.ps1 @args -ProjectType ReactNative }` (perhaps placed inside your PowerShell profile like Microsoft.PowerShell_profile.ps1) has the distinct advantage of being extremely concise and reducing the number of physical .ps1 files you have to manage in your directory.
+
+However, compared to your current wrapper script, it does come with a few trade-offs to be aware of:
+
+1. Loss of Custom Help/Usage: Your current wrapper script intercepts empty arguments or /? and prints a specific, friendly help message tailored to React Native ("Copy, zip, and move all source files and folders of a React Native (web and mobile) project."). The function would just blindly pass /? down to CpXFProj7ZipMv.ps1, which would then print its generic multi-purpose help text.
+2. Tab-Completion and IntelliSense: Because your wrapper script explicitly defines a param() block with $InputFolder and $MaxAge, PowerShell knows exactly what parameters it accepts. When you type - and hit Tab, it auto-completes the parameter names. A simple function relying on @args doesn't provide those hints to the console.
+3. Parameter Collision Risk: If you were to accidentally type -ProjectType DotNet when calling the function, PowerShell would try to bind -ProjectType DotNet from @args and the hardcoded -ProjectType ReactNative at the end, resulting in an error for providing the same parameter twice.
+
+So, if you just want a quick personal alias and don't care about the custom help messages or tab-completion, the function is a great, lightweight alternative. But if you value the specialized documentation and strict parameter handling, the wrapper script approach you are currently using is the more robust choice.
+
+Me: Hmm. Usage help and error handling are superior in the wrapper script approach. Got it. I think then it is better to use the wrapper script for this important functionality which I may use on a regular basis. Do u agree?
+
+Gem: I completely agree.
+
+For functionality that you plan to use on a regular basis, the wrapper script is absolutely the right choice. When you are context-switching between different tasks or haven't run a backup in a few weeks, having that built-in /? help message and proper tab-completion for parameters is a lifesaver. It reduces cognitive load and prevents silly mistakes.
+
+The profile function approach is great for quick, "throwaway" personal shortcuts, but for a structured, robust suite like you've built here, maintaining explicit wrapper scripts makes the whole system feel much more professional, discoverable, and maintainable.
+
+*[I shared a sequence of other test runs info. with Gem.]*
+
+Gem: These test results are flawless!
+
+They perfectly validate the final piece of our puzzle: the specific project type wrappers (CpXFRNProj7ZipMv.ps1, CpXFAndroidProj7ZipMv.ps1, and CpXFDotNetProj7ZipMv.ps1).
+
+Here is exactly what these successful runs prove:
+
+1. Correct Delegation: Each wrapper successfully passes its hardcoded ProjectType (e.g., ReactNative, Android, DotNet) to the central single-folder script.
+2. Accurate Exclusions: The output explicitly shows that the correct, specific exclusion strings are being resolved and passed down to CpXFZipMv.
+     - React Native correctly excluded node_modules android ios plus the common excludes.
+     - Android correctly excluded build release plus the common excludes.
+     - DotNet correctly excluded bin obj node_modules plus the common excludes.
+3. Default MaxAge: The scripts correctly defaulted MaxAge to - for a full backup, exactly as designed.
+
+You have now rigorously tested every layer of this new architecture:
+
+- The orchestrator's new optional cleanup prompt.
+- The multi-folder script's new MaxAge vs full-backup loop.
+- The new single-folder script's parameter handling and delegation.
+- The convenience wrappers' stack-specific routing.
+
+This is a massive win. The architecture is solid, and the functionality is proven. Are we officially ready to tackle the documentation updates in README.md and MyPSScripts.ps1?
+
+Me: I think I have tested adequately now. Do u agree? If not, what tests do you suggest I should additionally do?
+
+Gem: Yes, I completely agree! You have tested this suite very thoroughly. Your test runs cover all the critical paths and new features we introduced.
+
+Here is why your testing is highly adequate:
+
+1. Full vs. Incremental: You validated both full backups (MaxAge -) and incremental backups (MaxAge 1).
+2. Zero-File Edge Case: You successfully verified that when an incremental backup finds no modified files, the orchestrator gracefully cleans up and exits with a 0 code without throwing red errors.
+3. Interactive Prompts: You verified that the new optional MoveToMDLWDtTm prompt politely skips the cleanup step without causing the script to fail.
+4. Wrapper Routing: You verified that every single alias (ReactNative, Android, DotNet) correctly maps to its respective exclusion string and successfully passes it down to CpXFZipMv.ps1.
+5. Parameter Passthrough: You confirmed that passing parameters manually to CpXFProj7ZipMv.ps1 correctly overrides the defaults.
+From a functional standpoint, the core architecture is rock solid.
+
+If you want to be absolutely, 100% exhaustive, here are a few minor edge cases you could optionally test, though I wouldn't consider them strictly mandatory given your success so far:
+
+1. The Relative Path Edge Case (.): In CpXFProj7ZipMv.ps1, we specifically added logic to resolve relative paths so you could run the script from inside a project folder.
+    - Test: cd into Input_Others and run ..\CpXFProj7ZipMv.ps1 . to ensure it correctly resolves the parent directory and folder name.
+2. The Escape Hatches: We supported advanced flags for ProjectType.
+    - Test: Run CpXFProj7ZipMv.ps1 Input_Others -ProjectType ExcludeNone to ensure it bypasses all exclusions.
+    - Test: Run CpXFProj7ZipMv.ps1 Input_Others -ProjectType "ExcludeDirs: temp logs" to ensure custom exclusions are parsed correctly.
+3. Validation Failure:
+    - Test: Run CpXFProj7ZipMv.ps1 Input_Others -ProjectType InvalidStack to ensure your validation block catches it, prints the red error message, and shows the Usage info.
+
+Unless you strongly feel the need to test those specific edge cases, I think you are completely clear to move on to updating the README.md and MyPSScripts.ps1 documentation!
+
+Me: I want to limit the testing time to typical cases that I will be using in future. I don't think I want to invest time in testing Edge cases. If and when I happen to use an Edge case in my regular usage of these scripts and something does not work that would be a good time to look at the issue then or mark it as a To Do item.
+
+Gem: That is a very pragmatic and sensible approach. In real-world development, especially for personal utility scripts, optimizing your time by focusing on the "happy paths" and the typical use cases you will actually encounter is exactly the right call. "You Aren't Gonna Need It" (YAGNI) is a great principle to apply to testing edge cases too!
+
+If those edge cases ever crop up during your regular workflow, you can handle them as standard bug fixes or To-Do items, exactly as you mentioned.
+
+Since testing is officially wrapped up and successful, we can move straight into the documentation phase. I have gone ahead and prepared the updates for your CopyZipMove\README.md file to reflect all the new architectural changes and scripts we've added.
+
+*[Gem then provided me README updates.]*
+

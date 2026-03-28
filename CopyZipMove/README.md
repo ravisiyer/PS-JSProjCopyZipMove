@@ -2,7 +2,12 @@
 
 This documentation has been provided by Gemini and has been reviewed and edited by me. 
 
-**Date created:** 24 Mar 2026
+**Date created:** 24 Mar 2026 
+
+**Last updated:** 28 Mar 2026
+
+---
+
 
 ## Summary
 
@@ -20,8 +25,8 @@ This is the central pipeline engine. It executes a strict 5-step process for a s
 1. **Prepare & Copy:** Creates a timestamped temporary folder and uses `CopyWoXF.ps1` to copy files into it (applying exclusions and/or MaxAge).
 2. **Validate:** Checks if files were actually copied (gracefully exiting if a MaxAge filter resulted in 0 files).
 3. **Package:** Uses `ZipFldrWDtTm.ps1` to compress the temporary folder.
-4. **Archive:** Prompts the user, then uses `MoveToBack.ps1` to move the final `.zip` file to the backup destination.
-5. **Cleanup:** Prompts the user (allowing polite skipping), then uses `MoveToMDLWDtTm.ps1` to safely move the intermediate temporary folder to the `MayDeleteLater` directory.
+4. **Optional Archive:** Prompts the user for confirmation giving user option to skip, and if not skipped, uses `MoveToBack.ps1` to move the final `.zip` file to the backup destination.
+5. **Optional Cleanup:** Prompts the user for confirmation giving user option to skip, and if not skipped, uses `MoveToMDLWDtTm.ps1` to safely move the intermediate temporary folder to the `MayDeleteLater` directory.
 
 ### 2. Pipeline Wrappers & Batch Managers
 **`CpZipMv.ps1`**

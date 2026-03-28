@@ -1,3 +1,5 @@
+# This code was provided by Gemini but I preferred to modify PrMaxAgeMFCpXF7ZipMv.ps1 instead to avoid
+# code replication. So this code has not been used and has not been tested.
 param (
     [string]$InputFolder,
     [hashtable]$ProjectDirsAndTypes
