@@ -30,6 +30,7 @@ Write-Output "ZipMv: Zip folder or file with Date and Time prefix by default in 
 Write-Output "7zipMv: This script is a wrapper around ZipMv script tailored for zip with Use7zip Y and UseTodaySubFolder Y."
 Write-Output "MoveToBack: Move InputFolderOrFile to BackupFolder."
 Write-Output "MoveToMDLWDtTm: Move folder or file to MayDeleteLater folder with Date and Time prefix by default."
+Write-Output "RemoveFldrIfEmpty: Safely deletes a specified directory, but only if it is completely empty."
 Write-Output "CpXFZipMv: CopyWoXF + ZipFldrWDtTm + Optionally Move OutputZipFile to BackupFolder + Optionally MoveToMDLWDtTm."
 Write-Output "CpZipMv: This script is a wrapper around CpXFZipMv script tailored for copy with ExcludeNone."
 Write-Output "PrMaxAgeMFCpXF7ZipMv: Wrapper around CpXFZipMv script tailored for backup copy of multiple project folders with user prompt for MaxAge (including - for ignore) and using 7zip."

@@ -33,6 +33,9 @@ A dedicated utility for safely relocating an existing file or folder to the back
 **`MoveToMDLWDtTm.ps1`**
 A custom, scriptable alternative to the Windows Recycle Bin. It stages a file or folder for future manual deletion by moving it to a `MayDeleteLater` (MDL) folder. To prevent naming collisions, it prepends the current timestamp to the item's name before moving it. For performance, it dynamically resolves the current drive and moves the item to the MDL folder *on that exact same drive*, ensuring the OS simply updates the file index rather than executing a lengthy cross-drive data transfer.
 
+**`RemoveFldrIfEmpty.ps1`**
+A strict cleanup utility that safely deletes a specified directory, but only if it is completely empty (accounting for hidden files). This prevents accidental data loss while allowing manual usage or automated orchestration scripts to safely clean up empty folders.
+
 ### 3. Source Control Utilities
 **`GitModFilesZip.ps1`**
 A specialized Git utility that bridges `git ls-files` and 7-Zip. It quickly packages up all tracked, uncommitted, modified files into a single `modified-files.zip` archive. This is highly useful for sharing a "patch" or a work-in-progress state without making commits.
